@@ -577,11 +577,26 @@
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
     .footer-brand p { color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem; max-width: 300px; }
     .footer-heading { color: var(--text-pure); font-family: var(--font-display); font-weight: 600; margin-bottom: 1.5rem; font-size: 1.1rem; }
-    .footer-links { list-style: none; }
-    .footer-links li { margin-bottom: 0.8rem; }
-    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-links { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+    .footer-links li { margin: 0 0 0.8rem 0 !important; padding: 0 !important; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; display: inline-block; }
     .footer-links a:hover { color: var(--accent-primary); }
     .footer-bottom { border-top: 1px solid var(--border-subtle); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap; gap: 1rem;}
+
+    .footer .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .footer .brand-logo {
+      color: var(--text-pure);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.06em;
+    }
 
 
   </style>
