@@ -81,15 +81,15 @@
     /* ── CAROUSEL GRID ── */
     .carousel-wrapper {
       display: flex;
-      gap: 0.9rem;
+      gap: 0.75rem;
       overflow-x: auto;
-      padding-bottom: 1.25rem;
+      padding-bottom: 1rem;
     }
 
     /* ── SLIDE (4:5 Ratio - 1080x1350 scaled to 400x500 for grid view) ── */
     .slide {
-      width: 420px;
-      height: 525px;
+      width: 360px;
+      height: 450px;
       background: var(--bg-pure);
       border: 1px solid var(--border-subtle);
       border-radius: 8px;
@@ -118,7 +118,7 @@
 
     /* ── CONTENT LAYOUT ── */
     .s-content {
-      padding: 2.2rem 2rem;
+      padding: 1.7rem 1.6rem;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
@@ -131,14 +131,14 @@
     
     .s-title {
       font-family: var(--font-display);
-      font-size: 2.35rem;
+      font-size: 2rem;
       font-weight: 800;
       line-height: 1.05;
       letter-spacing: -0.04em;
       color: var(--text-pure);
       margin-bottom: 1.25rem;
     }
-    .s-title.huge { font-size: 2.95rem; }
+    .s-title.huge { font-size: 2.45rem; }
     .s-title span.violet { color: var(--accent-primary); }
     .s-title span.coral { color: var(--accent-coral); }
     .s-title span.yellow { color: var(--accent-yellow); }
@@ -146,7 +146,7 @@
 
     .s-text {
       font-family: var(--font-body);
-      font-size: 1.03rem;
+      font-size: 0.92rem;
       color: var(--text-main);
       line-height: 1.5;
       font-weight: 500;
@@ -155,7 +155,7 @@
     
     .s-number {
       font-family: var(--font-display);
-      font-size: 4.25rem;
+      font-size: 3.5rem;
       font-weight: 800;
       color: var(--accent-coral);
       line-height: 1;
@@ -165,7 +165,7 @@
 
     /* ── FOOTER ── */
     .s-footer {
-      padding: 1.1rem 2rem;
+      padding: 0.95rem 1.6rem;
       border-top: 1px solid rgba(255,255,255,0.05);
       display: flex;
       justify-content: space-between;
@@ -427,14 +427,14 @@
     @media (max-width: 900px) {
       body { padding: 1rem; }
       .slide {
-        width: 320px;
-        height: 400px;
+        width: 280px;
+        height: 350px;
       }
       .s-title {
-        font-size: 1.8rem;
+        font-size: 1.55rem;
       }
       .s-title.huge {
-        font-size: 2.35rem;
+        font-size: 2rem;
       }
       .feed-preview-panel {
         padding: 1rem;
