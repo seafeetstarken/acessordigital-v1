@@ -29,7 +29,7 @@
 
 | Arquivo | Descrição |
 |---------|-----------|
-| [acessor-brand-guide.html](file:///C:/Users/Juan/.gemini/antigravity-ide/brain/6a310dd1-d26a-4f81-99fe-ab8531415f5d/acessor-brand-guide.html) | Página interativa com logos, paleta, tipografia, mockups (cartão, post, dashboard) |
+| Brand guide | Página interativa com logos, paleta, tipografia, mockups (cartão, post, dashboard) |
 
 ### Design Tokens CSS
 
