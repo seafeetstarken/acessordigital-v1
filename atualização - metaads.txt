@@ -1,0 +1,96 @@
+Para blindar o Acessor Digital no App Review da Meta, precisamos de uma armadura jurídica e técnica focada em Software as a Service (SaaS) e OAuth. A Meta é implacável com apps que pedem permissão de leitura de mensagens ou automação; eles precisam ter certeza de que você não está minerando dados dos usuários.
+
+Como o sistema é voltado para automatizar o atendimento de operações de alto volume, como delivery, pizzarias e restaurantes, a clareza sobre o uso estritamente comercial da Graph API é fundamental.
+
+Aqui está o dossiê completo. Copie os blocos abaixo e entregue ao Antigravity para gerar as páginas e rotas no projeto do Acessor Digital.
+
+1. O Rodapé (Footer) do Acessor Digital
+Todas as páginas da LP do Acessor precisam ter esse rodapé. Ele amarra o software à empresa verificada.
+
+Conteúdo do Footer:
+
+Acessor Digital é uma plataforma desenvolvida e operada por SeaFeet Labs.
+Razão Social: SEAFEET - SERVICOS DE EDUCACAO E ASSISTENCIA FITNESS E TI LTDA - ME
+CNPJ: 42.792.893/0001-03
+Sede: Rua Rodrigues Alves, 459 - Velha, Blumenau - SC, CEP 89036-700
+Suporte: contato@seafeetlabs.tech | WhatsApp: +55 47 98813-9147
+
+[Política de Privacidade] | [Termos de Uso] | [Instruções de Exclusão de Dados]
+
+Este site não faz parte do site do Facebook ou da Meta Platforms, Inc. Além disso, este site NÃO é endossado pelo Facebook de nenhuma maneira. FACEBOOK é uma marca comercial da META PLATFORMS, INC.
+
+2. Rota Obrigatória: Instruções de Exclusão de Dados (/exclusao-de-dados)
+Atenção: Esta é a URL que você vai colar dentro do painel Facebook for Developers. Sem isso, o app é reprovado instantaneamente.
+
+Título da Página: Instruções de Exclusão de Dados (Data Deletion Instructions)
+Conteúdo:
+
+Como revogar o acesso e excluir seus dados do Acessor Digital
+
+O Acessor Digital utiliza o sistema oficial de autenticação da Meta (Facebook Login) para conectar sua página e automatizar seu atendimento. Nós não armazenamos suas senhas pessoais.
+
+Se você deseja remover o aplicativo Acessor Digital e revogar permanentemente todos os tokens de acesso e permissões associadas à sua conta do Facebook e Instagram, siga este passo a passo oficial da Meta:
+
+Acesse o seu perfil do Facebook e vá em Configurações e Privacidade > Configurações.
+
+No menu lateral esquerdo, clique em Segurança e Login e depois em Integrações Comerciais (ou acesse diretamente este link: https://www.facebook.com/settings?tab=business_tools).
+
+Na lista de aplicativos e sites ativos, procure por Acessor Digital.
+
+Marque a caixa ao lado do Acessor Digital e clique no botão Remover.
+
+Confirme a remoção.
+
+A partir desse momento, o Acessor Digital perderá instantaneamente qualquer acesso à sua conta via Graph API, e todas as automações serão paralisadas. Caso precise que qualquer registro residual de cadastro seja apagado dos nossos sistemas internos operados pela SeaFeet Labs, envie um e-mail para contato@seafeetlabs.tech com o assunto "Exclusão de Dados LGPD".
+
+3. Política de Privacidade do App (/politica-de-privacidade)
+Focada em explicar a arquitetura limpa de tokens.
+
+Título da Página: Política de Privacidade - Acessor Digital
+Conteúdo:
+
+1. Introdução e Escopo
+O Acessor Digital, uma plataforma desenvolvida pela SEAFEET - SERVICOS DE EDUCACAO E ASSISTENCIA FITNESS E TI LTDA - ME (CNPJ 42.792.893/0001-03), está comprometido com a segurança e a transparência. Esta política explica como lidamos com as informações quando você conecta suas contas do Meta (Facebook/Instagram) à nossa plataforma de automação comercial, desenvolvida para otimizar o atendimento de negócios do setor gastronômico, delivery e varejo.
+
+2. Autenticação e Uso de Dados da Meta (OAuth)
+Nossa arquitetura é baseada na integração direta via Graph API. Nós não solicitamos, não recebemos e não armazenamos suas senhas do Facebook ou Instagram.
+Quando você vincula sua conta, utilizamos o fluxo oficial de autorização da Meta (OAuth) que nos fornece apenas um Token de Acesso (Access Token). Este token é utilizado estritamente para:
+
+Ler mensagens recebidas nas páginas comerciais conectadas;
+
+Enviar respostas automatizadas configuradas por você;
+
+Acessar informações básicas do perfil público da página para fins de funcionamento do software.
+
+3. Armazenamento e Retenção
+O Acessor Digital atua como uma ponte de automação. Não armazenamos o histórico de conversas dos seus clientes em nossos bancos de dados para fins de mineração. Os dados de interação transitam temporariamente para a execução das regras de automação e são descartados de acordo com as boas práticas de segurança.
+
+4. Compartilhamento de Informações
+As informações trafegadas via token são de seu uso exclusivo. A SeaFeet Labs não compartilha, vende ou negocia os dados das suas páginas comerciais, leads ou clientes finais com terceiros sob nenhuma circunstância.
+
+5. Conformidade com as Políticas da Plataforma
+O uso de nossa ferramenta está estritamente vinculado ao cumprimento das Políticas de Desenvolvedor do Facebook e das Diretrizes do Instagram. O uso indevido do Acessor Digital para envio de spam resultará no bloqueio imediato da conta na nossa plataforma.
+
+4. Termos de Uso do SaaS (/termos-de-uso)
+Protege você contra clientes que fizerem spam e tomarem bloqueio da Meta.
+
+Título da Página: Termos de Serviço - Acessor Digital
+Conteúdo:
+
+1. Aceitação e Natureza do Serviço
+Ao criar uma conta no Acessor Digital (operado pela SeaFeet Labs, CNPJ 42.792.893/0001-03), você concorda com estes termos. O Acessor Digital é uma plataforma SaaS (Software as a Service) voltada para a automação de atendimento em redes sociais, utilizando as APIs oficiais da Meta.
+
+2. Responsabilidade sobre a Conta da Meta
+O Acessor Digital é uma ferramenta de produtividade. Você é inteiramente responsável pelo conteúdo das mensagens automatizadas enviadas através do nosso sistema. É terminantemente proibido utilizar o Acessor Digital para enviar mensagens não solicitadas (spam), violar os limites de taxa de envio (rate limits) ou infringir as Políticas Comerciais do WhatsApp, Instagram ou Facebook.
+
+3. Bloqueios e Suspensões por Terceiros
+A SeaFeet Labs não tem controle sobre as decisões de moderação da Meta Platforms, Inc. Não nos responsabilizamos por suspensões de páginas, bloqueios de contas de anúncios ou restrições de envio de mensagens impostas pela Meta devido ao conteúdo ou volume das automações configuradas pelo usuário.
+
+4. Disponibilidade (Uptime) e Limitações de API
+Nosso serviço depende da estabilidade da Graph API da Meta. Embora envidemos todos os esforços técnicos para manter a plataforma online, não nos responsabilizamos por interrupções causadas por instabilidades nos servidores do Facebook/Instagram ou revogação abrupta de tokens de acesso pela plataforma de origem.
+
+5. Cancelamento
+Você pode cancelar sua assinatura ou revogar o acesso do Acessor Digital à sua conta a qualquer momento, através do próprio painel do Facebook (veja a página "Instruções de Exclusão de Dados").
+
+Ação no Antigravity:
+Peça para o seu assistente no Codex/Antigravity gerar o Layout Base Legal com essas três rotas (/exclusao-de-dados, /politica-de-privacidade, /termos-de-uso) e integrá-las no rodapé da página inicial do Acessor Digital. Com esse código no ar pela Vercel, o auditor da Meta não terá sequer um milímetro de margem para reprovar o app.

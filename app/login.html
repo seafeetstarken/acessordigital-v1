@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — Acessor Digital</title>
+  <title>Login Ã¢â‚¬â€ Acessor Digital</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -210,7 +210,7 @@
         <div style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; letter-spacing: -0.05em; color: #FFF; display: flex; align-items: baseline; text-decoration: none;">acessor<span style="color: var(--accent-coral); margin-left: 2px; text-shadow: 0 0 10px rgba(255, 94, 58, 0.5);">.</span></div>
       </a>
       <h1>Bem-vindo de volta</h1>
-      <p>Acesse seu cockpit de operações</p>
+      <p>Acesse seu cockpit de operaÃƒÂ§ÃƒÂµes</p>
     </div>
 
     <div class="glass-card">
@@ -222,11 +222,11 @@
         
         <div class="form-group">
           <label>Senha</label>
-          <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+          <input type="password" id="password" class="form-control" placeholder="Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢" required>
         </div>
 
         <div id="errorMessage" style="color: var(--accent-coral); font-size: 0.9rem; margin-bottom: 1rem; display: none; text-align: center; font-family: var(--font-mono);">
-          E-mail ou senha inválidos. Use demo@acessor.ai / 123456
+          E-mail ou senha invÃƒÂ¡lidos. Use demo@acessor.ai / 123456
         </div>
 
         <div class="form-actions">
@@ -241,7 +241,7 @@
     </div>
 
     <div class="footer">
-      Ainda não tem o Acessor Digital? <a href="cadastro">Assinar agora</a>
+      Ainda nÃƒÂ£o tem o Acessor Digital? <a href="cadastro">Assinar agora</a>
     </div>
   </div>
 
@@ -252,7 +252,7 @@
       const emailInput = document.getElementById('email').value.trim();
       const passwordInput = document.getElementById('password').value.trim();
       
-      // Obter credenciais salvas em localStorage (caso o usuário tenha acabado de se cadastrar)
+      // Obter credenciais salvas em localStorage (caso o usuÃƒÂ¡rio tenha acabado de se cadastrar)
       const registeredEmail = localStorage.getItem('registered_email') || 'demo@acessor.ai';
       const registeredPassword = localStorage.getItem('registered_password') || '123456';
       
@@ -266,7 +266,7 @@
         // Mostrar erro
         const errDiv = document.getElementById('errorMessage');
         errDiv.style.display = 'block';
-        errDiv.textContent = `E-mail ou senha inválidos. Para testes use: demo@acessor.ai e senha: 123456`;
+        errDiv.textContent = `E-mail ou senha invÃƒÂ¡lidos. Para testes use: demo@acessor.ai e senha: 123456`;
       }
     });
   </script>
