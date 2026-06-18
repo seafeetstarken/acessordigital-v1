@@ -546,7 +546,7 @@
       margin-bottom: 1rem; color: var(--text-main); font-size: 0.95rem;
       display: flex; align-items: flex-start; gap: 0.5rem;
     }
-    .price-features li::before { content: '�?''; color: var(--accent-primary); font-family: var(--font-mono); }
+    .price-features li::before { content: '\2713'; color: var(--accent-primary); font-family: var(--font-mono); }
     .price-card.scale .price-features li::before { color: var(--accent-coral); }
     
     .price-discount { font-size: 0.9rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; margin-top: -0.5rem; margin-bottom: 1rem; font-family: var(--font-mono);}
@@ -575,148 +575,122 @@
     /* 09. FOOTER */
     .footer {
       position: relative;
-      background:
-        radial-gradient(circle at top, rgba(124, 58, 237, 0.09), transparent 38%),
-        linear-gradient(180deg, #0A0A0D 0%, #07070A 100%);
-      padding: 4.5rem 0 2.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      padding: 5.5rem 0 2rem;
+      background: var(--bg-pure);
+      border-top: 1px solid var(--border-thin);
     }
     .footer::before {
       content: "";
       position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 64px 64px;
-      opacity: 0.12;
+      top: -180px;
+      left: 50%;
+      width: 720px;
+      height: 320px;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse, rgba(124, 58, 237, 0.14), transparent 68%);
       pointer-events: none;
     }
-    .footer .container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .footer .container { position: relative; z-index: 1; }
     .footer-grid {
       display: grid;
-      grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 3rem;
-      margin-bottom: 3rem;
-      align-items: start;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3.5rem;
+      padding-bottom: 4rem;
     }
-    .footer-brand { padding-right: 1rem; }
+    .footer-brand { padding-right: 2rem; }
     .footer-brand .brand-logo {
       display: inline-flex;
-      align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
+      font-size: 2rem;
     }
     .footer-brand p {
+      max-width: 320px;
       color: var(--text-muted);
-      font-size: 0.92rem;
-      line-height: 1.7;
-      margin-top: 0.85rem;
-      max-width: 360px;
-    }
-    .footer-heading {
-      color: var(--text-pure);
-      font-family: var(--font-display);
-      font-weight: 600;
-      margin-bottom: 1.1rem;
       font-size: 0.95rem;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
-      opacity: 0.9;
+      line-height: 1.75;
     }
-    .footer-links { list-style: none !important; margin: 0 !important; padding: 0 !important; }
-    .footer-links li { margin: 0 0 0.7rem 0 !important; padding: 0 !important; }
-    .footer a,
-    .footer a:visited {
-      color: var(--text-muted) !important;
-      text-decoration: none !important;
-      transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
-    }
-    .footer-links a,
-    .footer-link {
-      position: relative;
+    .footer-signature {
       display: inline-flex;
       align-items: center;
       gap: 0.55rem;
-      font-size: 0.92rem;
-      line-height: 1.4;
-      opacity: 0.82;
+      margin-top: 1.5rem;
+      color: var(--accent-coral);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
-    .footer-links a::before,
-    .footer-link::before {
+    .footer-signature::before {
       content: "";
-      width: 0.3rem;
-      height: 0.3rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.35);
-      opacity: 0.5;
-      transform: scale(1);
-      transition: all 0.2s ease;
+      width: 26px;
+      height: 1px;
+      background: var(--accent-coral);
+      box-shadow: 0 0 10px rgba(255, 94, 58, 0.55);
     }
-    .footer-links a:hover,
-    .footer-link:hover {
-      color: var(--text-pure) !important;
-      opacity: 1;
-      transform: translateX(1px);
-      background: transparent;
+    .footer-heading {
+      margin-bottom: 1.4rem;
+      color: var(--text-pure);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
     }
-    .footer-links a:hover::before,
-    .footer-link:hover::before {
-      opacity: 1;
-      background: var(--accent-primary);
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 0.85rem; }
+    .footer-links a,
+    .footer-social a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+    .footer-links a { display: inline-block; }
+    .footer-links a:hover {
+      color: var(--text-pure);
+      transform: translateX(3px);
+    }
+    .footer-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-top: 0.7rem;
+      color: var(--accent-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .footer-contact::after { content: '\2192'; }
+    .footer-contact:hover { color: #A78BFA; }
+    .footer-legal {
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      line-height: 1.65;
+      text-align: center;
     }
     .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      flex-wrap: wrap;
       gap: 1rem;
-    }
-    .footer-bottom a {
-      color: var(--text-muted) !important;
-      opacity: 0.9;
-    }
-    .footer-bottom a:hover { color: var(--text-pure) !important; opacity: 1; }
-    .footer-divider {
-      width: 100%;
-      height: 1px;
-      margin: 0 auto 2rem;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-    }
-    .footer-legal {
-      max-width: 920px;
-      margin: 0 auto 1.75rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-subtle);
       color: var(--text-muted);
-      font-size: 0.88rem;
-      line-height: 1.7;
-      text-align: center;
+      font-size: 0.82rem;
     }
-    .footer-social {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-    .footer-social a {
-      display: inline-flex;
-      align-items: center;
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      font-size: 0.85rem;
-    }
-    .footer-social a:hover { background: transparent; }
+    .footer-social { display: flex; align-items: center; gap: 1.5rem; }
+    .footer-social a:hover { color: var(--accent-coral); }
 
-    .footer .brand-logo {
-      color: var(--text-pure);
-      text-decoration: none;
-      font-family: var(--font-display);
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -0.06em;
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1.5fr 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; padding-right: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .footer { padding-top: 4rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem 1.5rem; }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-bottom { align-items: flex-start; flex-direction: column; }
     }
 
 
@@ -1115,7 +1089,7 @@
   </section>
 
   <!-- Section 06: FAQ -->
-  <section class="faq-section" style="background: linear-gradient(180deg, var(--bg-pure) 0%, rgba(124, 58, 237, 0.05) 50%, var(--bg-pure) 100%);">
+  <section id="faq" class="faq-section" style="background: linear-gradient(180deg, var(--bg-pure) 0%, rgba(124, 58, 237, 0.05) 50%, var(--bg-pure) 100%);">
     <div class="tech-grid-lines" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; pointer-events: none; opacity: 0.3;"></div>
     <div class="container faq-container" style="max-width: 800px; background: rgba(10, 10, 12, 0.8); border: 1px solid var(--border-thin); padding: 4rem; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); backdrop-filter: blur(10px);">
       <h2 class="section-title" style="margin-bottom: 3rem; color: #FFFFFF;">O Cofre de Dúvidas</h2>
@@ -1141,39 +1115,42 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand" style="min-width: 0;">
+        <div class="footer-brand">
           <a href="/" class="brand-logo">acessor<span class="dot">.</span></a>
           <p>A Consciência Artificial que escala suas vendas e acaba com o gargalo do atendimento humano no WhatsApp e Instagram.</p>
+          <span class="footer-signature">Vendas em movimento, 24/7</span>
         </div>
         
-        <div style="min-width: 0;">
-          <div class="footer-heading">Navegação</div>
-          <ul class="footer-links" style="list-style: none; margin: 0; padding: 0;">
-            <li><a href="#solucao" class="footer-link">Funcionalidades</a></li>
-            <li><a href="#cockpit" class="footer-link">Como Funciona</a></li>
-            <li><a href="#precos" class="footer-link">Planos e Preços</a></li>
-            <li><a href="#integracoes" class="footer-link">Integrações</a></li>
-            <li><a href="/politica-de-privacidade" class="footer-link">O Cofre de Dúvidas (Ajuda)</a></li>
-            <li><a href="/previewposts" class="footer-link">Apresentação dos Posts</a></li>
+        <div>
+          <div class="footer-heading">Produto</div>
+          <ul class="footer-links">
+            <li><a href="#solucao">Funcionalidades</a></li>
+            <li><a href="#cockpit">Como funciona</a></li>
+            <li><a href="#precos">Planos e preços</a></li>
+            <li><a href="#integracoes">Integrações</a></li>
           </ul>
         </div>
         
-        <div style="min-width: 0;">
-          <div class="footer-heading">Contato</div>
-          <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; margin: 0 0 1rem; max-width: 280px;">
-            Quer avançar com a ativação ou precisa de suporte para colocar a operação no ar?
-          </p>
-          <a href="./app/login.html" class="btn btn-primary" style="display: inline-flex; align-items: center; justify-content: center; padding: 0.8rem 1.2rem; font-size: 0.92rem; margin-bottom: 1rem;">Entrar no Painel</a>
-          <ul class="footer-links" style="list-style: none; margin: 0; padding: 0;">
-            <li><a href="/" class="footer-link">Calculadora de Prejuízo</a></li>
-            <li><a href="/" class="footer-link">Status do Sistema</a></li>
-            <li><a href="/termos-de-uso" class="footer-link">Termos de Uso</a></li>
-            <li><a href="/exclusao-de-dados" class="footer-link">Exclusão de Dados</a></li>
+        <div>
+          <div class="footer-heading">Recursos</div>
+          <ul class="footer-links">
+            <li><a href="#faq">Cofre de dúvidas</a></li>
+            <li><a href="/previewposts">Apresentação dos posts</a></li>
+            <li><a href="#calculadora">Calculadora de prejuízo</a></li>
+            <li><a href="./app/login.html">Entrar no painel</a></li>
           </ul>
+        </div>
+
+        <div>
+          <div class="footer-heading">Legal</div>
+          <ul class="footer-links">
+            <li><a href="/termos-de-uso">Termos de uso</a></li>
+            <li><a href="/politica-de-privacidade">Política de privacidade</a></li>
+            <li><a href="/exclusao-de-dados">Exclusão de dados</a></li>
+          </ul>
+          <a href="#precos" class="footer-contact">Ativar minha IA</a>
         </div>
       </div>
-      
-      <div class="footer-divider"></div>
 
       <div class="footer-legal">
         Acessor Digital é desenvolvido e operado pela SeaFeet Labs. Não somos afiliados, endossados ou patrocinados pela Meta Platforms, Inc., Facebook ou Instagram.
@@ -1182,8 +1159,8 @@
       <div class="footer-bottom">
         <div>&copy; 2026 Acessor Digital. Todos os direitos reservados.</div>
         <div class="footer-social">
-          <a href="https://instagram.com/acessordigital.ai/" target="_blank" class="footer-link">Instagram</a>
-          <a href="https://facebook.com/acessordigital" target="_blank" class="footer-link">Facebook</a>
+          <a href="https://instagram.com/acessordigital.ai/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://facebook.com/acessordigital" target="_blank" rel="noopener noreferrer">Facebook</a>
         </div>
       </div>
     </div>
