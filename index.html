@@ -633,7 +633,8 @@
       text-decoration: none !important;
       transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
     }
-    .footer-links a {
+    .footer-links a,
+    .footer-link {
       position: relative;
       display: inline-flex;
       align-items: center;
@@ -641,8 +642,13 @@
       font-size: 0.92rem;
       line-height: 1.4;
       opacity: 0.82;
+      padding: 0.35rem 0.55rem;
+      margin-left: -0.55rem;
+      border-radius: 999px;
+      background: transparent;
     }
-    .footer-links a::before {
+    .footer-links a::before,
+    .footer-link::before {
       content: "";
       width: 0.4rem;
       height: 0.4rem;
@@ -653,12 +659,15 @@
       transform: scale(0.8);
       transition: all 0.2s ease;
     }
-    .footer-links a:hover {
+    .footer-links a:hover,
+    .footer-link:hover {
       color: var(--text-pure) !important;
       opacity: 1;
       transform: translateX(2px);
+      background: rgba(255, 255, 255, 0.04);
     }
-    .footer-links a:hover::before {
+    .footer-links a:hover::before,
+    .footer-link:hover::before {
       opacity: 1;
       transform: scale(1);
       box-shadow: 0 0 0 6px rgba(124, 58, 237, 0.16);
@@ -679,6 +688,43 @@
       opacity: 0.9;
     }
     .footer-bottom a:hover { color: var(--text-pure) !important; opacity: 1; }
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      margin: 0 auto 2rem;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    }
+    .footer-legal {
+      max-width: 920px;
+      margin: 0 auto 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      text-align: center;
+      padding: 1rem 1.25rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(10px);
+    }
+    .footer-social {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .footer-social a {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.02);
+      font-size: 0.85rem;
+    }
+    .footer-social a:hover {
+      border-color: rgba(124,58,237,0.35);
+      background: rgba(124,58,237,0.12);
+    }
 
     .footer .brand-logo {
       color: var(--text-pure);
@@ -1119,42 +1165,44 @@
         <div style="min-width: 0;">
           <div class="footer-heading">Produto</div>
           <ul class="footer-links" style="list-style: none; margin: 0; padding: 0;">
-            <li><a href="#solucao">Funcionalidades</a></li>
-            <li><a href="#cockpit">Como Funciona</a></li>
-            <li><a href="#precos">Planos e Preços</a></li>
-            <li><a href="#integracoes">Integrações</a></li>
+            <li><a href="#solucao" class="footer-link">Funcionalidades</a></li>
+            <li><a href="#cockpit" class="footer-link">Como Funciona</a></li>
+            <li><a href="#precos" class="footer-link">Planos e Preços</a></li>
+            <li><a href="#integracoes" class="footer-link">Integrações</a></li>
           </ul>
         </div>
         
         <div style="min-width: 0;">
           <div class="footer-heading">Recursos</div>
           <ul class="footer-links" style="list-style: none; margin: 0; padding: 0;">
-            <li><a href="/politica-de-privacidade">O Cofre de Dúvidas (Ajuda)</a></li>
-            <li><a href="/previewposts">Apresentação dos Posts</a></li>
-            <li><a href="/">Calculadora de Prejuízo</a></li>
-            <li><a href="/">Status do Sistema</a></li>
+            <li><a href="/politica-de-privacidade" class="footer-link">O Cofre de Dúvidas (Ajuda)</a></li>
+            <li><a href="/previewposts" class="footer-link">Apresentação dos Posts</a></li>
+            <li><a href="/" class="footer-link">Calculadora de Prejuízo</a></li>
+            <li><a href="/" class="footer-link">Status do Sistema</a></li>
           </ul>
         </div>
         
         <div style="min-width: 0;">
           <div class="footer-heading">Legal</div>
           <ul class="footer-links" style="list-style: none; margin: 0; padding: 0;">
-            <li><a href="/termos-de-uso">Termos de Uso</a></li>
-            <li><a href="/politica-de-privacidade">Política de Privacidade</a></li>
-            <li><a href="/exclusao-de-dados">Exclusão de Dados</a></li>
+            <li><a href="/termos-de-uso" class="footer-link">Termos de Uso</a></li>
+            <li><a href="/politica-de-privacidade" class="footer-link">Política de Privacidade</a></li>
+            <li><a href="/exclusao-de-dados" class="footer-link">Exclusão de Dados</a></li>
           </ul>
         </div>
       </div>
       
-      <div style="max-width: 920px; margin: 0 auto 2rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; text-align: center;">
+      <div class="footer-divider"></div>
+
+      <div class="footer-legal">
         Acessor Digital é desenvolvido e operado pela SeaFeet Labs. Não somos afiliados, endossados ou patrocinados pela Meta Platforms, Inc., Facebook ou Instagram.
       </div>
 
-      <div class="footer-bottom" style="border-top: 1px solid var(--border-subtle); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap; gap: 1rem;">
+      <div class="footer-bottom">
         <div>&copy; 2026 Acessor Digital. Todos os direitos reservados.</div>
-        <div style="display: flex; gap: 1rem;">
-          <a href="https://instagram.com/acessordigital.ai/" target="_blank" style="color: var(--text-muted); text-decoration: none;">Instagram</a>
-          <a href="https://facebook.com/acessordigital" target="_blank" style="color: var(--text-muted); text-decoration: none;">Facebook</a>
+        <div class="footer-social">
+          <a href="https://instagram.com/acessordigital.ai/" target="_blank" class="footer-link">Instagram</a>
+          <a href="https://facebook.com/acessordigital" target="_blank" class="footer-link">Facebook</a>
         </div>
       </div>
     </div>
