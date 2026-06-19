@@ -241,22 +241,22 @@
         <div class="metrics-grid">
           <div class="metric-card">
             <div class="metric-title">Conversas Totais</div>
-            <div class="metric-value">38,412</div>
+            <div class="metric-value" id="analytics-total-conversations">38,412</div>
             <div class="metric-trend trend-up">↑ +22% este mês</div>
           </div>
           <div class="metric-card">
             <div class="metric-title">Taxa de Resolução IA</div>
-            <div class="metric-value">91.4%</div>
+            <div class="metric-value" id="analytics-resolution-rate">91.4%</div>
             <div class="metric-trend trend-up">↑ Acima da meta</div>
           </div>
           <div class="metric-card">
             <div class="metric-title">Tempo Médio de Resp.</div>
-            <div class="metric-value">1.4s</div>
+            <div class="metric-value" id="analytics-response-time">1.4s</div>
             <div class="metric-trend trend-up">↑ -0.3s vs mês ant.</div>
           </div>
           <div class="metric-card">
             <div class="metric-title">Leads Gerados</div>
-            <div class="metric-value">2,847</div>
+            <div class="metric-value" id="analytics-leads">2,847</div>
             <div class="metric-trend trend-up">↑ +18% qualificados</div>
           </div>
         </div>
@@ -280,22 +280,22 @@
               <div class="channel-row">
                 <div class="channel-name">WhatsApp</div>
                 <div class="channel-bar-track"><div class="channel-bar-fill" style="width:68%;background:#25D366"></div></div>
-                <div class="channel-pct">68%</div>
+                <div class="channel-pct" id="analytics-whatsapp">68%</div>
               </div>
               <div class="channel-row">
                 <div class="channel-name">Instagram</div>
                 <div class="channel-bar-track"><div class="channel-bar-fill" style="width:20%;background:#E1306C"></div></div>
-                <div class="channel-pct">20%</div>
+                <div class="channel-pct" id="analytics-instagram">20%</div>
               </div>
               <div class="channel-row">
                 <div class="channel-name">Messenger</div>
                 <div class="channel-bar-track"><div class="channel-bar-fill" style="width:8%;background:#0084FF"></div></div>
-                <div class="channel-pct">8%</div>
+                <div class="channel-pct" id="analytics-messenger">8%</div>
               </div>
               <div class="channel-row">
                 <div class="channel-name">Telegram</div>
                 <div class="channel-bar-track"><div class="channel-bar-fill" style="width:4%;background:#0088cc"></div></div>
-                <div class="channel-pct">4%</div>
+                <div class="channel-pct" id="analytics-telegram">4%</div>
               </div>
             </div>
           </div>
@@ -304,5 +304,11 @@
     </main>
   </div>
 
+  <script type="module">
+    import { initCockpitRuntime } from './cockpit-runtime.js';
+    const runtime = await initCockpitRuntime();
+    const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    hydrateCockpitPage(runtime);
+  </script>
 </body>
 </html>

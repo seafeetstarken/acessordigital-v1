@@ -323,12 +323,12 @@
           <div class="current-plan-left">
             <div class="current-plan-badge">Plano Ativo</div>
             <div class="current-plan-info">
-              <h3>O Teste — Mensal</h3>
-              <p>Renova em 12 de Julho de 2026 · Cartão •••• 4242</p>
+              <h3 id="faturamento-plan">O Teste — Mensal</h3>
+              <p id="faturamento-renewal">Renova em 12 de Julho de 2026 · Cartão •••• 4242</p>
             </div>
           </div>
           <div class="current-plan-right">
-            <div class="current-plan-price"><sup>R$</sup>129<span>/mês</span></div>
+            <div class="current-plan-price"><sup>R$</sup><span id="faturamento-price">129</span><span>/mês</span></div>
             <button class="btn-outline">Cancelar Plano</button>
           </div>
         </div>
@@ -433,6 +433,13 @@
       </div>
     </main>
   </div>
+
+  <script type="module">
+    import { initCockpitRuntime } from './cockpit-runtime.js';
+    const runtime = await initCockpitRuntime();
+    const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    hydrateCockpitPage(runtime);
+  </script>
 
 </body>
 </html>

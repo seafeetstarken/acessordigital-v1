@@ -243,28 +243,28 @@
           <!-- Receita Recuperada -->
           <div class="metric-card" style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.02)); border-color: rgba(16,185,129,0.2);">
             <div class="metric-title" style="color: #10b981;">Receita Recuperada <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
-            <div class="metric-value">R$ 12.450</div>
+            <div class="metric-value" id="metric-revenue">R$ 12.450</div>
             <div class="metric-trend trend-up" style="display: flex; align-items: center; justify-content: space-between;">↑ Últimos 30 dias <svg width="40" height="15" viewBox="0 0 40 15"><path d="M0,15 L10,5 L20,8 L30,0 L40,4" fill="none" stroke="#10b981" stroke-width="2"/></svg></div>
           </div>
           
           <div class="metric-card">
             <div class="metric-title">Conversas Hoje <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-            <div class="metric-value">1,284</div>
+            <div class="metric-value" id="metric-conversations">1,284</div>
             <div class="metric-trend trend-up">↑ +14% em relação a ontem</div>
           </div>
           <div class="metric-card">
             <div class="metric-title">Score Médio da IA <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
-            <div class="metric-value">94.2%</div>
+            <div class="metric-value" id="metric-ai-score">94.2%</div>
             <div class="metric-trend trend-up">↑ Excelente acurácia</div>
           </div>
           <div class="metric-card">
             <div class="metric-title">Novos Contatos <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg></div>
-            <div class="metric-value">342</div>
+            <div class="metric-value" id="metric-contacts">342</div>
             <div class="metric-trend trend-up">↑ +5% orgânico</div>
           </div>
           <div class="metric-card">
             <div class="metric-title">Tempo de Resposta <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
-            <div class="metric-value">1.2s</div>
+            <div class="metric-value" id="metric-response">1.2s</div>
             <div class="metric-trend trend-up">Rápido como um raio ⚡</div>
           </div>
         </div>
@@ -312,5 +312,17 @@
     </main>
   </div>
 
+  <script type="module">
+    import { initCockpitRuntime } from './cockpit-runtime.js';
+    const runtime = await initCockpitRuntime();
+    if (runtime?.snapshot?.workspace?.name) {
+      const header = document.querySelector('.page-header p');
+      if (header) {
+        header.textContent = `Workspace ${runtime.snapshot.workspace.name} conectado ao Firebase. Dados carregados em tempo real quando disponiveis.`;
+      }
+    }
+    const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    hydrateCockpitPage(runtime);
+  </script>
 </body>
 </html>

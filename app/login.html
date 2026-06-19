@@ -5,16 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login — Acessor Digital</title>
   
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Core Tokens -->
   <link rel="stylesheet" href="../tokens/acessor-tokens.css">
   
   <style>
-    /* Base */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 14px; }
     body {
@@ -28,8 +24,6 @@
       position: relative;
       overflow: hidden;
     }
-
-    /* Background Effects (Dark/Neon Glass) */
     .bg-glow {
       position: absolute;
       top: 50%;
@@ -41,7 +35,6 @@
       z-index: 0;
       pointer-events: none;
     }
-
     .container {
       position: relative;
       z-index: 1;
@@ -50,18 +43,11 @@
       padding: 2rem;
       animation: fadeUp 0.6s ease-out;
     }
-
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-    
+    .header { text-align: center; margin-bottom: 2.5rem; }
     .logo-container {
       display: inline-flex;
       align-items: center;
@@ -74,18 +60,6 @@
       margin-bottom: 2rem;
       letter-spacing: -0.03em;
     }
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-hover));
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
-    }
-    .logo-icon svg { width: 20px; height: 20px; fill: #111; }
-
     .header h1 {
       font-family: var(--font-display);
       font-size: 1.8rem;
@@ -94,12 +68,7 @@
       margin-bottom: 0.5rem;
       letter-spacing: -0.02em;
     }
-    .header p {
-      color: var(--text-muted);
-      font-size: 1rem;
-    }
-
-    /* Glass Card */
+    .header p { color: var(--text-muted); font-size: 1rem; }
     .glass-card {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -108,11 +77,7 @@
       backdrop-filter: blur(20px);
       box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
     }
-
-    /* Form Elements */
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
+    .form-group { margin-bottom: 1.5rem; }
     .form-group label {
       display: block;
       font-size: 0.9rem;
@@ -136,11 +101,7 @@
       border-color: var(--accent-primary);
       box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
     }
-    .form-control::placeholder {
-      color: rgba(255, 255, 255, 0.2);
-    }
-
-    /* Actions */
+    .form-control::placeholder { color: rgba(255, 255, 255, 0.2); }
     .form-actions {
       display: flex;
       justify-content: flex-end;
@@ -153,11 +114,6 @@
       text-decoration: none;
       transition: opacity 0.3s;
     }
-    .forgot-link:hover {
-      opacity: 0.8;
-      text-decoration: underline;
-    }
-
     .btn-primary {
       width: 100%;
       background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-hover));
@@ -176,28 +132,13 @@
       gap: 0.5rem;
       box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
     }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
-    }
-
-    /* Footer */
     .footer {
       text-align: center;
       margin-top: 2rem;
       color: var(--text-muted);
       font-size: 0.95rem;
     }
-    .footer a {
-      color: var(--accent-primary);
-      text-decoration: none;
-      font-weight: 500;
-      transition: opacity 0.3s;
-    }
-    .footer a:hover {
-      opacity: 0.8;
-      text-decoration: underline;
-    }
+    .footer a { color: var(--accent-primary); text-decoration: none; font-weight: 500; }
     .compliance-note {
       margin-top: 1rem;
       color: var(--text-muted);
@@ -207,14 +148,10 @@
   </style>
 </head>
 <body>
-
   <div class="bg-glow"></div>
-
   <div class="container">
     <div class="header">
-      <a href="../index.html" class="logo-container">
-        <div style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; letter-spacing: -0.05em; color: #FFF; display: flex; align-items: baseline; text-decoration: none;">acessor<span style="color: var(--accent-coral); margin-left: 2px; text-shadow: 0 0 10px rgba(255, 94, 58, 0.5);">.</span></div>
-      </a>
+      <a href="../index.html" class="logo-container">acessor<span style="color: var(--accent-coral); margin-left: 2px; text-shadow: 0 0 10px rgba(255, 94, 58, 0.5);">.</span></a>
       <h1>Bem-vindo de volta</h1>
       <p>Acesse seu cockpit de operações</p>
     </div>
@@ -254,31 +191,79 @@
     </div>
   </div>
 
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+  <script type="module">
+    import { hasFirebaseConfig, loadFirebaseApp, getFirebaseHints } from './firebase-bootstrap.js';
+
+    const demoEmail = 'demo@acessor.ai';
+    const demoPassword = '123456';
+    const form = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+
+    const showError = (message, muted = false) => {
+      errorMessage.style.display = 'block';
+      errorMessage.style.color = muted ? 'var(--text-muted)' : 'var(--accent-coral)';
+      errorMessage.textContent = message;
+    };
+
+    const hideError = () => {
+      errorMessage.style.display = 'none';
+      errorMessage.textContent = '';
+    };
+
+    const firebase = await loadFirebaseApp();
+    const hints = await getFirebaseHints();
+
+    if (await hasFirebaseConfig()) {
+      showError('Modo Firebase pronto. Entre com o e-mail/senha do seu projeto.', true);
+    } else if (!hints.apiKeyConfigured || !hints.projectIdConfigured) {
+      showError('Modo demo ativo. Configure as credenciais do Firebase para autenticação real.', true);
+    }
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+      hideError();
+
       const emailInput = document.getElementById('email').value.trim();
       const passwordInput = document.getElementById('password').value.trim();
-      
-      // Obter credenciais salvas em localStorage (caso o usuário tenha acabado de se cadastrar)
-      const registeredEmail = localStorage.getItem('registered_email') || 'demo@acessor.ai';
-      const registeredPassword = localStorage.getItem('registered_password') || '123456';
-      
+
+      const registeredEmail = localStorage.getItem('registered_email') || demoEmail;
+      const registeredPassword = localStorage.getItem('registered_password') || demoPassword;
+
+      if (firebase?.auth && (await hasFirebaseConfig())) {
+        try {
+          const { signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+          const result = await signInWithEmailAndPassword(firebase.auth, emailInput, passwordInput);
+          const user = result.user;
+          window.localStorage.setItem('acessor_session', JSON.stringify({
+            access_token: await user.getIdToken().catch(() => 'firebase-session'),
+            user: {
+              uid: user.uid,
+              email: user.email,
+              displayName: user.displayName,
+              photoURL: user.photoURL
+            }
+          }));
+          window.location.href = 'dashboard.html';
+        } catch (error) {
+          showError(error?.message || 'Não foi possível autenticar com o Firebase.');
+        }
+        return;
+      }
+
       if (
-        (emailInput === 'demo@acessor.ai' && passwordInput === '123456') ||
+        (emailInput === demoEmail && passwordInput === demoPassword) ||
         (emailInput === registeredEmail && passwordInput === registeredPassword)
       ) {
-        // Sucesso
+        localStorage.setItem('acessor_session', JSON.stringify({
+          access_token: 'demo-session',
+          user: { email: emailInput, app_metadata: { provider: 'demo' } },
+          expires_at: null
+        }));
         window.location.href = 'dashboard.html';
       } else {
-        // Mostrar erro
-        const errDiv = document.getElementById('errorMessage');
-        errDiv.style.display = 'block';
-        errDiv.textContent = `E-mail ou senha inválidos. Para testes use: demo@acessor.ai e senha: 123456`;
+        showError(`E-mail ou senha inválidos. Para testes use: ${demoEmail} / ${demoPassword}`);
       }
     });
   </script>
-
 </body>
 </html>

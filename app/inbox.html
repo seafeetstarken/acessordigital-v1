@@ -1404,6 +1404,13 @@
     selectChat('js');
   </script>
 
+  <script type="module">
+    import { initCockpitRuntime } from './cockpit-runtime.js';
+    const runtime = await initCockpitRuntime();
+    const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    hydrateCockpitPage(runtime);
+  </script>
+
 </body>
 </html>
 

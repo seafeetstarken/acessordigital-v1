@@ -405,15 +405,15 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
               Pipeline Total
             </div>
-            <div class="summary-value" id="stat-total">R$ 0</div>
-            <div class="summary-sub" id="stat-deals-count">0 deals no funil</div>
+            <div class="summary-value" id="pipeline-total">R$ 0</div>
+            <div class="summary-sub" id="pipeline-deals">0 deals no funil</div>
           </div>
           <div class="summary-card">
             <div class="summary-label">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="9" height="9"></rect><rect x="13" y="2" width="9" height="9"></rect><rect x="13" y="13" width="9" height="9"></rect><rect x="2" y="13" width="9" height="9"></rect></svg>
               Deals Abertos
             </div>
-            <div class="summary-value" id="stat-open">0</div>
+            <div class="summary-value" id="pipeline-open">0</div>
             <div class="summary-sub">ativos no funil</div>
           </div>
           <div class="summary-card">
@@ -421,7 +421,7 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
               Taxa de Conversão
             </div>
-            <div class="summary-value" id="stat-rate">0%</div>
+            <div class="summary-value" id="pipeline-rate">0%</div>
             <div class="summary-sub">fechados / total</div>
           </div>
           <div class="summary-card">
@@ -429,7 +429,7 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
               Ticket Médio
             </div>
-            <div class="summary-value" id="stat-avg">R$ 0</div>
+            <div class="summary-value" id="pipeline-average">R$ 0</div>
             <div class="summary-sub">por deal</div>
           </div>
         </div>
@@ -700,5 +700,11 @@
     updateStats();
   </script>
 
+  <script type="module">
+    import { initCockpitRuntime } from './cockpit-runtime.js';
+    const runtime = await initCockpitRuntime();
+    const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    hydrateCockpitPage(runtime);
+  </script>
 </body>
 </html>

@@ -429,22 +429,22 @@
               <div class="form-row">
                 <div class="form-group">
                   <label>Nome do workspace</label>
-                  <input type="text" class="form-control" value="Acessor Digital">
+                  <input type="text" class="form-control" id="config-workspace-name" value="Acessor Digital">
                 </div>
                 <div class="form-group">
                   <label>Slug</label>
-                  <input type="text" class="form-control" value="acessor-digital-clinic">
+                  <input type="text" class="form-control" id="config-workspace-slug" value="acessor-digital-clinic">
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
                   <label>Website</label>
-                  <input type="text" class="form-control" value="https://acessordigital.com.br">
+                  <input type="text" class="form-control" id="config-workspace-site" value="https://acessordigital.com.br">
                 </div>
                 <div class="form-group">
                   <label>E-mail de suporte</label>
-                  <input type="email" class="form-control" value="suporte@acessordigital.com.br">
+                  <input type="email" class="form-control" id="config-support-email" value="suporte@acessordigital.com.br">
                 </div>
               </div>
 
@@ -1412,6 +1412,13 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
         });
       });
     });
+  </script>
+
+  <script type="module">
+    import { initCockpitRuntime } from './cockpit-runtime.js';
+    const runtime = await initCockpitRuntime();
+    const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    hydrateCockpitPage(runtime);
   </script>
 </body>
 </html>

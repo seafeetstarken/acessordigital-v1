@@ -280,14 +280,14 @@
           <div>
             <h2>ðŸ§  Base de Conhecimento</h2>
             <p>FaÃ§a upload de materiais e crie notas (ex.: preÃ§os, polÃ­ticas). A IA usa isso para responder sem inventar.</p>
-            <div class="sync-status">Base conectada • 45 documentos • último sync há 2 min</div>
+            <div class="sync-status" id="knowledge-sync-status">Base conectada • 45 documentos • último sync há 2 min</div>
           </div>
         </div>
 
         <div class="knowledge-stats">
           <div class="knowledge-stat">
             <small>Documentos indexados</small>
-            <strong>45</strong>
+            <strong id="knowledge-docs-count">45</strong>
           </div>
           <div class="knowledge-stat">
             <small>Fontes ativas</small>
@@ -1007,6 +1007,13 @@
         }
       });
     });
+  </script>
+
+  <script type="module">
+    import { initCockpitRuntime } from './cockpit-runtime.js';
+    const runtime = await initCockpitRuntime();
+    const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    hydrateCockpitPage(runtime);
   </script>
 </body>
 </html>

@@ -233,19 +233,19 @@
         <div class="auto-metrics">
           <div class="metric-box">
             <h4>Automações Ativas</h4>
-            <span>3</span>
+            <span id="auto-active-count">3</span>
           </div>
           <div class="metric-box">
             <h4>Execuções Totais (Hoje)</h4>
-            <span>1,402</span>
+            <span id="auto-exec-count">1,402</span>
           </div>
           <div class="metric-box">
             <h4>Taxa de Sucesso</h4>
-            <span style="color: var(--accent-primary);">99.8%</span>
+            <span id="auto-success-rate" style="color: var(--accent-primary);">99.8%</span>
           </div>
           <div class="metric-box">
             <h4>Ações Economizadas</h4>
-            <span>~ 8.5h</span>
+            <span id="auto-saved-actions">~ 8.5h</span>
           </div>
         </div>
 
@@ -461,5 +461,11 @@ Liberamos um cupom de 15% off exclusivo para você usar hoje. Bora aproveitar?</
     </div>
   </div>
 
+  <script type="module">
+    import { initCockpitRuntime } from './cockpit-runtime.js';
+    const runtime = await initCockpitRuntime();
+    const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    hydrateCockpitPage(runtime);
+  </script>
 </body>
 </html>
