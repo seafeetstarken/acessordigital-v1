@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Acessor Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../tokens/acessor-tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(124,58,237,0.18), transparent 32%),
+        radial-gradient(circle at top right, rgba(255,94,58,0.12), transparent 24%),
+        var(--bg-pure);
+      color: var(--text-main);
+      font-family: var(--font-body);
+    }
+    a { color: inherit; }
+    .page-shell {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.4rem 1.2rem 2rem;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 0 1.5rem;
+    }
+    .brand-link {
+      display: inline-flex;
+      align-items: baseline;
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: #fff;
+    }
+    .brand-dot {
+      color: var(--accent-coral);
+      margin-left: 2px;
+      text-shadow: 0 0 10px rgba(255,94,58,0.5);
+    }
+    .topbar-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.82);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .hero {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+    }
+    .hero-kicker {
+      font-family: var(--font-mono);
+      color: var(--accent-primary);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.75rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      max-width: 12ch;
+    }
+    .hero p {
+      color: rgba(255,255,255,0.62);
+      font-size: 1rem;
+      max-width: 60ch;
+      line-height: 1.6;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin: 1.35rem 0 1.6rem;
+    }
+    .step {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 0.9rem;
+      display: flex;
+      gap: 0.85rem;
+      align-items: center;
+      min-height: 74px;
+    }
+    .step-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-primary), #8B5CF6);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .step strong { display: block; margin-bottom: 0.15rem; font-size: 0.92rem; }
+    .step span { color: rgba(255,255,255,0.54); font-size: 0.8rem; line-height: 1.4; }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr);
+      gap: 1rem;
+      align-items: start;
+    }
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 1.35rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.28);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.9rem;
+    }
+    .section-copy {
+      color: rgba(255,255,255,0.58);
+      font-size: 0.93rem;
+      line-height: 1.6;
+      margin-bottom: 1.1rem;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
+    .form-group { margin-bottom: 0.95rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.86rem;
+      color: rgba(255,255,255,0.58);
+      margin-bottom: 0.45rem;
+      font-weight: 600;
+    }
+    .input {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.35);
+      color: #fff;
+      padding: 0.88rem 1rem;
+      font: inherit;
+      outline: none;
+      transition: 0.18s ease;
+    }
+    .input:focus {
+      border-color: rgba(124,58,237,0.7);
+      box-shadow: 0 0 0 4px rgba(124,58,237,0.12);
+    }
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin: 1rem 0 1.1rem;
+    }
+    .plan-card {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.025);
+      padding: 1rem;
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      min-height: 170px;
+    }
+    .plan-card:hover { transform: translateY(-2px); border-color: rgba(124,58,237,0.35); }
+    .plan-card.active {
+      background: linear-gradient(180deg, rgba(124,58,237,0.14), rgba(255,255,255,0.03));
+      border-color: rgba(124,58,237,0.5);
+      box-shadow: 0 10px 28px rgba(124,58,237,0.12);
+    }
+    .plan-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 0.75rem;
+    }
+    .plan-name { font-family: var(--font-display); font-size: 1.02rem; margin-bottom: 0.35rem; }
+    .plan-price { font-family: var(--font-display); font-size: 1.85rem; font-weight: 800; line-height: 1; margin-bottom: 0.35rem; }
+    .plan-price span { font-size: 0.82rem; color: rgba(255,255,255,0.52); font-weight: 500; }
+    .plan-desc { color: rgba(255,255,255,0.54); font-size: 0.82rem; line-height: 1.45; margin-bottom: 0.8rem; }
+    .plan-card ul { list-style: none; display: grid; gap: 0.45rem; }
+    .plan-card li { color: rgba(255,255,255,0.74); font-size: 0.8rem; line-height: 1.4; }
+    .plan-card li::before { content: '•'; color: var(--accent-primary); margin-right: 0.45rem; }
+    .checkout-actions {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1.05rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 0.95rem 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-hover));
+      color: #000;
+      box-shadow: 0 10px 24px rgba(124,58,237,0.28);
+    }
+    .btn-ghost {
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.84);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .summary-list { display: grid; gap: 0.75rem; margin-top: 1rem; }
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .summary-item:last-child { border-bottom: 0; padding-bottom: 0; }
+    .summary-item span { color: rgba(255,255,255,0.55); font-size: 0.84rem; }
+    .summary-item strong { font-size: 0.95rem; text-align: right; }
+    .payment-shell {
+      margin-top: 1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(124,58,237,0.28);
+      background:
+        linear-gradient(180deg, rgba(124,58,237,0.12), rgba(0,0,0,0.28));
+      padding: 1rem;
+      min-height: 270px;
+      display: grid;
+      gap: 0.8rem;
+    }
+    .payment-shell .head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+    .payment-shell .head strong { font-family: var(--font-display); font-size: 1rem; }
+    .payment-shell .head span { color: rgba(255,255,255,0.52); font-size: 0.8rem; }
+    .payment-box {
+      border-radius: 16px;
+      border: 1px dashed rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.2);
+      min-height: 180px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 1.2rem;
+    }
+    .payment-box strong { display: block; margin-bottom: 0.4rem; font-size: 0.98rem; }
+    .payment-box p { color: rgba(255,255,255,0.56); font-size: 0.86rem; line-height: 1.6; }
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .badge {
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .status {
+      margin-top: 1rem;
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .status.visible { display: block; }
+    .status.info {
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.24);
+      color: #e8ddff;
+    }
+    .status.success {
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.22);
+      color: #d6ffee;
+    }
+    .status.error {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.22);
+      color: #ffd1d1;
+    }
+    .status strong { display: block; margin-bottom: 0.2rem; color: #fff; }
+    .small-note {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.8rem;
+      line-height: 1.5;
+      margin-top: 0.8rem;
+    }
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+      .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .page-shell { padding-inline: 0.9rem; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .grid-2, .plans, .steps { grid-template-columns: 1fr; }
+      .card { padding: 1rem; border-radius: 18px; }
+      .hero h1 { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a href="../index.html" class="brand-link">acessor<span class="brand-dot">.</span></a>
+      <a href="./login.html" class="topbar-cta">Já tenho conta</a>
+    </header>
+
+    <section class="hero">
+      <div class="hero-kicker">// cadastro + pagamento transparente</div>
+      <h1>Escolha seu plano e conclua tudo em uma única tela.</h1>
+      <p>
+        Cadastre seus dados, selecione o plano e finalize com o checkout transparente do Asaas sem sair do fluxo.
+        Depois da confirmação, a conta é ativada e o cockpit fica liberado.
+      </p>
+    </section>
+
+    <section class="steps" aria-label="Etapas do checkout">
+      <div class="step"><div class="step-badge">1</div><div><strong>Seus dados</strong><span>Nome, empresa, WhatsApp, e-mail e senha.</span></div></div>
+      <div class="step"><div class="step-badge">2</div><div><strong>Plano</strong><span>Mensal, semestral ou anual com resumo claro.</span></div></div>
+      <div class="step"><div class="step-badge">3</div><div><strong>Pagamento</strong><span>Checkout transparente Asaas embutido na tela.</span></div></div>
+      <div class="step"><div class="step-badge">4</div><div><strong>Ativação</strong><span>Pagamento aprovado, acesso liberado ao cockpit.</span></div></div>
+    </section>
+
+    <div class="layout">
+      <form id="checkoutForm" class="card">
+        <div class="section-title">1. Dados da conta</div>
+        <div class="section-copy">Use um e-mail corporativo para manter a conta vinculada ao workspace da sua operação.</div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="fullName">Nome completo</label>
+            <input id="fullName" class="input" type="text" placeholder="Seu nome e sobrenome" required>
+          </div>
+          <div class="form-group">
+            <label for="companyName">Nome da empresa</label>
+            <input id="companyName" class="input" type="text" placeholder="Minha Loja S/A" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="whatsapp">WhatsApp comercial</label>
+            <input id="whatsapp" class="input" type="tel" placeholder="(00) 00000-0000" required>
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail corporativo</label>
+            <input id="email" class="input" type="email" placeholder="contato@empresa.com.br" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Crie sua senha</label>
+          <input id="password" class="input" type="password" placeholder="••••••••" required>
+        </div>
+
+        <div class="section-title" style="margin-top:1.4rem;">2. Escolha do plano</div>
+        <div class="section-copy">Selecione o plano que será usado no checkout e na criação do workspace.</div>
+
+        <div class="plans">
+          <label class="plan-card" data-plan-card="monthly">
+            <input type="radio" name="plan" value="monthly" hidden checked>
+            <div class="plan-tag">Teste</div>
+            <div class="plan-name">Mensal</div>
+            <div class="plan-price">R$ 129<span>/mês</span></div>
+            <div class="plan-desc">Ideal para começar rápido, com cobrança recorrente mensal.</div>
+            <ul>
+              <li>500 créditos/mês</li>
+              <li>Pagamento recorrente</li>
+              <li>PIX e cartão</li>
+            </ul>
+          </label>
+          <label class="plan-card active" data-plan-card="semiannual">
+            <input type="radio" name="plan" value="semiannual" hidden>
+            <div class="plan-tag">Mais escolhido</div>
+            <div class="plan-name">Semestral</div>
+            <div class="plan-price">R$ 109<span>/mês</span></div>
+            <div class="plan-desc">Melhor equilíbrio entre conversão e previsibilidade de caixa.</div>
+            <ul>
+              <li>500 créditos/mês por 6 meses</li>
+              <li>Parcela no cartão</li>
+              <li>Suporte IA 24/7</li>
+            </ul>
+          </label>
+          <label class="plan-card" data-plan-card="annual">
+            <input type="radio" name="plan" value="annual" hidden>
+            <div class="plan-tag">Melhor preço</div>
+            <div class="plan-name">Anual</div>
+            <div class="plan-price">R$ 89<span>/mês</span></div>
+            <div class="plan-desc">Plano de maior LTV, com desconto maior e recorrência anual.</div>
+            <ul>
+              <li>500 créditos/mês por 12 meses</li>
+              <li>Menor custo mensal</li>
+              <li>Suporte IA 24/7</li>
+            </ul>
+          </label>
+          <label class="plan-card" data-plan-card="custom">
+            <input type="radio" name="plan" value="custom" hidden>
+            <div class="plan-tag">Sob medida</div>
+            <div class="plan-name">Operação maior</div>
+            <div class="plan-price">Fale <span>com vendas</span></div>
+            <div class="plan-desc">Para quem quer negociar volume, múltiplos CNPJs ou implantação customizada.</div>
+            <ul>
+              <li>Plano customizado</li>
+              <li>Ativação guiada</li>
+              <li>Proposta comercial</li>
+            </ul>
+          </label>
+        </div>
+
+        <div class="checkout-actions">
+          <button type="submit" class="btn btn-primary">Continuar para pagamento</button>
+          <button type="button" id="saveDraftBtn" class="btn btn-ghost">Salvar rascunho</button>
+        </div>
+
+        <div id="checkoutStatus" class="status info" aria-live="polite"></div>
+      </form>
+
+      <aside class="card">
+        <div class="section-title">3. Resumo e checkout Asaas</div>
+        <div class="section-copy">
+          Aqui vai o checkout transparente do Asaas. Quando a integração estiver ligada, o bloco abaixo recebe o componente oficial sem sair da página.
+        </div>
+
+        <div class="summary-list">
+          <div class="summary-item"><span>Plano selecionado</span><strong id="summaryPlan">Semestral</strong></div>
+          <div class="summary-item"><span>Valor de referência</span><strong id="summaryPrice">R$ 109/mês</strong></div>
+          <div class="summary-item"><span>Modelo de cobrança</span><strong id="summaryBilling">Recorrente</strong></div>
+          <div class="summary-item"><span>Status</span><strong id="summaryStatus">Aguardando pagamento</strong></div>
+        </div>
+
+        <div class="payment-shell">
+          <div class="head">
+            <div>
+              <strong>Checkout transparente Asaas</strong>
+              <span id="asaasHint">Área pronta para embutir o SDK oficial.</span>
+            </div>
+            <span class="badge">Transparente</span>
+          </div>
+          <div class="payment-box" id="asaasCheckoutMount">
+            <div>
+              <strong>Pagamento embutido na mesma tela</strong>
+              <p>
+                Aqui entra o componente do Asaas quando a chave pública e o fluxo de cobrança estiverem conectados.
+                Enquanto isso, a tela já salva o rascunho e prepara a ativação.
+              </p>
+            </div>
+          </div>
+          <div class="badges">
+            <span class="badge">Cartão</span>
+            <span class="badge">Pix</span>
+            <span class="badge">Boleto</span>
+            <span class="badge">Recorrência</span>
+          </div>
+        </div>
+
+        <p class="small-note">
+          Fluxo recomendado: dados → plano → checkout → webhook Asaas → ativação automática do workspace.
+        </p>
+      </aside>
+    </div>
+  </div>
+
+  <script type="module">
+    const planDetails = {
+      monthly: { label: 'Mensal', price: 'R$ 129/mês', billing: 'Recorrente mensal', status: 'Pronto para cobrança mensal' },
+      semiannual: { label: 'Semestral', price: 'R$ 109/mês', billing: 'Cobrança parcelada / recorrente', status: 'Pronto para cobrança semestral' },
+      annual: { label: 'Anual', price: 'R$ 89/mês', billing: 'Cobrança anual', status: 'Pronto para cobrança anual' },
+      custom: { label: 'Operação maior', price: 'Sob consulta', billing: 'Proposta comercial', status: 'Encaminhar para vendas' }
+    };
+
+    const form = document.getElementById('checkoutForm');
+    const saveDraftBtn = document.getElementById('saveDraftBtn');
+    const statusBox = document.getElementById('checkoutStatus');
+    const summaryPlan = document.getElementById('summaryPlan');
+    const summaryPrice = document.getElementById('summaryPrice');
+    const summaryBilling = document.getElementById('summaryBilling');
+    const summaryStatus = document.getElementById('summaryStatus');
+    const asaasHint = document.getElementById('asaasHint');
+    const mount = document.getElementById('asaasCheckoutMount');
+    const planInputs = Array.from(document.querySelectorAll('input[name="plan"]'));
+    const planCards = Array.from(document.querySelectorAll('.plan-card'));
+
+    const draftKey = 'acessor_checkout_draft';
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialPlan = urlParams.get('plan') || JSON.parse(localStorage.getItem(draftKey) || '{}').plan || 'semiannual';
+
+    function setStatus(kind, title, message) {
+      statusBox.className = `status visible ${kind}`;
+      statusBox.innerHTML = `<strong>${title}</strong><span>${message}</span>`;
+    }
+
+    function getPlanData(plan) {
+      return planDetails[plan] || planDetails.semiannual;
+    }
+
+    function updatePlan(plan) {
+      const data = getPlanData(plan);
+      summaryPlan.textContent = data.label;
+      summaryPrice.textContent = data.price;
+      summaryBilling.textContent = data.billing;
+      summaryStatus.textContent = data.status;
+      asaasHint.textContent = `Checkout transparente preparado para o plano ${data.label}.`;
+      planCards.forEach((card) => card.classList.toggle('active', card.dataset.planCard === plan));
+      planInputs.forEach((input) => { input.checked = input.value === plan; });
+      saveDraft();
+    }
+
+    function saveDraft() {
+      const checkedPlan = document.querySelector('input[name="plan"]:checked')?.value || 'semiannual';
+      const payload = {
+        fullName: document.getElementById('fullName').value.trim(),
+        companyName: document.getElementById('companyName').value.trim(),
+        whatsapp: document.getElementById('whatsapp').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value.trim(),
+        plan: checkedPlan,
+        planData: getPlanData(checkedPlan),
+        paymentStatus: 'draft',
+        updatedAt: new Date().toISOString()
+      };
+      localStorage.setItem(draftKey, JSON.stringify(payload));
+      return payload;
+    }
+
+    function loadDraft() {
+      try {
+        return JSON.parse(localStorage.getItem(draftKey) || '{}');
+      } catch {
+        return {};
+      }
+    }
+
+    const draft = loadDraft();
+    document.getElementById('fullName').value = draft.fullName || '';
+    document.getElementById('companyName').value = draft.companyName || '';
+    document.getElementById('whatsapp').value = draft.whatsapp || '';
+    document.getElementById('email').value = draft.email || '';
+    document.getElementById('password').value = draft.password || '';
+    updatePlan(draft.plan || initialPlan);
+
+    planInputs.forEach((input) => {
+      input.addEventListener('change', () => updatePlan(input.value));
+    });
+
+    form.addEventListener('input', saveDraft);
+
+    saveDraftBtn.addEventListener('click', () => {
+      const payload = saveDraft();
+      setStatus('success', 'Rascunho salvo', `Plano ${getPlanData(payload.plan).label} guardado. Pronto para o checkout transparente Asaas.`);
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const payload = saveDraft();
+      if (!payload.fullName || !payload.companyName || !payload.whatsapp || !payload.email || !payload.password) {
+        setStatus('error', 'Preencha os dados', 'Antes de continuar para o pagamento, complete nome, empresa, WhatsApp, e-mail e senha.');
+        return;
+      }
+      setStatus('info', 'Tudo pronto', 'Os dados foram salvos. O checkout transparente do Asaas pode ser carregado no bloco ao lado.');
+      mount.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</body>
+</html>
