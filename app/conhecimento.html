@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Base de Conhecimento — Acessor Digital</title>
+  <title>Base de Conhecimento â€” Acessor Digital</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
 
     .app-layout { display: flex; width: 100%; height: 100vh; }
 
-    /* ── Sidebar ── */
+    /* â”€â”€ Sidebar â”€â”€ */
     .sidebar {
       width: 220px; background: rgba(255,255,255,0.018);
       border-right: 1px solid rgba(255,255,255,0.05);
@@ -70,13 +70,13 @@
     .user-info span { display: block; font-weight: 600; color: #FFF; font-size: 0.85rem; }
     .user-info small { color: var(--text-muted); font-size: 0.72rem; }
 
-    /* ── Main Wrapper ── */
+    /* â”€â”€ Main Wrapper â”€â”€ */
     .main-wrapper {
       flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;
       background: radial-gradient(ellipse at top left, rgba(124,58,237,0.04) 0%, transparent 55%);
     }
 
-    /* ── Topbar ── */
+    /* â”€â”€ Topbar â”€â”€ */
     .topbar {
       height: 56px; display: flex; align-items: center; justify-content: space-between;
       padding: 0 1.8rem;
@@ -124,6 +124,11 @@
     .glass-card { background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 1.5rem; }
     .glass-card h3 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: #FFF; margin-bottom: 0.4rem; }
     .glass-card p.subtitle { font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-bottom: 1.5rem; }
+    .knowledge-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .knowledge-stat { border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; background: rgba(255,255,255,0.02); padding: 1rem; }
+    .knowledge-stat small { display: block; font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .knowledge-stat strong { color: #FFF; font-family: var(--font-display); font-size: 1.15rem; }
+    .sync-status { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.35rem 0.65rem; border-radius: 999px; border: 1px solid rgba(16,185,129,0.24); background: rgba(16,185,129,0.08); color: #10b981; font-size: 0.75rem; font-weight: 700; margin-top: 0.4rem; }
 
     /* Form controls */
     .form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.2rem; }
@@ -187,7 +192,7 @@
         <a href="dashboard.html" class="brand-link">acessor<span class="brand-dot">.</span></a>
       </div>
       <div class="nav-section">
-        <div class="nav-label">Visão Geral</div>
+        <div class="nav-label">VisÃ£o Geral</div>
         <a href="dashboard.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
           Dashboard
@@ -196,7 +201,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
           Inbox
         </a>
-        <div class="nav-label">Operação</div>
+        <div class="nav-label">OperaÃ§Ã£o</div>
         <a href="crm.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
           Contatos
@@ -207,7 +212,7 @@
         </a>
         <a href="automacoes.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          Automações
+          AutomaÃ§Ãµes
         </a>
         <a href="agenda.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -215,9 +220,9 @@
         </a>
         <a href="catalogo.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
-          Catálogo
+          CatÃ¡logo
         </a>
-        <div class="nav-label">Inteligência</div>
+        <div class="nav-label">InteligÃªncia</div>
         <a href="analytics.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           Analytics
@@ -233,11 +238,11 @@
         </a>
         <a href="configuracoes.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-          Configurações
+          ConfiguraÃ§Ãµes
         </a>
         <a href="notificacoes.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-          Notificações
+          NotificaÃ§Ãµes
         </a>
       </div>
       <div class="sidebar-footer">
@@ -261,7 +266,7 @@
           <div class="topbar-sep"></div>
         </div>
         <div class="topbar-right">
-          <button class="tb-btn" title="Notificações">
+          <button class="tb-btn" title="NotificaÃ§Ãµes">
             <div class="n-dot"></div>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
           </button>
@@ -273,8 +278,28 @@
         <!-- Page Header -->
         <div class="page-header">
           <div>
-            <h2>🧠 Base de Conhecimento</h2>
-            <p>Faça upload de materiais e crie notas (ex.: preços, políticas). A IA usa isso para responder sem inventar.</p>
+            <h2>ðŸ§  Base de Conhecimento</h2>
+            <p>FaÃ§a upload de materiais e crie notas (ex.: preÃ§os, polÃ­ticas). A IA usa isso para responder sem inventar.</p>
+            <div class="sync-status">Base conectada • 45 documentos • último sync há 2 min</div>
+          </div>
+        </div>
+
+        <div class="knowledge-stats">
+          <div class="knowledge-stat">
+            <small>Documentos indexados</small>
+            <strong>45</strong>
+          </div>
+          <div class="knowledge-stat">
+            <small>Fontes ativas</small>
+            <strong>3</strong>
+          </div>
+          <div class="knowledge-stat">
+            <small>Processando agora</small>
+            <strong>2</strong>
+          </div>
+          <div class="knowledge-stat">
+            <small>Qualidade do corpus</small>
+            <strong>94%</strong>
           </div>
         </div>
 
@@ -285,8 +310,8 @@
             <h3>Upload de documento</h3>
             <p class="subtitle">PDF, TXT ou MD.</p>
             <div class="form-group">
-              <label>Título (opcional)</label>
-              <input type="text" class="form-control" placeholder="Ex: Tabela de Preços">
+              <label>TÃ­tulo (opcional)</label>
+              <input type="text" class="form-control" placeholder="Ex: Tabela de PreÃ§os">
             </div>
             <div class="form-group">
               <label>Arquivo</label>
@@ -298,14 +323,14 @@
           <!-- Col 2: Create Note (Manual) -->
           <div class="glass-card">
             <h3>Criar nota (manual)</h3>
-            <p class="subtitle">Ideal para preços e regras rápidas.</p>
+            <p class="subtitle">Ideal para preÃ§os e regras rÃ¡pidas.</p>
             <div class="form-group">
-              <label>Título</label>
-              <input type="text" class="form-control" placeholder="Ex: Política de Retorno">
+              <label>TÃ­tulo</label>
+              <input type="text" class="form-control" placeholder="Ex: PolÃ­tica de Retorno">
             </div>
             <div class="form-group">
-              <label>Conteúdo</label>
-              <textarea class="form-control" placeholder="Cole o conteúdo aqui..." style="min-height: 52px;"></textarea>
+              <label>ConteÃºdo</label>
+              <textarea class="form-control" placeholder="Cole o conteÃºdo aqui..." style="min-height: 52px;"></textarea>
             </div>
             <button class="btn-primary" style="width: 100%; justify-content: center;">Salvar nota</button>
           </div>
@@ -313,9 +338,9 @@
           <!-- Col 3: Import Website -->
           <div class="glass-card">
             <h3>Importar de Site (IA)</h3>
-            <p class="subtitle">A IA vai ler e organizar as informações.</p>
+            <p class="subtitle">A IA vai ler e organizar as informaÃ§Ãµes.</p>
             <div class="form-group">
-              <label>Endereço do Site</label>
+              <label>EndereÃ§o do Site</label>
               <input type="text" class="form-control" placeholder="https://seu-site.com">
             </div>
             <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 2.8rem;">Scraper Site</button>
@@ -340,7 +365,7 @@
             <div class="doc-item-row" data-name="pos venda">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">pos venda <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">pos venda <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -353,7 +378,7 @@
             <div class="doc-item-row" data-name="fechamento de venda">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">fechamento de venda <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">fechamento de venda <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -366,7 +391,7 @@
             <div class="doc-item-row" data-name="intencao do paciente">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Intenção do paciente <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">IntenÃ§Ã£o do paciente <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -379,7 +404,7 @@
             <div class="doc-item-row" data-name="procedimentos avancados">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">procedimentos avançados <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">procedimentos avanÃ§ados <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -392,7 +417,7 @@
             <div class="doc-item-row" data-name="se voce busca naturalidade">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">se você busca naturalidade <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">se vocÃª busca naturalidade <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -405,7 +430,7 @@
             <div class="doc-item-row" data-name="quanto custa qual valor">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Quanto custa/ qual valor? <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Quanto custa/ qual valor? <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -418,7 +443,7 @@
             <div class="doc-item-row" data-name="achei caro">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Achei Caro <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Achei Caro <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -431,7 +456,7 @@
             <div class="doc-item-row" data-name="ja fiz botox quanto custa">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">ja fiz botox / Quanto custa? <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">ja fiz botox / Quanto custa? <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -444,7 +469,7 @@
             <div class="doc-item-row" data-name="botox ou toxina botulinica">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">botox ou toxina botulinica <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">botox ou toxina botulinica <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -457,7 +482,7 @@
             <div class="doc-item-row" data-name="quero saber sobre botox">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">quero saber sobre botox <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">quero saber sobre botox <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -470,7 +495,7 @@
             <div class="doc-item-row" data-name="linhas de expressao">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Linhas de expressão <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Linhas de expressÃ£o <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -483,7 +508,7 @@
             <div class="doc-item-row" data-name="procedimentos como funciona e resultados">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">PROCEDIMENTOS como funciona e resultados <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">PROCEDIMENTOS como funciona e resultados <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -496,7 +521,7 @@
             <div class="doc-item-row" data-name="horario de funcionamento">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Horário de Funcionamento <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">HorÃ¡rio de Funcionamento <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -509,7 +534,7 @@
             <div class="doc-item-row" data-name="faq">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">FAQ <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">FAQ <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -522,7 +547,7 @@
             <div class="doc-item-row" data-name="pacotes e promocoes">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Pacotes e Promoções <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Pacotes e PromoÃ§Ãµes <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -535,7 +560,7 @@
             <div class="doc-item-row" data-name="nutricional">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Nutricional <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Nutricional <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -548,7 +573,7 @@
             <div class="doc-item-row" data-name="protocolo capilar">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Protocolo Capilar <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Protocolo Capilar <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -561,7 +586,7 @@
             <div class="doc-item-row" data-name="carboxiterapia">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Carboxiterapia <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Carboxiterapia <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -574,7 +599,7 @@
             <div class="doc-item-row" data-name="endermologia">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Endermologia <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Endermologia <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -587,7 +612,7 @@
             <div class="doc-item-row" data-name="hifu ultrassom">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">HIFU Ultrassom <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">HIFU Ultrassom <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -600,7 +625,7 @@
             <div class="doc-item-row" data-name="depilacao a laser">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Depilação a Laser <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">DepilaÃ§Ã£o a Laser <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -613,7 +638,7 @@
             <div class="doc-item-row" data-name="radiofrequencia">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Radiofrequência <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">RadiofrequÃªncia <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -626,7 +651,7 @@
             <div class="doc-item-row" data-name="massagem detox">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Massagem Detox <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Massagem Detox <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -639,7 +664,7 @@
             <div class="doc-item-row" data-name="massagem relaxante">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Massagem Relaxante <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Massagem Relaxante <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -652,7 +677,7 @@
             <div class="doc-item-row" data-name="massagem modeladora">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Massagem Modeladora <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Massagem Modeladora <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -665,7 +690,7 @@
             <div class="doc-item-row" data-name="drenagem linfatica">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Drenagem Linfática <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Drenagem LinfÃ¡tica <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -678,7 +703,7 @@
             <div class="doc-item-row" data-name="criolipolise">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Criolipólise <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">CriolipÃ³lise <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -691,7 +716,7 @@
             <div class="doc-item-row" data-name="olheiras">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Olheiras <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Olheiras <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -704,7 +729,7 @@
             <div class="doc-item-row" data-name="jato de plasma">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Jato de Plasma <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Jato de Plasma <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -717,7 +742,7 @@
             <div class="doc-item-row" data-name="microagulhamento">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Microagulhamento <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Microagulhamento <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -730,7 +755,7 @@
             <div class="doc-item-row" data-name="peeling quimico">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Peeling Químico <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Peeling QuÃ­mico <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -743,7 +768,7 @@
             <div class="doc-item-row" data-name="limpeza de pele">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Limpeza de Pele <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Limpeza de Pele <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -756,7 +781,7 @@
             <div class="doc-item-row" data-name="skinbooster">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Skinbooster <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Skinbooster <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -766,10 +791,10 @@
               </div>
             </div>
 
-            <div class="doc-item-row" data-name="rinomodelação">
+            <div class="doc-item-row" data-name="rinomodelaÃ§Ã£o">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Rinomodelação <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">RinomodelaÃ§Ã£o <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -782,7 +807,7 @@
             <div class="doc-item-row" data-name="bioestimuladores">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Bioestimuladores <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Bioestimuladores <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -795,7 +820,7 @@
             <div class="doc-item-row" data-name="preenchimento acido hialuronico">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Preenchimento Ácido Hialurônico <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Preenchimento Ãcido HialurÃ´nico <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -808,7 +833,7 @@
             <div class="doc-item-row" data-name="toxina botulinica botox">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Toxina Botulínica (Botox) <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Toxina BotulÃ­nica (Botox) <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -821,7 +846,7 @@
             <div class="doc-item-row" data-name="harmonizacao facial">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Harmonização Facial <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">HarmonizaÃ§Ã£o Facial <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -834,7 +859,7 @@
             <div class="doc-item-row" data-name="equipe">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Equipe <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Equipe <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -847,7 +872,7 @@
             <div class="doc-item-row" data-name="primeira consulta">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Primeira Consulta <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Primeira Consulta <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -860,7 +885,7 @@
             <div class="doc-item-row" data-name="formas de pagamento">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Formas de Pagamento <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Formas de Pagamento <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -873,7 +898,7 @@
             <div class="doc-item-row" data-name="localizacao e acesso">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Localização e Acesso <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">LocalizaÃ§Ã£o e Acesso <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -886,7 +911,7 @@
             <div class="doc-item-row" data-name="sobre a clinica ghof">
               <div class="doc-item-left">
                 <div>
-                  <div class="doc-item-title">Sobre a Clínica GHOF <span class="doc-badge-green">✓ Indexado</span></div>
+                  <div class="doc-item-title">Sobre a ClÃ­nica GHOF <span class="doc-badge-green">âœ“ Indexado</span></div>
                   <div class="doc-badge-type">MANUAL</div>
                 </div>
               </div>
@@ -902,19 +927,34 @@
         <!-- Flow and Objectives Area -->
         <div class="glass-card">
           <h3>Fluxo e Objetivos da IA</h3>
-          <p class="subtitle">Defina os objetivos passo a passo da IA comercial. Arraste e solte os cards para ordenar o fluxo de atendimento. A IA entenderá o contexto e tentará avançar conforme esta sequência lógica.</p>
+          <p class="subtitle">Defina os objetivos passo a passo da IA comercial. Arraste e solte os cards para ordenar o fluxo de atendimento. A IA entenderÃ¡ o contexto e tentarÃ¡ avanÃ§ar conforme esta sequÃªncia lÃ³gica.</p>
           
           <div class="flow-card-placeholder">
-            <div class="placeholder-icon">❓</div>
+            <div class="placeholder-icon">â“</div>
             <div style="font-weight: 600; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Nenhum objetivo comercial cadastrado ainda.</div>
             <button class="btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.9rem; margin-top: 0.5rem;">+ Adicionar Objetivo</button>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; margin-top: 1rem;">
+            <div style="padding: 0.9rem; border-radius: 12px; background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.15);">
+              <div style="font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-bottom: 0.35rem;">1. Captura</div>
+              <div style="font-size: 0.85rem; color: #fff; line-height: 1.5;">Responder rápido, identificar intenção e marcar contexto do lead.</div>
+            </div>
+            <div style="padding: 0.9rem; border-radius: 12px; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.15);">
+              <div style="font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-bottom: 0.35rem;">2. Qualificação</div>
+              <div style="font-size: 0.85rem; color: #fff; line-height: 1.5;">Pontuar o lead, capturar tags e preparar a passagem para o humano.</div>
+            </div>
+            <div style="padding: 0.9rem; border-radius: 12px; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.15);">
+              <div style="font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-bottom: 0.35rem;">3. Conversão</div>
+              <div style="font-size: 0.85rem; color: #fff; line-height: 1.5;">Agendar, vender e registrar eventos para analítica e tráfego.</div>
+            </div>
           </div>
         </div>
 
         <!-- Rapid Test Area -->
         <div class="glass-card" style="margin-bottom: 2rem;">
-          <h3>Teste rápido (IA)</h3>
-          <p class="subtitle">Teste rápido da IA (GPT-4o-mini) usando a Base de Conhecimento.</p>
+          <h3>Teste rÃ¡pido (IA)</h3>
+          <p class="subtitle">Teste rÃ¡pido da IA (GPT-4o-mini) usando a Base de Conhecimento.</p>
           
           <div class="rapid-test-inputs">
             <input type="text" class="form-control" placeholder="Nome (opcional)">
@@ -970,3 +1010,4 @@
   </script>
 </body>
 </html>
+
