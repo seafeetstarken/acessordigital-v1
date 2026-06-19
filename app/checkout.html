@@ -16,23 +16,41 @@
       background:
         radial-gradient(circle at top left, rgba(124,58,237,0.18), transparent 32%),
         radial-gradient(circle at top right, rgba(255,94,58,0.12), transparent 24%),
-        var(--bg-pure);
+        linear-gradient(180deg, rgba(10,10,12,0.98), rgba(8,8,10,1) 42%, rgba(8,8,10,1));
       color: var(--text-main);
       font-family: var(--font-body);
+      overflow-x: hidden;
     }
     a { color: inherit; }
+    .tech-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0) 100%);
+      opacity: 0.25;
+    }
     .page-shell {
       width: 100%;
       max-width: 1240px;
       margin: 0 auto;
       padding: 1.4rem 1.2rem 2rem;
+      position: relative;
+      z-index: 1;
     }
     .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      padding: 0.75rem 0 1.5rem;
+      padding: 0.8rem 0 1.3rem;
+      backdrop-filter: blur(16px);
     }
     .brand-link {
       display: inline-flex;
@@ -61,10 +79,17 @@
       text-decoration: none;
       font-weight: 600;
     }
+    .hero-shell {
+      background: linear-gradient(145deg, rgba(24,24,27,0.75), rgba(10,10,12,0.92));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 1.8rem;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.36), 0 20px 40px rgba(0,0,0,0.3);
+    }
     .hero {
       display: grid;
       gap: 1rem;
-      margin-bottom: 1.4rem;
+      margin-bottom: 0;
     }
     .hero-kicker {
       font-family: var(--font-mono);
@@ -86,6 +111,64 @@
       max-width: 60ch;
       line-height: 1.6;
     }
+    .hero-wrap {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1rem;
+      margin: 1rem 0 1.4rem;
+    }
+    .manifesto-box {
+      background: linear-gradient(145deg, rgba(24, 24, 27, 0.8), rgba(10, 10, 12, 0.9));
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 2rem;
+      border-radius: 18px;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.5), 0 20px 40px rgba(0,0,0,0.4);
+      overflow: hidden;
+      position: relative;
+    }
+    .manifesto-quote {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 2.8vw, 3.2rem);
+      line-height: 1.05;
+      color: var(--text-pure);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      max-width: 13ch;
+    }
+    .manifesto-quote span {
+      background: -webkit-linear-gradient(0deg, var(--accent-coral), var(--accent-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .manifesto-text {
+      margin-top: 1rem;
+      color: rgba(255,255,255,0.72);
+      max-width: 58ch;
+      line-height: 1.65;
+      font-size: 0.98rem;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+    }
+    .hero-side {
+      display: grid;
+      gap: 0.85rem;
+    }
+    .info-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 0.95rem 1rem;
+    }
+    .info-chip strong { display: block; font-family: var(--font-display); }
+    .info-chip span { color: rgba(255,255,255,0.58); font-size: 0.8rem; line-height: 1.4; }
     .steps {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -314,6 +397,26 @@
       color: #ffd1d1;
     }
     .status strong { display: block; margin-bottom: 0.2rem; color: #fff; }
+    .asaas-placeholder {
+      display: grid;
+      gap: 0.8rem;
+      width: 100%;
+      max-width: 360px;
+      justify-items: center;
+    }
+    .asaas-placeholder .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.22), rgba(255,94,58,0.18));
+      border: 1px solid rgba(255,255,255,0.08);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
     .small-note {
       color: rgba(255,255,255,0.5);
       font-size: 0.8rem;
@@ -335,20 +438,54 @@
   </style>
 </head>
 <body>
+  <div class="tech-grid"></div>
   <div class="page-shell">
     <header class="topbar">
       <a href="../index.html" class="brand-link">acessor<span class="brand-dot">.</span></a>
       <a href="./login.html" class="topbar-cta">Já tenho conta</a>
     </header>
 
-    <section class="hero">
-      <div class="hero-kicker">// cadastro + pagamento transparente</div>
-      <h1>Escolha seu plano e conclua tudo em uma única tela.</h1>
-      <p>
-        Cadastre seus dados, selecione o plano e finalize com o checkout transparente do Asaas sem sair do fluxo.
-        Depois da confirmação, a conta é ativada e o cockpit fica liberado.
-      </p>
-    </section>
+    <div class="hero-wrap">
+      <section class="hero-shell">
+        <section class="hero">
+          <div class="hero-kicker">// cadastro + pagamento transparente</div>
+          <div class="manifesto-box">
+            <div class="manifesto-quote">Escolha seu plano e conclua tudo em uma <span>única tela</span>.</div>
+            <div class="manifesto-text">
+              Cadastre seus dados, selecione o plano e finalize com o checkout transparente do Asaas sem sair do fluxo.
+              Depois da confirmação, a conta é ativada e o cockpit fica liberado.
+            </div>
+            <div class="hero-actions">
+              <a href="#checkoutForm" class="btn btn-primary">Começar agora</a>
+              <a href="./login.html" class="btn btn-ghost">Já sou cliente</a>
+            </div>
+          </div>
+        </section>
+      </section>
+      <div class="hero-side">
+        <div class="info-chip">
+          <div>
+            <strong>Recorrência</strong>
+            <span>Mensal, semestral ou anual.</span>
+          </div>
+          <span class="badge">Ativação imediata</span>
+        </div>
+        <div class="info-chip">
+          <div>
+            <strong>Pagamento</strong>
+            <span>Checkout transparente Asaas embutido.</span>
+          </div>
+          <span class="badge">Sem saída da tela</span>
+        </div>
+        <div class="info-chip">
+          <div>
+            <strong>Pós-compra</strong>
+            <span>Webhook ativa o workspace automaticamente.</span>
+          </div>
+          <span class="badge">Firebase + Asaas</span>
+        </div>
+      </div>
+    </div>
 
     <section class="steps" aria-label="Etapas do checkout">
       <div class="step"><div class="step-badge">1</div><div><strong>Seus dados</strong><span>Nome, empresa, WhatsApp, e-mail e senha.</span></div></div>
@@ -473,14 +610,17 @@
             <span class="badge">Transparente</span>
           </div>
           <div class="payment-box" id="asaasCheckoutMount">
+          <div class="asaas-placeholder">
+            <div class="logo">A</div>
             <div>
-              <strong>Pagamento embutido na mesma tela</strong>
+              <strong>Checkout transparente Asaas</strong>
               <p>
-                Aqui entra o componente do Asaas quando a chave pública e o fluxo de cobrança estiverem conectados.
+                Aqui entra o componente oficial do Asaas quando a chave pública e o fluxo de cobrança estiverem conectados.
                 Enquanto isso, a tela já salva o rascunho e prepara a ativação.
               </p>
             </div>
           </div>
+        </div>
           <div class="badges">
             <span class="badge">Cartão</span>
             <span class="badge">Pix</span>
