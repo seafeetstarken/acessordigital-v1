@@ -30,6 +30,45 @@ function safeArray(items) {
   return Array.isArray(items) ? items : [];
 }
 
+function deriveWorkspaceIdFromProfile(profile, session) {
+  return profile?.workspaceId || profile?.uid || session?.user?.uid || null;
+}
+
+async function loadUserProfile(firebase, session) {
+  const fallbackProfile = {
+    uid: session?.user?.uid || null,
+    email: session?.user?.email || null,
+    displayName: session?.user?.displayName || session?.user?.email || 'Empresa BR',
+    companyName: session?.user?.companyName || session?.user?.displayName || session?.user?.email || 'Empresa BR',
+    whatsapp: session?.user?.whatsapp || '',
+    plan: session?.user?.plan || 'Plano Pro',
+    workspaceId: session?.user?.workspaceId || session?.user?.uid || null
+  };
+
+  if (!firebase?.db || !session?.user?.uid) {
+    return fallbackProfile;
+  }
+
+  try {
+    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+    const snap = await getDoc(doc(firebase.db, 'users', session.user.uid));
+    if (!snap.exists()) return fallbackProfile;
+    const data = snap.data() || {};
+    return {
+      uid: session.user.uid,
+      email: data.email || session.user.email || null,
+      displayName: data.displayName || session.user.displayName || session.user.email || 'Empresa BR',
+      companyName: data.companyName || data.displayName || session.user.displayName || session.user.email || 'Empresa BR',
+      whatsapp: data.whatsapp || '',
+      plan: data.plan || 'Plano Pro',
+      workspaceId: data.workspaceId || session.user.uid,
+      ...data
+    };
+  } catch {
+    return fallbackProfile;
+  }
+}
+
 async function buildSnapshot(firebase) {
   const snapshot = {
     workspace: null,
@@ -61,12 +100,34 @@ async function buildSnapshot(firebase) {
     where
   } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
 
-  const workspaceSnap = await getDocs(query(collection(db, 'workspaces')));
-  const workspaceDoc = workspaceSnap.docs[0];
-  const workspace = workspaceDoc ? { id: workspaceDoc.id, ...workspaceDoc.data() } : null;
+  const sessionRaw = window.localStorage.getItem('acessor_session');
+  let session = null;
+  try {
+    session = sessionRaw ? JSON.parse(sessionRaw) : null;
+  } catch {
+    session = null;
+  }
+  const profile = await loadUserProfile(firebase, session);
+  const preferredWorkspaceId = deriveWorkspaceIdFromProfile(profile, session);
+
+  let workspace = null;
+  if (preferredWorkspaceId) {
+    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+    const workspaceById = await getDoc(doc(db, 'workspaces', preferredWorkspaceId));
+    if (workspaceById.exists()) {
+      workspace = { id: workspaceById.id, ...workspaceById.data() };
+    }
+  }
+
+  if (!workspace) {
+    const workspaceSnap = await getDocs(query(collection(db, 'workspaces')));
+    const workspaceDoc = workspaceSnap.docs[0];
+    workspace = workspaceDoc ? { id: workspaceDoc.id, ...workspaceDoc.data() } : null;
+  }
   snapshot.workspace = workspace;
 
   const workspaceId = workspace?.id;
+  snapshot.profile = profile;
   if (!workspaceId) return snapshot;
 
   const collectionDocs = async (name) => {
@@ -126,6 +187,7 @@ async function buildSnapshot(firebase) {
     billing_plan: workspace.billingPlan || workspace.billing_plan || 'Mensal',
     credits_balance: workspace.creditsBalance ?? workspace.credits_balance ?? 0
   };
+  snapshot.profile = profile;
 
   return snapshot;
 }
@@ -140,6 +202,7 @@ export async function initCockpitRuntime() {
     firebase,
     hasFirebaseConfig: await hasFirebaseConfig(),
     hints,
+    profile: null,
     session: null,
     snapshot: null,
     signOut: async () => {
@@ -192,6 +255,7 @@ export async function initCockpitRuntime() {
     }
   }
 
+  runtime.profile = await loadUserProfile(firebase, runtime.session);
   runtime.snapshot = await buildSnapshot(firebase);
   window.ACESSOR_RUNTIME = runtime;
   window.ACESSOR_AUTH = {

@@ -9,6 +9,10 @@ service cloud.firestore {
       return isSignedIn() && request.auth.token.admin == true;
     }
 
+    function isSelf(docId) {
+      return isSignedIn() && request.auth.uid == docId;
+    }
+
     function canReadWorkspace(workspaceId) {
       return isSignedIn();
     }
@@ -19,7 +23,12 @@ service cloud.firestore {
 
     match /workspaces/{workspaceId} {
       allow read: if canReadWorkspace(workspaceId);
-      allow write: if canWriteWorkspace(workspaceId);
+      allow write: if canWriteWorkspace(workspaceId) || isSelf(workspaceId);
+    }
+
+    match /users/{userId} {
+      allow read, create, update: if isSelf(userId) || isOwner();
+      allow delete: if isOwner();
     }
 
     match /contacts/{contactId} {

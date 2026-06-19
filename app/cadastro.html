@@ -249,15 +249,44 @@
           const { createUserWithEmailAndPassword, updateProfile } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
           const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
           const result = await createUserWithEmailAndPassword(firebase.auth, email, password);
+          const workspaceId = result.user.uid;
+          const workspaceSlug = companyName
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '') || `workspace-${workspaceId.slice(0, 8)}`;
           await updateProfile(result.user, { displayName: fullName || companyName || email });
+          await setDoc(doc(firebase.db, 'workspaces', workspaceId), {
+            name: companyName || fullName || email,
+            slug: workspaceSlug,
+            cnpj: '',
+            billingPlan: 'Mensal',
+            creditsBalance: 500,
+            businessHours: {
+              monday: ['08:00', '19:00'],
+              tuesday: ['08:00', '19:00'],
+              wednesday: ['08:00', '19:00'],
+              thursday: ['08:00', '19:00'],
+              friday: ['08:00', '19:00'],
+              saturday: ['09:00', '13:00'],
+              sunday: []
+            },
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            ownerUid: result.user.uid,
+            ownerEmail: email
+          }, { merge: true });
           await setDoc(doc(firebase.db, 'users', result.user.uid), {
             uid: result.user.uid,
             email,
             displayName: fullName || companyName || email,
             companyName,
             whatsapp,
-            plan: 'demo',
+            plan: 'Mensal',
+            workspaceId,
             createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
             source: 'signup-form'
           }, { merge: true });
           window.localStorage.setItem('acessor_session', JSON.stringify({

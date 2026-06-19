@@ -27,18 +27,38 @@ export function hydrateCockpitPage(runtime) {
   const metrics = snapshot.metrics || {};
   const counts = snapshot.counts || {};
   const workspace = snapshot.workspace || null;
+  const profile = runtime?.profile || {};
+
+  const displayName = workspace?.name || profile.companyName || profile.displayName || profile.email || 'Empresa BR';
+  const planName = workspace?.billing_plan || profile.plan || 'Plano Pro';
+  const workspaceSlug = workspace?.slug || profile.workspaceId || '';
+  const credits = workspace?.credits_balance ?? profile.creditsBalance ?? 0;
+
+  setText('sidebar-name', displayName);
+  setText('sidebar-plan', planName);
+  setText('sidebar-avatar', String(displayName).trim().charAt(0).toUpperCase() || 'E');
+  setText('topbar-title', snapshot.workspace?.name ? `Dashboard · ${snapshot.workspace.name}` : 'Dashboard');
+  setText('topbar-sub', snapshot.workspace?.name ? 'Cockpit de operações' : 'Acesso autenticado');
+  setText('topbar-avatar', String(displayName).trim().charAt(0).toUpperCase() || 'E');
+  setText('page-title', snapshot.workspace?.name ? `Bem-vindo ao Cockpit ✦` : `Bem-vindo ao Cockpit ✦`);
+  setText('page-subtitle', snapshot.workspace?.name
+    ? `Visão geral das suas operações e performance da Inteligência Artificial.`
+    : `Visão geral da sua conta e do seu plano.`);
 
   if (!workspace) {
+    setText('metric-revenue', currency.format(0));
+    setText('metric-conversations', '0');
+    setText('metric-ai-score', '0.0%');
+    setText('metric-contacts', '0');
+    setText('metric-response', '0.0s');
     return { snapshot, metrics, counts, workspace };
   }
 
-  if (workspace?.name) {
-    setText('workspace-name', workspace.name);
-    setText('workspace-slug', workspace.slug || workspace.name);
-    setText('workspace-plan', workspace.billing_plan || 'Mensal');
-    setText('workspace-credits', String(workspace.credits_balance ?? 0));
-    setText('workspace-label', `${workspace.name} conectado ao Firebase`);
-  }
+  setText('workspace-name', workspace.name);
+  setText('workspace-slug', workspace.slug || workspace.name);
+  setText('workspace-plan', workspace.billing_plan || 'Mensal');
+  setText('workspace-credits', String(workspace.credits_balance ?? 0));
+  setText('workspace-label', `${workspace.name} conectado ao Firebase`);
 
   setText('metric-revenue', currency.format(metrics.revenueRecovered || 0));
   setText('metric-conversations', String(metrics.conversationsToday || 0));

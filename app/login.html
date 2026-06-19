@@ -229,15 +229,67 @@
 
       if (firebase?.auth && (await hasFirebaseConfig())) {
         try {
-          const { signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+          const { signInWithEmailAndPassword, updateProfile } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+          const { doc, getDoc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
           const result = await signInWithEmailAndPassword(firebase.auth, emailInput, passwordInput);
           const user = result.user;
+          const userRef = doc(firebase.db, 'users', user.uid);
+          const userSnap = await getDoc(userRef);
+          const registeredProfileRaw = localStorage.getItem('registered_profile');
+          let registeredProfile = {};
+          try {
+            registeredProfile = registeredProfileRaw ? JSON.parse(registeredProfileRaw) : {};
+          } catch {
+            registeredProfile = {};
+          }
+          const displayName = user.displayName || registeredProfile.fullName || registeredProfile.companyName || emailInput;
+          const companyName = registeredProfile.companyName || registeredProfile.fullName || user.displayName || emailInput;
+          const workspaceId = user.uid;
+          const workspaceRef = doc(firebase.db, 'workspaces', workspaceId);
+
+          await updateProfile(user, { displayName });
+
+          if (!userSnap.exists()) {
+            await setDoc(userRef, {
+              uid: user.uid,
+              email: user.email,
+              displayName,
+              companyName,
+              whatsapp: registeredProfile.whatsapp || '',
+              plan: 'Mensal',
+              workspaceId,
+              createdAt: serverTimestamp(),
+              updatedAt: serverTimestamp(),
+              source: 'login-bootstrap'
+            }, { merge: true });
+          } else {
+            await setDoc(userRef, {
+              uid: user.uid,
+              email: user.email,
+              displayName,
+              companyName,
+              updatedAt: serverTimestamp()
+            }, { merge: true });
+          }
+
+          await setDoc(workspaceRef, {
+            name: companyName,
+            slug: companyName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || `workspace-${workspaceId.slice(0, 8)}`,
+            billingPlan: 'Mensal',
+            creditsBalance: 500,
+            ownerUid: user.uid,
+            ownerEmail: user.email,
+            updatedAt: serverTimestamp()
+          }, { merge: true });
+
           window.localStorage.setItem('acessor_session', JSON.stringify({
             access_token: await user.getIdToken().catch(() => 'firebase-session'),
             user: {
               uid: user.uid,
               email: user.email,
-              displayName: user.displayName,
+              displayName,
+              companyName,
+              workspaceId,
               photoURL: user.photoURL
             }
           }));
