@@ -405,6 +405,7 @@
             <div class="config-menu-item" data-config-tab="webhooks">Webhooks</div>
             <div class="config-menu-item" data-config-tab="automacao">Automação</div>
             <div class="config-menu-item" data-config-tab="trafego">Tráfego & Pixels</div>
+            <div class="config-menu-item" data-config-tab="meta">Meta Review</div>
             <div class="config-menu-item" data-config-tab="api-keys">API Keys</div>
           </div>
 
@@ -1047,6 +1048,140 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
               <button class="btn-primary">Salvar configurações de tráfego</button>
             </div>
 
+            <!-- Panel: Meta Review -->
+            <div class="glass-card hidden" id="panel-meta">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem;">
+                <div>
+                  <h3>Meta Review</h3>
+                  <p class="subtitle">Checklist de publicação, confiança e requisitos de aprovação do app.</p>
+                </div>
+                <span class="status-badge-inline" style="background: rgba(16,185,129,0.12); color: #10b981; border-color: rgba(16,185,129,0.25);">
+                  <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span>
+                  Em revisão
+                </span>
+              </div>
+
+              <div class="integrations-card-list" style="margin-bottom: 1.5rem;">
+                <div class="integration-panel-card" style="flex-direction: column; align-items: flex-start;">
+                  <div style="display: flex; justify-content: space-between; width: 100%; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                    <div class="int-panel-left">
+                      <div class="int-panel-icon" style="background: rgba(124,58,237,0.15); color: #a855f7;">M</div>
+                      <div>
+                        <div class="int-panel-title">App Review Checklist</div>
+                        <div class="int-panel-desc">Campos obrigatórios para publicação e validação da Meta</div>
+                      </div>
+                    </div>
+                    <button class="btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">Exportar resumo</button>
+                  </div>
+
+                  <div class="form-row" style="width: 100%;">
+                    <div class="form-group">
+                      <label>App ID</label>
+                      <input type="text" class="form-control" value="123456789012345">
+                    </div>
+                    <div class="form-group">
+                      <label>Business Manager ID</label>
+                      <input type="text" class="form-control" value="987654321098765">
+                    </div>
+                  </div>
+
+                  <div class="form-row" style="width: 100%;">
+                    <div class="form-group">
+                      <label>Contato institucional</label>
+                      <input type="email" class="form-control" value="suporte@acessordigital.com.br">
+                    </div>
+                    <div class="form-group">
+                      <label>URL de Política de Privacidade</label>
+                      <input type="text" class="form-control" value="https://acessordigital.com.br/politica-de-privacidade">
+                    </div>
+                  </div>
+
+                  <div class="form-row" style="width: 100%;">
+                    <div class="form-group">
+                      <label>URL de Termos de Uso</label>
+                      <input type="text" class="form-control" value="https://acessordigital.com.br/termos-de-uso">
+                    </div>
+                    <div class="form-group">
+                      <label>URL de Exclusão de Dados</label>
+                      <input type="text" class="form-control" value="https://acessordigital.com.br/exclusao-de-dados">
+                    </div>
+                  </div>
+
+                  <div style="width: 100%; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1);">
+                    <h4 style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 0.8rem;">Checklist de aprovação</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem 1rem;">
+                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
+                        <input type="checkbox" checked>
+                        Domínio publicado e SSL ativo
+                      </label>
+                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
+                        <input type="checkbox" checked>
+                        Página de privacidade acessível
+                      </label>
+                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
+                        <input type="checkbox" checked>
+                        Página de termos acessível
+                      </label>
+                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
+                        <input type="checkbox" checked>
+                        Página de exclusão de dados
+                      </label>
+                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
+                        <input type="checkbox" checked>
+                        Disclaimer de não afiliação no footer
+                      </label>
+                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
+                        <input type="checkbox">
+                        Verificação do App concluída
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="integration-panel-card" style="flex-direction: column; align-items: flex-start;">
+                  <div style="display: flex; justify-content: space-between; width: 100%; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                    <div class="int-panel-left">
+                      <div class="int-panel-icon" style="background: rgba(16,185,129,0.15); color: #10b981;">✓</div>
+                      <div>
+                        <div class="int-panel-title">Pronto para revisão</div>
+                        <div class="int-panel-desc">Resumo final de confiança e transmissão de dados</div>
+                      </div>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div style="display: grid; gap: 0.9rem; width: 100%;">
+                    <div style="padding: 0.95rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);">
+                      <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-bottom: 0.35rem;">Mensagem de confiança</div>
+                      <div style="font-size: 0.9rem; line-height: 1.6; color: rgba(255,255,255,0.82);">
+                        Acessor Digital opera com guardrails, repasse humano e rotas de compliance publicadas.
+                      </div>
+                    </div>
+                    <div style="padding: 0.95rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);">
+                      <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-bottom: 0.35rem;">URLs públicas</div>
+                      <div style="display: grid; gap: 0.4rem; font-size: 0.9rem; color: rgba(255,255,255,0.82);">
+                        <span>/politica-de-privacidade</span>
+                        <span>/termos-de-uso</span>
+                        <span>/exclusao-de-dados</span>
+                      </div>
+                    </div>
+                    <div style="padding: 0.95rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);">
+                      <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-bottom: 0.35rem;">Status de publicação</div>
+                      <div style="display: flex; justify-content: space-between; gap: 1rem; align-items: center; font-size: 0.9rem; color: rgba(255,255,255,0.82);">
+                        <span>Landing + rodapé + páginas legais</span>
+                        <span style="color: #10b981;">Aguardando envio</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="btn-primary" style="margin-top: 1rem;">Salvar checklist Meta</button>
+                </div>
+              </div>
+            </div>
+
             <!-- Panel: API Keys -->
             <div class="glass-card id" id="panel-api-keys">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
@@ -1121,6 +1256,7 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
         webhooks: document.getElementById('panel-webhooks'),
         automacao: document.getElementById('panel-automacao'),
         trafego: document.getElementById('panel-trafego'),
+        meta: document.getElementById('panel-meta'),
         'api-keys': document.getElementById('panel-api-keys')
       };
 
