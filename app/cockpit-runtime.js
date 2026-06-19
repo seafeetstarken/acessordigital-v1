@@ -58,12 +58,10 @@ async function buildSnapshot(firebase) {
     collection,
     getDocs,
     query,
-    orderBy,
-    limit,
     where
   } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
 
-  const workspaceSnap = await getDocs(query(collection(db, 'workspaces'), orderBy('createdAt', 'asc'), limit(1)));
+  const workspaceSnap = await getDocs(query(collection(db, 'workspaces')));
   const workspaceDoc = workspaceSnap.docs[0];
   const workspace = workspaceDoc ? { id: workspaceDoc.id, ...workspaceDoc.data() } : null;
   snapshot.workspace = workspace;

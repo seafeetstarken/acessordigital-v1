@@ -884,6 +884,91 @@
       }
     };
 
+    function normalizeKey(value) {
+      return String(value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '');
+    }
+
+    function buildChatFromContact(contact, conversation, fallbackChat, index) {
+      const fallback = fallbackChat || {};
+      const name = contact?.name || fallback.name || 'Contato sem nome';
+      const initials = name.split(' ').map((part) => part[0] || '').join('').slice(0, 2).toUpperCase();
+      const summary = conversation?.summary || fallback.summary || 'Conversa sincronizada com Firebase.';
+      const lastMessageAt = conversation?.lastMessageAt || fallback.date;
+      const status = conversation?.status || (contact?.status === 'hot' ? 'Abertas' : contact?.status === 'active' ? 'Humano' : 'Resolvidas');
+      const score = Number(contact?.aiScore ?? fallback.score ?? 0);
+      const tags = Array.isArray(contact?.tags) && contact.tags.length ? contact.tags : (fallback.tags || []);
+      return {
+        id: fallback.id || contact?.id || `firebase-${index + 1}`,
+        name,
+        phone: contact?.phone || fallback.phone || 'Não informado',
+        avatar: initials,
+        channel: contact?.channel || fallback.channel || 'WhatsApp',
+        status,
+        date: (() => {
+          if (!lastMessageAt) return fallback.date || new Date().toLocaleDateString('pt-BR');
+          const parsed = new Date(lastMessageAt);
+          return Number.isNaN(parsed.getTime()) ? (fallback.date || new Date().toLocaleDateString('pt-BR')) : parsed.toLocaleDateString('pt-BR');
+        })(),
+        messagesCount: fallback.messagesCount || 0,
+        score,
+        tags,
+        summary,
+        aiActive: conversation?.aiPaused ? false : (fallback.aiActive ?? true),
+        notes: contact?.notes || fallback.notes || '',
+        messages: fallback.messages || [
+          { sender: 'received', text: summary, time: '09:00' }
+        ]
+      };
+    }
+
+    function syncWorkspaceInbox({ contacts = [], conversations = [] } = {}) {
+      const contactMap = new Map();
+      contacts.forEach((contact) => {
+        contactMap.set(normalizeKey(contact.name), contact);
+      });
+
+      const conversationMap = new Map();
+      conversations.forEach((conversation) => {
+        const key = normalizeKey(conversation.name || conversation.contactName || conversation.contactId);
+        conversationMap.set(key, conversation);
+      });
+
+      const mergedChats = {};
+      const fallbackChats = Object.values(state.chats);
+
+      contacts.forEach((contact, index) => {
+        const fallback = fallbackChats.find((chat) => normalizeKey(chat.name) === normalizeKey(contact.name))
+          || fallbackChats[index % Math.max(fallbackChats.length, 1)]
+          || null;
+        const conversation = conversationMap.get(normalizeKey(contact.name))
+          || conversationMap.get(normalizeKey(contact.id))
+          || null;
+        const chat = buildChatFromContact(contact, conversation, fallback, index);
+        mergedChats[chat.id] = chat;
+      });
+
+      if (!Object.keys(mergedChats).length) {
+        fallbackChats.forEach((chat) => { mergedChats[chat.id] = chat; });
+      }
+
+      state.chats = mergedChats;
+      state.activeChat = mergedChats[state.activeChat] ? state.activeChat : Object.keys(mergedChats)[0];
+      if (state.activeChat) {
+        renderChatList();
+        selectChat(state.activeChat);
+      }
+    }
+
+    window.ACESSOR_INBOX = {
+      setWorkspaceData(payload) {
+        syncWorkspaceInbox(payload);
+      }
+    };
+
     // DOM Elements Cache
     const elements = {
       chatsContainer: document.querySelector('.chats'),
@@ -1407,8 +1492,17 @@
   <script type="module">
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
+    const { loadCollectionForWorkspace } = await import('./firebase-data.js');
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
+
+    if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id && window.ACESSOR_INBOX?.setWorkspaceData) {
+      const [contacts, conversations] = await Promise.all([
+        loadCollectionForWorkspace(runtime.firebase, 'contacts', runtime.snapshot.workspace.id),
+        loadCollectionForWorkspace(runtime.firebase, 'conversations', runtime.snapshot.workspace.id)
+      ]);
+      window.ACESSOR_INBOX.setWorkspaceData({ contacts, conversations });
+    }
   </script>
 
 </body>

@@ -974,46 +974,90 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Filter list input
-      const searchInput = document.getElementById('docSearch');
-      const rows = document.querySelectorAll('.doc-item-row');
+    const docsContainer = document.getElementById('docsContainer');
+    const searchInput = document.getElementById('docSearch');
+    const countLabel = document.querySelector('.docs-count-label');
 
-      searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase().trim();
-        rows.forEach(row => {
-          const name = row.getAttribute('data-name');
-          if (name.includes(query)) {
-            row.classList.remove('hidden');
-          } else {
-            row.classList.add('hidden');
-          }
-        });
-      });
+    function normalizeDocument(doc) {
+      return {
+        id: doc.id || crypto.randomUUID(),
+        title: doc.title || doc.name || 'Documento sem título',
+        type: doc.type || 'MANUAL',
+        status: doc.status || 'Indexado',
+        content: doc.content || doc.description || '',
+        source: doc.source || 'Firebase'
+      };
+    }
 
-      // Bind delete action to docs list
-      document.querySelectorAll('.btn-doc-action').forEach(btn => {
+    function renderDocumentRows(items) {
+      if (!docsContainer || !Array.isArray(items)) return;
+      docsContainer.innerHTML = items.map((doc) => {
+        const safeName = String(doc.title).toLowerCase().replace(/\s+/g, ' ');
+        return `
+          <div class="doc-item-row" data-name="${safeName}">
+            <div class="doc-item-left">
+              <div>
+                <div class="doc-item-title">${doc.title} <span class="doc-badge-green">✓ ${doc.status}</span></div>
+                <div class="doc-badge-type">${doc.type}</div>
+              </div>
+            </div>
+            <div class="doc-actions-row">
+              <button class="btn-doc-action">Editar</button>
+              <button class="btn-doc-action">Excluir</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (countLabel) {
+        countLabel.textContent = `${items.length} item(s)`;
+      }
+
+      document.querySelectorAll('.btn-doc-action').forEach((btn) => {
         if (btn.textContent === 'Excluir') {
           btn.addEventListener('click', (e) => {
             const row = e.currentTarget.closest('.doc-item-row');
             if (confirm('Deseja realmente excluir este documento?')) {
               row.remove();
-              // Update count
-              const countLabel = document.querySelector('.docs-count-label');
-              const remaining = document.querySelectorAll('.doc-item-row').length;
-              countLabel.textContent = `${remaining} item(s)`;
+              if (countLabel) {
+                const remaining = document.querySelectorAll('.doc-item-row').length;
+                countLabel.textContent = `${remaining} item(s)`;
+              }
             }
           });
         }
       });
-    });
+    }
+
+    window.ACESSOR_KNOWLEDGE = {
+      setDocuments(items) {
+        const normalized = Array.isArray(items) ? items.map(normalizeDocument) : [];
+        if (normalized.length) renderDocumentRows(normalized);
+      }
+    };
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase().trim();
+        document.querySelectorAll('.doc-item-row').forEach((row) => {
+          const name = row.getAttribute('data-name') || '';
+          row.classList.toggle('hidden', !name.includes(query));
+        });
+      });
+    }
   </script>
 
   <script type="module">
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
+    const { loadCollectionForWorkspace } = await import('./firebase-data.js');
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
+
+    if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id && window.ACESSOR_KNOWLEDGE?.setDocuments) {
+      const documents = await loadCollectionForWorkspace(runtime.firebase, 'knowledge_base', runtime.snapshot.workspace.id);
+      if (documents.length) window.ACESSOR_KNOWLEDGE.setDocuments(documents);
+    }
   </script>
 </body>
 </html>

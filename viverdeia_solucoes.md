@@ -124,8 +124,8 @@
 6. **Chatbot N8N**
    - Descrição: Converse com a documentação do N8N para construir automações mais rápido. Um chatbot especialista que funciona como um colega que conhece tudo sobre N8N.
    - Dificuldade: Fácil
-7. **Chatbot Supabase**
-   - Descrição: Gerencie e migre dados no Supabase com a ajuda de um chatbot especializado. Tire dúvidas técnicas, corrija erros e acelere o desenvolvimento sem precisar de suporte externo.
+7. **Chatbot Firebase**
+   - Descrição: Gerencie e migre dados no Firebase com a ajuda de um chatbot especializado. Tire dúvidas técnicas, corrija erros e acelere o desenvolvimento sem precisar de suporte externo.
    - Dificuldade: Fácil
 8. **Comparativo de Modelos de IA: LLM Playground**
    - Descrição: Compare múltiplos modelos de IA lado a lado em tempo real. Teste prompts, avalie respostas e escolha o melhor modelo para cada caso de uso sem precisar configurar nada.

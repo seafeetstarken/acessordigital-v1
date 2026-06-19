@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+
+    function canReadWorkspace(workspaceId) {
+      return isSignedIn();
+    }
+
+    function canWriteWorkspace(workspaceId) {
+      return isOwner();
+    }
+
+    match /workspaces/{workspaceId} {
+      allow read: if canReadWorkspace(workspaceId);
+      allow write: if canWriteWorkspace(workspaceId);
+    }
+
+    match /contacts/{contactId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner();
+    }
+
+    match /conversations/{conversationId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner();
+    }
+
+    match /deals/{dealId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner();
+    }
+
+    match /automations/{automationId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner();
+    }
+
+    match /knowledge_base/{documentId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner();
+    }
+
+    match /session_notes/{noteId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner();
+    }
+
+    match /changelog_events/{eventId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner();
+    }
+  }
+}

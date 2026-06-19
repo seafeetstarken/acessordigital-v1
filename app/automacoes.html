@@ -257,7 +257,7 @@
           </button>
         </div>
 
-        <div class="auto-list">
+        <div class="auto-list" id="auto-list">
           
           <div class="auto-item">
             <div class="auto-info">
@@ -464,8 +464,85 @@ Liberamos um cupom de 15% off exclusivo para você usar hoje. Bora aproveitar?</
   <script type="module">
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
+    const { loadCollectionForWorkspace } = await import('./firebase-data.js');
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
+
+    const autoListEl = document.getElementById('auto-list');
+    const metricRefs = {
+      active: document.getElementById('auto-active-count'),
+      exec: document.getElementById('auto-exec-count'),
+      success: document.getElementById('auto-success-rate'),
+      saved: document.getElementById('auto-saved-actions')
+    };
+
+    function renderAutomationCard(auto) {
+      const active = Boolean(auto.isActive ?? auto.active ?? false);
+      const conversion = Number(auto.conversionRate ?? auto.conversion ?? 0);
+      const triggers = Number(auto.triggerCount ?? auto.triggers ?? auto.trigger_count ?? 0);
+      const name = auto.name || auto.title || 'Automação';
+      const description = auto.description || auto.summary || 'Fluxo operacional conectado ao Firebase.';
+      const tone = active ? '' : 'opacity: 0.6;';
+      const iconBg = active ? 'rgba(124,58,237,0.12)' : 'rgba(255,255,255,0.05)';
+      return `
+        <div class="auto-item" style="${tone}">
+          <div class="auto-info">
+            <div class="auto-icon" style="background:${iconBg};">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22 4 12 14.01 9 11.01" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="auto-text">
+              <h4>${name}${active ? '' : ' <span class="tag hot" style="background:rgba(255,255,255,0.05);color:#9ca3af;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;margin-left:0.5rem;vertical-align:middle;">Inativa</span>'}</h4>
+              <p>${description}</p>
+            </div>
+          </div>
+          <div class="auto-stats">
+            <div class="stat-block">
+              <span>Gatilhos (7d)</span>
+              <strong>${triggers.toLocaleString('pt-BR')}</strong>
+            </div>
+            <div class="stat-block" style="margin-right: 1.5rem;">
+              <span>Conversão</span>
+              <strong>${conversion.toFixed(conversion % 1 === 0 ? 0 : 1)}%</strong>
+            </div>
+            <label class="switch">
+              <input type="checkbox" ${active ? 'checked' : ''}>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAutomations(items) {
+      if (!autoListEl) return;
+      if (!Array.isArray(items) || !items.length) return;
+      autoListEl.innerHTML = items.map(renderAutomationCard).join('');
+      if (metricRefs.active) metricRefs.active.textContent = String(items.filter((item) => item.isActive ?? item.active).length);
+      if (metricRefs.exec) metricRefs.exec.textContent = items.reduce((sum, item) => sum + Number(item.triggerCount ?? item.triggers ?? item.trigger_count ?? 0), 0).toLocaleString('pt-BR');
+      if (metricRefs.success) {
+        const avg = items.length
+          ? items.reduce((sum, item) => sum + Number(item.conversionRate ?? item.conversion ?? 0), 0) / items.length
+          : 0;
+        metricRefs.success.textContent = `${avg.toFixed(avg % 1 === 0 ? 0 : 1)}%`;
+      }
+      if (metricRefs.saved) {
+        const hours = Math.max(1, Math.round(items.reduce((sum, item) => sum + Number(item.triggerCount ?? item.triggers ?? 0), 0) / 250));
+        metricRefs.saved.textContent = `~ ${hours}.0h`.replace('.0h', 'h');
+      }
+    }
+
+    window.ACESSOR_AUTOMACOES = {
+      setAutomations(items) {
+        renderAutomations(items);
+      }
+    };
+
+    if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id) {
+      const automations = await loadCollectionForWorkspace(runtime.firebase, 'automations', runtime.snapshot.workspace.id);
+      if (automations.length) {
+        renderAutomations(automations);
+      }
+    }
   </script>
 </body>
 </html>

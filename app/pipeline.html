@@ -690,6 +690,23 @@
       updateStats();
     }
 
+    window.ACESSOR_PIPELINE = {
+      setDeals(newDeals) {
+        deals = newDeals.map((deal, index) => ({
+          id: deal.id || index + 1,
+          name: deal.name || 'Sem nome',
+          value: Number(deal.value || 0),
+          stage: deal.stage || 'prospecção',
+          tag: deal.tag || 'default',
+          channel: deal.channel || 'WhatsApp',
+          meta: deal.meta || 'Atualizado agora'
+        }));
+        nextId = deals.length ? Math.max(...deals.map(d => Number(d.id) || 0)) + 1 : 1;
+        renderBoard();
+        updateStats();
+      }
+    };
+
     // Close modal on overlay click
     document.getElementById('deal-modal').addEventListener('click', function(e) {
       if (e.target === this) closeModal();
@@ -704,7 +721,12 @@
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    const { loadCollectionForWorkspace } = await import('./firebase-data.js');
     hydrateCockpitPage(runtime);
+    if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id && window.ACESSOR_PIPELINE?.setDeals) {
+      const deals = await loadCollectionForWorkspace(runtime.firebase, 'deals', runtime.snapshot.workspace.id);
+      if (deals.length) window.ACESSOR_PIPELINE.setDeals(deals);
+    }
   </script>
 </body>
 </html>

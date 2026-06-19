@@ -822,6 +822,25 @@
       document.getElementById('tab-' + v).classList.add('active');
     }
 
+    window.ACESSOR_CRM = {
+      setContacts(newContacts) {
+        contacts = newContacts.map((contact, index) => ({
+          id: contact.id || index + 1,
+          name: contact.name || 'Sem nome',
+          phone: contact.phone || 'Não informado',
+          channel: contact.channel || 'WhatsApp',
+          status: contact.status || 'lead',
+          score: Number(contact.aiScore ?? contact.score ?? 0),
+          lastMsg: contact.lastMessageAt ? 'Atualizado agora' : (contact.lastMsg || 'Agora'),
+          email: contact.email || '',
+          notes: contact.notes || ''
+        }));
+        nextId = contacts.length ? Math.max(...contacts.map(c => Number(c.id) || 0)) + 1 : 1;
+        renderContacts();
+        updateStats();
+      }
+    };
+
     // Close modal on overlay click
     document.getElementById('new-contact-modal').addEventListener('click', function(e) {
       if (e.target === this) closeNewContact();
@@ -836,7 +855,12 @@
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    const { loadCollectionForWorkspace } = await import('./firebase-data.js');
     hydrateCockpitPage(runtime);
+    if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id && window.ACESSOR_CRM?.setContacts) {
+      const contacts = await loadCollectionForWorkspace(runtime.firebase, 'contacts', runtime.snapshot.workspace.id);
+      if (contacts.length) window.ACESSOR_CRM.setContacts(contacts);
+    }
   </script>
 
 </body>

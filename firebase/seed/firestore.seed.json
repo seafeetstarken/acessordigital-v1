@@ -1,0 +1,147 @@
+{
+  "workspaces": [
+    {
+      "id": "acessor-default",
+      "name": "Acessor Digital",
+      "slug": "acessor-digital",
+      "cnpj": "42.792.893/0001-03",
+      "billingPlan": "Mensal",
+      "creditsBalance": 500,
+      "businessHours": {
+        "monday": ["08:00", "19:00"],
+        "tuesday": ["08:00", "19:00"],
+        "wednesday": ["08:00", "19:00"],
+        "thursday": ["08:00", "19:00"],
+        "friday": ["08:00", "19:00"],
+        "saturday": ["09:00", "13:00"],
+        "sunday": []
+      },
+      "createdAt": "2026-06-01T10:00:00.000Z",
+      "updatedAt": "2026-06-19T09:00:00.000Z"
+    }
+  ],
+  "contacts": [
+    {
+      "workspaceId": "acessor-default",
+      "name": "João Silva",
+      "phone": "+55 11 99999-9999",
+      "email": "joao@empresa.com",
+      "channel": "WhatsApp",
+      "aiScore": 92,
+      "status": "hot",
+      "tags": ["Quente", "Agendado", "Instagram Ads"],
+      "notes": "Lead via Instagram Ads. Agendou para amanhã 14h.",
+      "createdAt": "2026-06-18T10:15:00.000Z",
+      "updatedAt": "2026-06-19T09:00:00.000Z",
+      "lastMessageAt": "2026-06-19T09:00:00.000Z"
+    },
+    {
+      "workspaceId": "acessor-default",
+      "name": "Maria Oliveira",
+      "phone": "+55 21 98888-8888",
+      "email": "",
+      "channel": "Telegram",
+      "aiScore": 45,
+      "status": "active",
+      "tags": ["Dúvida", "Suporte"],
+      "notes": "Dúvida sobre prazo de entrega.",
+      "createdAt": "2026-06-17T12:00:00.000Z",
+      "updatedAt": "2026-06-19T08:40:00.000Z",
+      "lastMessageAt": "2026-06-19T08:40:00.000Z"
+    }
+  ],
+  "conversations": [
+    {
+      "workspaceId": "acessor-default",
+      "contactId": "joao-silva",
+      "contactName": "João Silva",
+      "status": "Aberta",
+      "aiPaused": false,
+      "summary": "Lead chegou através do anúncio do Instagram. Demonstrou interesse imediato em agendamento.",
+      "lastMessageAt": "2026-06-19T09:00:00.000Z",
+      "createdAt": "2026-06-19T08:50:00.000Z",
+      "updatedAt": "2026-06-19T09:00:00.000Z"
+    }
+  ],
+  "deals": [
+    {
+      "workspaceId": "acessor-default",
+      "contactId": "joao-silva",
+      "contactName": "João Silva",
+      "stage": "Qualificado",
+      "value": 2400,
+      "ownerName": "Equipe Acessor",
+      "source": "Instagram",
+      "createdAt": "2026-06-18T10:20:00.000Z",
+      "updatedAt": "2026-06-19T09:00:00.000Z"
+    },
+    {
+      "workspaceId": "acessor-default",
+      "contactId": "maria-oliveira",
+      "contactName": "Maria Oliveira",
+      "stage": "Fechado",
+      "value": 1500,
+      "ownerName": "Equipe Acessor",
+      "source": "WhatsApp",
+      "createdAt": "2026-06-17T14:10:00.000Z",
+      "updatedAt": "2026-06-18T16:20:00.000Z",
+      "closedAt": "2026-06-18T16:20:00.000Z"
+    }
+  ],
+  "automations": [
+    {
+      "workspaceId": "acessor-default",
+      "type": "welcome",
+      "name": "Boas-vindas",
+      "isActive": true,
+      "triggerCount": 402,
+      "conversionRate": 42.7,
+      "config": {
+        "message": "Olá! Eu sou a IA do Acessor Digital..."
+      },
+      "createdAt": "2026-06-10T09:00:00.000Z",
+      "updatedAt": "2026-06-19T09:00:00.000Z"
+    }
+  ],
+  "knowledge_base": [
+    {
+      "workspaceId": "acessor-default",
+      "type": "Texto",
+      "title": "Produto e Proposta de Valor",
+      "content": "O Acessor Digital resolve o gargalo de resposta humana em WhatsApp e Instagram.",
+      "status": "Indexado",
+      "sourceUrl": "manual://produto-proposta",
+      "metadata": {
+        "origin": "codex"
+      },
+      "createdAt": "2026-06-11T09:30:00.000Z",
+      "updatedAt": "2026-06-19T09:00:00.000Z"
+    }
+  ],
+  "session_notes": [
+    {
+      "workspaceId": "acessor-default",
+      "author": "system",
+      "note": "Projeto migrado para Firebase.",
+      "context": {
+        "source": "codex",
+        "date": "2026-06-19"
+      },
+      "createdAt": "2026-06-19T09:00:00.000Z"
+    }
+  ],
+  "changelog_events": [
+    {
+      "workspaceId": "acessor-default",
+      "source": "manual",
+      "eventType": "migration",
+      "title": "Migração para Firebase",
+      "description": "Cockpit atualizado para usar Firebase Auth e Firestore.",
+      "payload": {
+        "from": "Supabase",
+        "to": "Firebase"
+      },
+      "createdAt": "2026-06-19T09:00:00.000Z"
+    }
+  ]
+}

@@ -9,13 +9,13 @@ Front-end Core: Next.js (App Router) e React. O projeto possui uma entrada está
 
 Estilização: Tailwind CSS (focado em Dark Mode com alto contraste, utilizando a paleta estabelecida: fundos escuros, detalhes em Roxo Neon, Verde e Laranja).
 
-Back-end & Database: Supabase (PostgreSQL, Row Level Security, Auth e Edge Functions).
+Back-end & Database: Firebase (Authentication, Firestore, Storage, Rules e Cloud Functions).
 
 Hospedagem & CI/CD: Vercel (configurado via vercel.json).
 
 Integrações Críticas: Meta Graph API (Modo Live via OAuth), CAPI (Conversions API) para envio de eventos de compra ao Meta Ads.
 
-2. Estrutura do Banco de Dados (Supabase PostgreSQL)
+2. Estrutura do Banco de Dados (Firebase Firestore)
 O Codex deverá gerar as migrations e configurar o schema com as seguintes entidades centrais:
 
 workspaces: Dados da empresa assinante.
@@ -47,7 +47,7 @@ A. /app/ia-conhecimento (Cérebro do Sistema)
 
 Interface: Três blocos centrais para inserção de dados (Upload de PDF/TXT, Criar nota manual e Importar Site/Scraper).
 
-Lógica: O upload deve triggar um processamento no Supabase para converter os textos. Uma lista inferior exibe os documentos com a tag ✓ Indexado, permitindo edição ou exclusão.
+Lógica: O upload deve triggar um processamento no Firebase para converter os textos. Uma lista inferior exibe os documentos com a tag ✓ Indexado, permitindo edição ou exclusão.
 
 B. /app/inbox (Caixa de Entrada Unificada e Handoff)
 
@@ -67,7 +67,7 @@ C. /app/crm & /app/pipeline (Máquina de Vendas)
 
 Interface: Alternância entre visualização em Lista (Contatos) e Kanban (Pipeline).
 
-Lógica: Dashboard superior resumindo Total de Leads, Deals Abertos e Taxa de Conversão. Os cards do pipeline devem exibir o valor financeiro do deal, o responsável, e a tag do contato. Arrastar um card deve atualizar o status no Supabase imediatamente.
+Lógica: Dashboard superior resumindo Total de Leads, Deals Abertos e Taxa de Conversão. Os cards do pipeline devem exibir o valor financeiro do deal, o responsável, e a tag do contato. Arrastar um card deve atualizar o status no Firebase imediatamente.
 
 D. /app/automacoes (Economia de Tempo e LTV)
 
@@ -107,7 +107,7 @@ Ação Obrigatória do Codex: Inserir SeaFeet Labs LTDA - CNPJ: [Inserir CNPJ] e
 Manter a arquitetura de links apontando para as páginas de Recursos e Legal (Termos, Política e Exclusão).
 
 5. Plano de Execução para o Codex
-Setup do Banco de Dados: Acessar o Supabase, criar o esquema descrito no Item 2 e gerar os types TypeScript.
+Setup do Banco de Dados: Acessar o Firebase, criar o schema descrito no Item 2 e gerar os mapeamentos TypeScript.
 
 Configuração de Rotas Base: Mapear a estrutura de pastas e componentes dentro do app/ no Next.js (mantendo o layout principal que encapsula a Sidebar e a Topbar).
 
