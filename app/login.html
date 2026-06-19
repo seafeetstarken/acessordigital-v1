@@ -213,9 +213,7 @@
     const firebase = await loadFirebaseApp();
     const hints = await getFirebaseHints();
 
-    if (await hasFirebaseConfig()) {
-      showError('Modo Firebase pronto. Entre com o e-mail/senha do seu projeto.', true);
-    } else if (!hints.apiKeyConfigured || !hints.projectIdConfigured) {
+    if (!hints.apiKeyConfigured || !hints.projectIdConfigured) {
       showError('Modo demo ativo. Configure as credenciais do Firebase para autenticação real.', true);
     }
 

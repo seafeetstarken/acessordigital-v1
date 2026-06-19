@@ -225,18 +225,54 @@
     </div>
   </div>
 
-  <script>
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
+    <script type="module">
+    import { hasFirebaseConfig, loadFirebaseApp } from './firebase-bootstrap.js';
+
+    const form = document.getElementById('signupForm');
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const email = document.getElementById('signupEmail').value.trim();
       const password = document.getElementById('signupPassword').value.trim();
-      
-      // Salvar em localStorage
+      const fullName = `${document.querySelector('input[placeholder="Seu nome"]').value.trim()} ${document.querySelector('input[placeholder="Seu sobrenome"]').value.trim()}`.trim();
+      const companyName = document.querySelector('input[placeholder="Minha Loja S/A"]').value.trim();
+      const whatsapp = document.querySelector('input[placeholder="(00) 00000-0000"]').value.trim();
+
+      if (await hasFirebaseConfig()) {
+        const firebase = await loadFirebaseApp();
+        if (firebase?.auth) {
+          const { createUserWithEmailAndPassword, updateProfile } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+          const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+          const result = await createUserWithEmailAndPassword(firebase.auth, email, password);
+          await updateProfile(result.user, { displayName: fullName || companyName || email });
+          await setDoc(doc(firebase.db, 'users', result.user.uid), {
+            uid: result.user.uid,
+            email,
+            displayName: fullName || companyName || email,
+            companyName,
+            whatsapp,
+            plan: 'demo',
+            createdAt: serverTimestamp(),
+            source: 'signup-form'
+          }, { merge: true });
+          window.localStorage.setItem('acessor_session', JSON.stringify({
+            access_token: await result.user.getIdToken().catch(() => 'firebase-session'),
+            user: {
+              uid: result.user.uid,
+              email: result.user.email,
+              displayName: result.user.displayName,
+              photoURL: result.user.photoURL
+            }
+          }));
+          window.location.href = 'dashboard.html';
+          return;
+        }
+      }
+
       localStorage.setItem('registered_email', email);
       localStorage.setItem('registered_password', password);
-      
-      // Ir para o dashboard
+      localStorage.setItem('registered_profile', JSON.stringify({ fullName, companyName, whatsapp, email }));
       window.location.href = 'dashboard.html';
     });
   </script>
