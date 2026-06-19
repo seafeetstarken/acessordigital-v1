@@ -242,35 +242,38 @@
       if (await hasFirebaseConfig()) {
         try {
           const firebase = await loadFirebaseApp();
-          if (firebase?.auth) {
-            const { createUserWithEmailAndPassword, updateProfile } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
-            const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
-            const result = await createUserWithEmailAndPassword(firebase.auth, email, password);
-            await updateProfile(result.user, { displayName: fullName || companyName || email });
-            await setDoc(doc(firebase.db, 'users', result.user.uid), {
-              uid: result.user.uid,
-              email,
-              displayName: fullName || companyName || email,
-              companyName,
-              whatsapp,
-              plan: 'demo',
-              createdAt: serverTimestamp(),
-              source: 'signup-form'
-            }, { merge: true });
-            window.localStorage.setItem('acessor_session', JSON.stringify({
-              access_token: await result.user.getIdToken().catch(() => 'firebase-session'),
-              user: {
-                uid: result.user.uid,
-                email: result.user.email,
-                displayName: result.user.displayName,
-                photoURL: result.user.photoURL
-              }
-            }));
-            window.location.href = 'dashboard.html';
-            return;
+          if (!firebase?.auth) {
+            throw new Error('Firebase Auth indisponível.');
           }
+
+          const { createUserWithEmailAndPassword, updateProfile } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+          const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+          const result = await createUserWithEmailAndPassword(firebase.auth, email, password);
+          await updateProfile(result.user, { displayName: fullName || companyName || email });
+          await setDoc(doc(firebase.db, 'users', result.user.uid), {
+            uid: result.user.uid,
+            email,
+            displayName: fullName || companyName || email,
+            companyName,
+            whatsapp,
+            plan: 'demo',
+            createdAt: serverTimestamp(),
+            source: 'signup-form'
+          }, { merge: true });
+          window.localStorage.setItem('acessor_session', JSON.stringify({
+            access_token: await result.user.getIdToken().catch(() => 'firebase-session'),
+            user: {
+              uid: result.user.uid,
+              email: result.user.email,
+              displayName: result.user.displayName,
+              photoURL: result.user.photoURL
+            }
+          }));
+          window.location.href = 'dashboard.html';
+          return;
         } catch (error) {
-          console.warn('Firebase signup unavailable, falling back to local demo mode.', error);
+          alert(error?.message || 'Não foi possível criar a conta no Firebase.');
+          return;
         }
       }
 
