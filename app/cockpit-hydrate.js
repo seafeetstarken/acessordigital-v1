@@ -22,28 +22,40 @@ function setValueIfExists(id, value) {
   el.textContent = value;
 }
 
+function shortUserName(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return 'Conta ativa';
+  if (raw.includes('@')) {
+    return raw.split('@')[0] || 'Conta ativa';
+  }
+  return raw.split(/\s+/)[0] || raw;
+}
+
 export function hydrateCockpitPage(runtime) {
   const snapshot = runtime?.snapshot || {};
   const metrics = snapshot.metrics || {};
   const counts = snapshot.counts || {};
   const workspace = snapshot.workspace || null;
   const profile = runtime?.profile || {};
+  const isFallbackWorkspace = workspace?.source === 'local-fallback';
 
-  const displayName = workspace?.name || profile.companyName || profile.displayName || profile.email || 'Empresa BR';
-  const planName = workspace?.billing_plan || profile.plan || 'Plano Pro';
+  const displayName = workspace?.name || profile.companyName || profile.displayName || profile.email || 'Conta ativa';
+  const planName = workspace?.billing_plan || profile.plan || 'Plano pendente';
   const workspaceSlug = workspace?.slug || profile.workspaceId || '';
   const credits = workspace?.credits_balance ?? profile.creditsBalance ?? 0;
+  const ownerEmail = profile.email || workspace?.ownerEmail || '';
 
   setText('sidebar-name', displayName);
   setText('sidebar-plan', planName);
-  setText('sidebar-avatar', String(displayName).trim().charAt(0).toUpperCase() || 'E');
+  setText('sidebar-avatar', String(displayName).trim().charAt(0).toUpperCase() || '?');
+  setText('sidebar-owner', ownerEmail ? `Conectado como ${ownerEmail}` : 'Sessão ativa');
   setText('topbar-title', snapshot.workspace?.name ? `Dashboard · ${snapshot.workspace.name}` : 'Dashboard');
-  setText('topbar-sub', snapshot.workspace?.name ? 'Cockpit de operações' : 'Acesso autenticado');
-  setText('topbar-avatar', String(displayName).trim().charAt(0).toUpperCase() || 'E');
-  setText('page-title', snapshot.workspace?.name ? `Bem-vindo ao Cockpit ✦` : `Bem-vindo ao Cockpit ✦`);
+  setText('topbar-sub', isFallbackWorkspace ? 'Conta recém-criada' : (snapshot.workspace?.name ? 'Cockpit de operações' : 'Acesso autenticado'));
+  setText('topbar-avatar', String(displayName).trim().charAt(0).toUpperCase() || '?');
+  setText('page-title', `Bem-vindo, ${shortUserName(displayName)} ✦`);
   setText('page-subtitle', snapshot.workspace?.name
     ? `Visão geral das suas operações e performance da Inteligência Artificial.`
-    : `Visão geral da sua conta e do seu plano.`);
+    : `Visão geral da sua conta recém-criada e do seu plano.`);
 
   if (!workspace) {
     setText('metric-revenue', currency.format(0));
@@ -56,9 +68,11 @@ export function hydrateCockpitPage(runtime) {
 
   setText('workspace-name', workspace.name);
   setText('workspace-slug', workspace.slug || workspace.name);
-  setText('workspace-plan', workspace.billing_plan || 'Mensal');
+  setText('workspace-plan', workspace.billing_plan || 'Plano pendente');
   setText('workspace-credits', String(workspace.credits_balance ?? 0));
-  setText('workspace-label', `${workspace.name} conectado ao Firebase`);
+  setText('workspace-label', isFallbackWorkspace
+    ? `${workspace.name} pronta para configuração`
+    : `${workspace.name} conectado ao Firebase`);
 
   setText('metric-revenue', currency.format(metrics.revenueRecovered || 0));
   setText('metric-conversations', String(metrics.conversationsToday || 0));
@@ -97,7 +111,7 @@ export function hydrateCockpitPage(runtime) {
   setText('knowledge-quality', `${Math.max(50, 90 - (counts.knowledge || 0) / 10).toFixed(0)}%`);
   setText('knowledge-sources', String(Math.max(1, Math.min(5, Math.ceil((counts.knowledge || 0) / 10) || 3))));
 
-  setText('faturamento-plan', workspace?.billing_plan || 'Mensal');
+  setText('faturamento-plan', workspace?.billing_plan || 'Plano pendente');
   setText('faturamento-credits', String(workspace?.credits_balance ?? 0));
 
   setText('config-workspace-name', workspace?.name || 'Workspace');

@@ -34,14 +34,34 @@ function deriveWorkspaceIdFromProfile(profile, session) {
   return profile?.workspaceId || profile?.uid || session?.user?.uid || null;
 }
 
+function normalizeWorkspaceName(profile, session) {
+  const fallbackLabel = 'Workspace ativo';
+  return profile?.companyName
+    || profile?.displayName
+    || session?.user?.companyName
+    || session?.user?.displayName
+    || session?.user?.email
+    || fallbackLabel;
+}
+
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'workspace';
+}
+
 async function loadUserProfile(firebase, session) {
+  const fallbackLabel = session?.user?.email || session?.user?.displayName || 'Conta ativa';
   const fallbackProfile = {
     uid: session?.user?.uid || null,
     email: session?.user?.email || null,
-    displayName: session?.user?.displayName || session?.user?.email || 'Empresa BR',
-    companyName: session?.user?.companyName || session?.user?.displayName || session?.user?.email || 'Empresa BR',
+    displayName: session?.user?.displayName || session?.user?.email || fallbackLabel,
+    companyName: session?.user?.companyName || session?.user?.displayName || session?.user?.email || fallbackLabel,
     whatsapp: session?.user?.whatsapp || '',
-    plan: session?.user?.plan || 'Plano Pro',
+    plan: session?.user?.plan || 'Plano pendente',
     workspaceId: session?.user?.workspaceId || session?.user?.uid || null
   };
 
@@ -54,13 +74,13 @@ async function loadUserProfile(firebase, session) {
     const snap = await getDoc(doc(firebase.db, 'users', session.user.uid));
     if (!snap.exists()) return fallbackProfile;
     const data = snap.data() || {};
-    return {
-      uid: session.user.uid,
-      email: data.email || session.user.email || null,
-      displayName: data.displayName || session.user.displayName || session.user.email || 'Empresa BR',
-      companyName: data.companyName || data.displayName || session.user.displayName || session.user.email || 'Empresa BR',
+      return {
+        uid: session.user.uid,
+        email: data.email || session.user.email || null,
+      displayName: data.displayName || session.user.displayName || session.user.email || fallbackLabel,
+      companyName: data.companyName || data.displayName || session.user.displayName || session.user.email || fallbackLabel,
       whatsapp: data.whatsapp || '',
-      plan: data.plan || 'Plano Pro',
+      plan: data.plan || 'Plano pendente',
       workspaceId: data.workspaceId || session.user.uid,
       ...data
     };
@@ -124,6 +144,21 @@ async function buildSnapshot(firebase) {
     const workspaceDoc = workspaceSnap.docs[0];
     workspace = workspaceDoc ? { id: workspaceDoc.id, ...workspaceDoc.data() } : null;
   }
+
+  if (!workspace) {
+    const fallbackName = normalizeWorkspaceName(profile, session);
+    const fallbackWorkspaceId = preferredWorkspaceId || session?.user?.uid || slugify(fallbackName);
+    workspace = {
+      id: fallbackWorkspaceId,
+      name: fallbackName,
+      slug: slugify(fallbackName),
+      billingPlan: profile?.plan || session?.user?.plan || 'Plano pendente',
+      creditsBalance: 0,
+      ownerUid: session?.user?.uid || profile?.uid || null,
+      ownerEmail: session?.user?.email || profile?.email || null,
+      source: 'local-fallback'
+    };
+  }
   snapshot.workspace = workspace;
 
   const workspaceId = workspace?.id;
@@ -136,7 +171,6 @@ async function buildSnapshot(firebase) {
   };
 
   const [
-    knowledgeDocs,
     contactDocs,
     conversationDocs,
     dealDocs,
@@ -144,7 +178,6 @@ async function buildSnapshot(firebase) {
     noteDocs,
     eventDocs
   ] = await Promise.all([
-    collectionDocs('knowledge_base'),
     collectionDocs('contacts'),
     collectionDocs('conversations'),
     collectionDocs('deals'),
@@ -153,7 +186,7 @@ async function buildSnapshot(firebase) {
     collectionDocs('changelog_events')
   ]);
 
-  snapshot.counts.knowledge = knowledgeDocs.length;
+  snapshot.counts.knowledge = 0;
   snapshot.counts.contacts = contactDocs.length;
   snapshot.counts.conversations = conversationDocs.length;
   snapshot.counts.dealsOpen = dealDocs.filter((deal) => deal.stage !== 'Fechado').length;

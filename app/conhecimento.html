@@ -278,16 +278,16 @@
         <!-- Page Header -->
         <div class="page-header">
           <div>
-            <h2>ðŸ§  Base de Conhecimento</h2>
-            <p>FaÃ§a upload de materiais e crie notas (ex.: preÃ§os, polÃ­ticas). A IA usa isso para responder sem inventar.</p>
-            <div class="sync-status" id="knowledge-sync-status">Base conectada • 45 documentos • último sync há 2 min</div>
+            <h2>Base de Conhecimento</h2>
+            <p>Espaço limpo para a nova base do projeto atual. Os itens antigos foram removidos.</p>
+            <div class="sync-status" id="knowledge-sync-status">Base limpa • 0 documentos • pronta para nova configuração</div>
           </div>
         </div>
 
         <div class="knowledge-stats">
           <div class="knowledge-stat">
             <small>Documentos indexados</small>
-            <strong id="knowledge-docs-count">45</strong>
+            <strong id="knowledge-docs-count">0</strong>
           </div>
           <div class="knowledge-stat">
             <small>Fontes ativas</small>
@@ -978,6 +978,20 @@
     const searchInput = document.getElementById('docSearch');
     const countLabel = document.querySelector('.docs-count-label');
 
+    const emptyStateHTML = `
+      <div style="border:1px dashed rgba(255,255,255,0.08); border-radius:12px; padding:1.6rem; text-align:center; color:rgba(255,255,255,0.5); background:rgba(255,255,255,0.015);">
+        <strong style="display:block; color:#fff; margin-bottom:0.4rem;">Base antiga removida</strong>
+        <span>Este espaço ficou limpo para a nova base de conhecimento do projeto atual.</span>
+      </div>
+    `;
+
+    if (docsContainer) {
+      docsContainer.innerHTML = emptyStateHTML;
+    }
+    if (countLabel) {
+      countLabel.textContent = '0 item(s)';
+    }
+
     function normalizeDocument(doc) {
       return {
         id: doc.id || crypto.randomUUID(),
@@ -1032,7 +1046,12 @@
     window.ACESSOR_KNOWLEDGE = {
       setDocuments(items) {
         const normalized = Array.isArray(items) ? items.map(normalizeDocument) : [];
-        if (normalized.length) renderDocumentRows(normalized);
+        if (!normalized.length) {
+          if (docsContainer) docsContainer.innerHTML = emptyStateHTML;
+          if (countLabel) countLabel.textContent = '0 item(s)';
+          return;
+        }
+        renderDocumentRows(normalized);
       }
     };
 
@@ -1050,14 +1069,8 @@
   <script type="module">
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
-    const { loadCollectionForWorkspace } = await import('./firebase-data.js');
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
-
-    if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id && window.ACESSOR_KNOWLEDGE?.setDocuments) {
-      const documents = await loadCollectionForWorkspace(runtime.firebase, 'knowledge_base', runtime.snapshot.workspace.id);
-      if (documents.length) window.ACESSOR_KNOWLEDGE.setDocuments(documents);
-    }
   </script>
 </body>
 </html>
