@@ -183,8 +183,8 @@ Tráfego Pago + IA de Atendimento
 
 | Dia | Formato | Conteúdo | Pilar |
 |-----|---------|----------|-------|
-| **Seg** | Carrossel | "O que é a Acessor Digital?" — apresentação da marca, serviços, diferencial | Institucional |
-| **Ter** | Reels | "Você sabia que 73% dos leads são perdidos por demora no atendimento?" — gancho IA | Educativo |
+| **Seg** | Carrossel | "O que é a Acessor Digital" — apresentação da marca, serviços, diferencial | Institucional |
+| **Ter** | Reels | "Você sabia que 73% dos leads são perdidos por demora no atendimento" — gancho IA | Educativo |
 | **Qua** | Single + Story | "Tráfego pago + IA: a combinação que ninguém está fazendo" — posicionamento | Educativo |
 | **Qui** | Carrossel | "Como a IA responde seus clientes em 12 segundos" — tutorial visual do RespondeAI | Educativo |
 | **Sex** | Reels | "Parei de perder clientes no WhatsApp" — storytelling sobre o problema vs solução | Prova social |
@@ -256,8 +256,8 @@ graph TD
 
 > [!IMPORTANT]
 > **Preciso da sua opinião sobre:**
-> 1. O estilo de logo te agradou? Quer mais geométrico, mais minimalista, ou com outro ícone?
-> 2. A paleta azul/ciano está ok ou prefere outra direção de cor?
-> 3. A tagline "Seu acesso ao resultado digital" soa bem?
-> 4. O nome de usuário do Instagram vai ser `@acessordigital` ou alguma variação?
-> 5. Vai usar o RespondeAI como produto white-label (marca da Acessor Digital) ou com a marca própria dele?
+> 1. O estilo de logo te agradouQuer mais geométrico, mais minimalista, ou com outro ícone
+> 2. A paleta azul/ciano está ok ou prefere outra direção de cor
+> 3. A tagline "Seu acesso ao resultado digital" soa bem
+> 4. O nome de usuário do Instagram vai ser `@acessordigital` ou alguma variação
+> 5. Vai usar o RespondeAI como produto white-label (marca da Acessor Digital) ou com a marca própria dele

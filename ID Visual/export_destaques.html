@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Acessor Digital - Destaques (Highlights)</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
 <style>
   body { background: #18181B; color: white; font-family: sans-serif; text-align: center; padding: 40px; }
   h2 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 5px; }
@@ -17,17 +17,17 @@
 </head>
 <body>
   <h2>Capas para os 5 Destaques (Instagram)</h2>
-  <p>Mantendo o padrão do logotipo principal (Texto Branco + Ponto Coral/Violeta).</p>
-  <div class="instructions">👉 Clique com o botão direito nas imagens redondas e "Salvar imagem como..."</div>
+  <p>Mantendo o padr�o do logotipo principal (Texto Branco + Ponto Coral/Violeta).</p>
+  <div class="instructions">=I Clique com o bot�o direito nas imagens redondas e "Salvar imagem como..."</div>
   
   <div class="grid" id="container"></div>
 
   <script>
     const highlights = [
-      { id: "ia", title: "1. A Inteligência", text: "IA", dotColor: "#7C3AED" }, // Violet Dot
+      { id: "ia", title: "1. A Intelig�ncia", text: "IA", dotColor: "#7C3AED" }, // Violet Dot
       { id: "roi", title: "2. Resultados", text: "ROI", dotColor: "#FF5E3A" }, // Coral Dot
       { id: "pro", title: "3. Os Planos", text: "PRO", dotColor: "#7C3AED" }, // Violet Dot
-      { id: "faq", title: "4. Dúvidas (FAQ)", text: "FAQ", dotColor: "#FF5E3A" }, // Coral Dot
+      { id: "faq", title: "4. D�vidas (FAQ)", text: "FAQ", dotColor: "#FF5E3A" }, // Coral Dot
       { id: "app", title: "5. O Sistema", text: "APP", dotColor: "#7C3AED" } // Violet Dot
     ];
 
@@ -44,7 +44,7 @@
         ctx.fillStyle = '#0A0A0C';
         ctx.fillRect(0, 0, 1080, 1080);
         
-        // Configuração do Texto
+        // Configura��o do Texto
         ctx.font = "bold 350px 'Space Grotesk'";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -54,7 +54,7 @@
         
         // Medir o texto para colar o ponto corretamente
         const mText = ctx.measureText(h.text);
-        const dotOffset = (mText.width / 2) + 15; // Distância do ponto
+        const dotOffset = (mText.width / 2) + 15; // Dist�ncia do ponto
 
         // Desenhar o Texto (Branco)
         ctx.fillStyle = '#FFFFFF';

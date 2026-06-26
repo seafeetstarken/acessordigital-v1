@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta Ads — Realizzati Moveis . Acessor Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../tokens/acessor-tokens.css">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:14px}
+    body{background:var(--bg-pure);color:var(--text-main);font-family:var(--font-body);min-height:100vh;display:flex;overflow:hidden}
+    .app-layout{display:flex;width:100%;height:100vh}
+    .sidebar{width:220px;background:rgba(255,255,255,0.018);border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;backdrop-filter:blur(12px);z-index:10;flex-shrink:0}
+    .sidebar-brand{padding:1.5rem 1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .brand-link{display:flex;align-items:baseline;text-decoration:none;font-family:var(--font-display);font-size:1.6rem;font-weight:800;letter-spacing:-0.05em;color:#FFF}
+    .brand-dot{color:var(--accent-coral);margin-left:2px;text-shadow:0 0 10px rgba(255,94,58,0.5)}
+    .ws-hdr{padding:0.8rem 1.2rem;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .ws-lbl{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.25);font-weight:700;display:block;margin-bottom:0.2rem}
+    .ws-name{font-size:0.95rem;font-weight:700;color:#FFF;font-family:var(--font-display)}
+    .nav-section{padding:0.8rem 0.8rem 0;flex-grow:1;overflow-y:auto}
+    .nav-section::-webkit-scrollbar{width:0}
+    .nav-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.25);font-weight:700;padding:0 0.4rem;margin-bottom:0.3rem;margin-top:0.8rem}
+    .nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.6rem 0.8rem;color:rgba(255,255,255,0.45);text-decoration:none;border-radius:7px;font-weight:500;font-size:0.9rem;transition:all 0.15s;background:none;border:none;cursor:pointer;text-align:left;width:100%;font-family:var(--font-body)}
+    .nav-item:hover{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.8)}
+    .nav-item.active{background:rgba(24,119,242,0.12);color:#4A90E2;border-left:2px solid #1877F2;padding-left:calc(0.8rem - 2px);font-weight:600}
+    .nav-item svg{width:16px;height:16px;flex-shrink:0}
+    .sidebar-footer{margin-top:auto;padding:1rem 0.8rem;border-top:1px solid rgba(255,255,255,0.05)}
+    .user-profile{display:flex;align-items:center;gap:0.65rem;padding:0.4rem 0.3rem;border-radius:8px}
+    .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent-coral),#EC4899);display:flex;align-items:center;justify-content:center;font-weight:700;color:#FFF;font-size:0.8rem;flex-shrink:0}
+    .user-info span{display:block;font-weight:600;color:#FFF;font-size:0.85rem}
+    .user-info small{color:var(--text-muted);font-size:0.72rem}
+    .main-wrapper{flex-grow:1;display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(ellipse at top left,rgba(24,119,242,0.04) 0%,transparent 55%)}
+    .topbar{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.8rem;border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(8,8,10,0.7);backdrop-filter:blur(16px);flex-shrink:0}
+    .topbar-title{font-family:var(--font-display);font-size:0.95rem;font-weight:700;color:#FFF;letter-spacing:-0.02em}
+    .topbar-sub{font-size:0.7rem;color:rgba(255,255,255,0.28)}
+    .topbar-sep{width:1px;height:18px;background:rgba(255,255,255,0.07)}
+    .meta-badge{display:flex;align-items:center;gap:0.5rem;background:rgba(24,119,242,0.12);border:1px solid rgba(24,119,242,0.3);border-radius:20px;padding:0.25rem 0.75rem;font-size:0.75rem;font-weight:600;color:#4A90E2}
+    .topbar-right{display:flex;align-items:center;gap:0.75rem}
+    .sync-info{font-size:0.72rem;color:rgba(255,255,255,0.3);font-family:var(--font-mono)}
+    .tb-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent-coral),#EC4899);display:flex;align-items:center;justify-content:center;font-weight:700;color:#FFF;font-size:0.75rem;cursor:pointer;border:2px solid rgba(255,94,58,0.3)}
+    .period-select{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border-radius:6px;padding:0.3rem 0.6rem;font-size:0.8rem;font-family:var(--font-body);cursor:pointer;outline:none}
+    .content-area{padding:1.8rem 2rem;overflow-y:auto;flex-grow:1}
+    .conn-banner{display:flex;align-items:flex-start;gap:1rem;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:0.9rem 1.2rem;margin-bottom:1.5rem;font-size:0.83rem}
+    .conn-dot{width:8px;height:8px;border-radius:50%;background:#F59E0B;flex-shrink:0;margin-top:0.3rem;box-shadow:0 0 6px rgba(245,158,11,0.5)}
+    .conn-banner p{color:rgba(255,255,255,0.65);line-height:1.5}
+    .conn-banner strong{color:#FFF}
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:1.8rem}
+    .kpi-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:1.3rem;position:relative;overflow:hidden;transition:border-color 0.2s}
+    .kpi-card:hover{border-color:rgba(24,119,242,0.25)}
+    .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cs),var(--ce));border-radius:14px 14px 0 0}
+    .kpi-card:nth-child(1){--cs:#1877F2;--ce:#4A90E2}
+    .kpi-card:nth-child(2){--cs:#7C3AED;--ce:#A855F7}
+    .kpi-card:nth-child(3){--cs:#10b981;--ce:#34d399}
+    .kpi-card:nth-child(4){--cs:#FF5E3A;--ce:#F59E0B}
+    .kpi-label{font-size:0.74rem;color:rgba(255,255,255,0.38);font-weight:500;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.04em}
+    .kpi-value{font-family:var(--font-display);font-size:1.9rem;font-weight:700;color:#FFF;line-height:1;margin-bottom:0.4rem}
+    .kpi-delta{font-size:0.78rem}
+    .kpi-delta.up{color:#10b981}
+    .kpi-delta.down{color:var(--accent-coral)}
+    .kpi-sub{font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:0.25rem}
+    .main-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:1.2rem;margin-bottom:1.5rem}
+    .glass-panel{background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.05);border-radius:14px;padding:1.5rem}
+    .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+    .panel-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:#FFF}
+    .panel-badge{font-size:0.72rem;color:rgba(255,255,255,0.4);font-family:var(--font-mono)}
+    .camp-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+    .camp-table th{padding:0.7rem 0.8rem;color:rgba(255,255,255,0.35);border-bottom:1px solid rgba(255,255,255,0.06);font-family:var(--font-display);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;text-align:left}
+    .camp-table td{padding:0.8rem;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle}
+    .camp-table tr:last-child td{border-bottom:none}
+    .camp-name{font-weight:600;color:#FFF;font-size:0.82rem}
+    .camp-status{font-size:0.7rem;color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:0.3rem}
+    .sdot{width:5px;height:5px;border-radius:50%;display:inline-block}
+    .sdot.active{background:#10b981}
+    .sdot.paused{background:#F59E0B}
+    .num-cell{font-family:var(--font-mono);color:rgba(255,255,255,0.65)}
+    .spend-cell{font-family:var(--font-mono);color:var(--accent-coral);font-weight:700}
+    .creative-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:0.5rem}
+    .creative-card{background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;transition:all 0.2s}
+    .creative-card:hover{border-color:rgba(24,119,242,0.35);transform:translateY(-2px)}
+    .creative-thumb{height:90px;background:linear-gradient(135deg,rgba(124,58,237,0.18),rgba(24,119,242,0.1));display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.18);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;position:relative;flex-direction:column;gap:0.3rem}
+    .perf-badge{position:absolute;top:0.5rem;right:0.5rem;font-size:0.63rem;font-weight:700;padding:0.15rem 0.4rem;border-radius:4px}
+    .perf-badge.top{background:rgba(16,185,129,0.18);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+    .perf-badge.low{background:rgba(255,94,58,0.12);color:var(--accent-coral);border:1px solid rgba(255,94,58,0.2)}
+    .perf-badge.mid{background:rgba(245,158,11,0.12);color:#F59E0B;border:1px solid rgba(245,158,11,0.2)}
+    .creative-body{padding:0.9rem}
+    .creative-name{font-weight:600;font-size:0.8rem;color:#FFF;margin-bottom:0.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .creative-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem}
+    .cm-label{font-size:0.62rem;color:rgba(255,255,255,0.3);text-transform:uppercase;text-align:center}
+    .cm-val{font-family:var(--font-mono);font-size:0.82rem;font-weight:700;color:#FFF;text-align:center}
+    .seg-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem}
+    .city-bar-list{display:flex;flex-direction:column;gap:0.75rem}
+    .city-row{display:flex;flex-direction:column;gap:0.25rem}
+    .city-info{display:flex;justify-content:space-between;font-size:0.8rem}
+    .city-info span:first-child{color:rgba(255,255,255,0.65)}
+    .city-info span:last-child{font-family:var(--font-mono);font-weight:700;color:var(--accent-primary)}
+    .bar-track{height:4px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+    .bar-fill{height:100%;background:linear-gradient(90deg,#1877F2,#4A90E2);border-radius:4px;transition:width 1s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .content-area>*{animation:fadeIn 0.4s ease-out}
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><a href="dashboard.html" class="brand-link">acessor<span class="brand-dot">.</span></a></div>
+    <div class="ws-hdr"><span class="ws-lbl">Workspace</span><div class="ws-name">Realizzati Moveis</div></div>
+    <div class="nav-section">
+      <div class="nav-label">Performance</div>
+      <a href="realizzati-meta.html" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+        Meta Ads
+      </a>
+      <a href="realizzati-google.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        Google Ads
+      </a>
+      <div class="nav-label" style="margin-top:0.8rem">Cockpit</div>
+      <a href="realizzati.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        Desempenho e Funil
+      </a>
+      <a href="realizzati.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+        CRM Funil
+      </a>
+      <div class="nav-label" style="margin-top:0.8rem">Inteligencia</div>
+      <a href="conhecimento.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        IA / Conhecimento
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <div class="avatar">RM</div>
+        <div class="user-info"><span>Realizzati Moveis</span><small>Plano Enterprise</small></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-wrapper">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:0.9rem">
+        <div>
+          <div class="topbar-title">Meta Ads</div>
+          <div class="topbar-sub" id="topbarSub">Realizzati Moveis . act_356351353346277</div>
+        </div>
+        <div class="topbar-sep"></div>
+        <div class="meta-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Meta Marketing API
+        </div>
+      </div>
+      <div class="topbar-right">
+        <select class="period-select" id="periodSelect" onchange="loadData()">
+          <option value="last_7d">Ultimos 7 dias</option>
+          <option value="last_30d" selected>Ultimos 30 dias</option>
+          <option value="last_month">Mes passado</option>
+          <option value="this_month">Este mes</option>
+        </select>
+        <span class="sync-info" id="syncInfo">--</span>
+        <div class="tb-avatar">RM</div>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <div class="conn-banner" id="connBanner" style="display:none">
+        <div class="conn-dot"></div>
+        <p><strong>Modo demonstracao ativo.</strong> O App Acessor Digital esta em modo de desenvolvimento na Meta. Os dados abaixo sao representativos da conta Realizzati (act_356351353346277). Para dados em tempo real, configure <code>META_MARKETING_TOKEN</code> no painel Vercel.</p>
+      </div>
+
+      <div class="kpi-grid" id="kpiGrid"></div>
+
+      <div class="main-grid">
+        <div class="glass-panel">
+          <div class="panel-header">
+            <span class="panel-title">Evolucao de Gastos (R$)</span>
+            <span class="panel-badge" id="spendLabel">Ultimos 30 dias</span>
+          </div>
+          <svg id="spendChart" width="100%" height="180" viewBox="0 0 560 180" preserveAspectRatio="none"></svg>
+          <div style="display:flex;gap:1.5rem;margin-top:0.8rem;font-size:0.75rem;color:rgba(255,255,255,0.35)">
+            <span><span style="width:10px;height:2px;background:#1877F2;display:inline-block;border-radius:2px;vertical-align:middle;margin-right:4px"></span>Gasto diario</span>
+            <span><span style="width:10px;height:1px;background:rgba(255,94,58,0.5);display:inline-block;border-top:1px dashed rgba(255,94,58,0.5);vertical-align:middle;margin-right:4px"></span>Orcamento diario</span>
+          </div>
+        </div>
+        <div class="glass-panel">
+          <div class="panel-header">
+            <span class="panel-title">Campanhas Ativas</span>
+            <span class="panel-badge" id="campCount">-- ativas</span>
+          </div>
+          <table class="camp-table">
+            <thead><tr><th>Campanha</th><th>CTR</th><th>Gasto</th></tr></thead>
+            <tbody id="campBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="glass-panel" style="margin-bottom:1.5rem">
+        <div class="panel-header">
+          <span class="panel-title">Criativos -- Performance</span>
+          <span class="panel-badge">ultimos 30 dias</span>
+        </div>
+        <div class="creative-grid" id="creativeGrid"></div>
+      </div>
+
+      <div class="seg-grid">
+        <div class="glass-panel">
+          <div class="panel-header"><span class="panel-title">Distribuicao por Cidade</span><span class="panel-badge">Alcance %</span></div>
+          <div class="city-bar-list" id="cityBars"></div>
+        </div>
+        <div class="glass-panel">
+          <div class="panel-header"><span class="panel-title">Breakdown Demografico</span><span class="panel-badge">Cliques</span></div>
+          <div id="demoBreakdown"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const MOCK = {
+  kpis: [
+    {label:'Alcance',value:'18.240',delta:'↑ +12%',dir:'up',sub:'vs. 30 dias anteriores'},
+    {label:'Impressoes',value:'94.780',delta:'↑ +8%',dir:'up',sub:'frequencia: 5,2x'},
+    {label:'Cliques no Link',value:'2.450',delta:'↑ +15%',dir:'up',sub:'CTR medio: 2,58%'},
+    {label:'CPL',value:'R$ 9,74',delta:'↓ -6%',dir:'up',sub:'custo por lead qualificado'}
+  ],
+  spend: [28,32,35,30,28,40,45,38,42,50,50,48,50,50,45,50,50,50,50,50,50,48,50,50,50,50,42,50,50,50],
+  budget: 50,
+  campaigns: [
+    {name:'Blumenau -- Lead Form',status:'active',ctr:'3.1%',spend:'R$ 680'},
+    {name:'SC Interior -- Retargeting',status:'active',ctr:'2.4%',spend:'R$ 520'},
+    {name:'SP -- Lookalike A+B',status:'active',ctr:'1.9%',spend:'R$ 380'},
+    {name:'Litoral SC -- Awareness',status:'paused',ctr:'1.1%',spend:'R$ 180'}
+  ],
+  creatives: [
+    {name:'Cozinha Premium -- Video 15s',cpm:'R$ 21,40',ctr:'3,8%',cpl:'R$ 7,20',perf:'top'},
+    {name:'Home Office -- Carrossel',cpm:'R$ 18,60',ctr:'2,9%',cpl:'R$ 9,40',perf:'mid'},
+    {name:'Dormitorio Casal -- Imagem',cpm:'R$ 24,10',ctr:'1,7%',cpl:'R$ 14,20',perf:'low'}
+  ],
+  cities: [
+    {name:'Blumenau',pct:82},{name:'Balneario Camboriu',pct:65},
+    {name:'Sao Paulo',pct:48},{name:'Itajai',pct:42},{name:'Timbo / Indaial',pct:34}
+  ],
+  demo: [
+    {label:'Mulheres 35-54',pct:48,color:'#EC4899'},
+    {label:'Homens 35-54',pct:28,color:'#1877F2'},
+    {label:'Mulheres 25-34',pct:14,color:'#A855F7'},
+    {label:'Outros',pct:10,color:'rgba(255,255,255,0.2)'}
+  ]
+};
+
+async function loadData() {
+  const period = document.getElementById('periodSelect').value;
+  document.getElementById('spendLabel').textContent = document.getElementById('periodSelect').selectedOptions[0].text;
+  try {
+    const r = await fetch('/api/meta-ads?endpoint=insights&date_preset=' + period);
+    const j = await r.json();
+    if (j.dev_mode || j.error || !j.success) { showDemoMode(); renderMock(); }
+    else { document.getElementById('connBanner').style.display = 'none'; renderMock(); }
+  } catch(e) { showDemoMode(); renderMock(); }
+  document.getElementById('syncInfo').textContent = 'Sync: ' + new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+
+function showDemoMode() { document.getElementById('connBanner').style.display = 'flex'; }
+
+function renderMock() {
+  // KPIs
+  document.getElementById('kpiGrid').innerHTML = MOCK.kpis.map(k => `
+    <div class="kpi-card">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-delta ${k.dir}">${k.delta}</div>
+      <div class="kpi-sub">${k.sub}</div>
+    </div>`).join('');
+
+  // Chart
+  const w=560,h=180,pt=15,pb=25,pl=45,pr=10;
+  const yw=h-pt-pb, xw=w-pl-pr;
+  const max = Math.max(...MOCK.spend, MOCK.budget) * 1.12;
+  const pts = MOCK.spend.map((v,i) => {
+    const x = pl + (i/(MOCK.spend.length-1))*xw;
+    const y = pt + yw - (v/max)*yw;
+    return x+','+y;
+  });
+  const pth = 'M'+pts.join(' L');
+  const area = pth+' L'+(pl+xw)+','+(pt+yw)+' L'+pl+','+(pt+yw)+' Z';
+  const by = pt + yw - (MOCK.budget/max)*yw;
+  const ticks = [0, Math.round(max/2), Math.round(max)];
+  document.getElementById('spendChart').innerHTML = `
+    <defs><linearGradient id="sg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1877F2" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#1877F2" stop-opacity="0"/>
+    </linearGradient></defs>
+    ${ticks.map(v=>{const y=pt+yw-(v/max)*yw;return `<line x1="${pl}" y1="${y}" x2="${w-pr}" y2="${y}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    <text x="${pl-5}" y="${y+4}" fill="rgba(255,255,255,0.22)" font-size="9" text-anchor="end">R$${v}</text>`}).join('')}
+    <path d="${area}" fill="url(#sg)"/>
+    <path d="${pth}" fill="none" stroke="#1877F2" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="${pl}" y1="${by}" x2="${w-pr}" y2="${by}" stroke="rgba(255,94,58,0.45)" stroke-width="1" stroke-dasharray="4,3"/>`;
+
+  // Campaigns
+  const active = MOCK.campaigns.filter(c=>c.status==='active').length;
+  document.getElementById('campCount').textContent = active + ' ativas';
+  document.getElementById('campBody').innerHTML = MOCK.campaigns.map(c=>`
+    <tr>
+      <td><div class="camp-name">${c.name}</div><div class="camp-status"><span class="sdot ${c.status}"></span>${c.status==='active'?'Ativa':'Pausada'}</div></td>
+      <td class="num-cell">${c.ctr}</td>
+      <td class="spend-cell">${c.spend}</td>
+    </tr>`).join('');
+
+  // Creatives
+  const pl2 = {top:'Top Performer',mid:'Estavel',low:'Baixo Desemp.'};
+  document.getElementById('creativeGrid').innerHTML = MOCK.creatives.map(cr=>`
+    <div class="creative-card">
+      <div class="creative-thumb">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>${cr.name.includes('Video')?'Vídeo':cr.name.includes('Carrossel')?'Carrossel':'Imagem'}</span>
+        <span class="perf-badge ${cr.perf}">${pl2[cr.perf]}</span>
+      </div>
+      <div class="creative-body">
+        <div class="creative-name" title="${cr.name}">${cr.name}</div>
+        <div class="creative-metrics">
+          <div><div class="cm-label">CPM</div><div class="cm-val">${cr.cpm}</div></div>
+          <div><div class="cm-label">CTR</div><div class="cm-val">${cr.ctr}</div></div>
+          <div><div class="cm-label">CPL</div><div class="cm-val">${cr.cpl}</div></div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Cities
+  const maxPct = MOCK.cities[0].pct;
+  document.getElementById('cityBars').innerHTML = MOCK.cities.map(c=>`
+    <div class="city-row">
+      <div class="city-info"><span>${c.name}</span><span>${c.pct}%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(c.pct/maxPct*100).toFixed(0)}%"></div></div>
+    </div>`).join('');
+
+  // Demo breakdown
+  document.getElementById('demoBreakdown').innerHTML = MOCK.demo.map(d=>`
+    <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.85rem">
+      <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.04);border:2px solid ${d.color};display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;color:${d.color};flex-shrink:0">${d.pct}%</div>
+      <div style="flex:1">
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.65);margin-bottom:0.2rem">${d.label}</div>
+        <div style="height:3px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:${d.pct}%;background:${d.color};border-radius:3px;transition:width 1s"></div></div>
+      </div>
+    </div>`).join('');
+}
+
+(function(){
+  const ws = localStorage.getItem('user_session_workspace');
+  const page = window.location.pathname.split('/').pop();
+  const allowed = ['realizzati-meta.html','realizzati-meta','realizzati.html','realizzati','realizzati-google.html','realizzati-google','conhecimento.html','conhecimento','login.html','login',''];
+  if (ws === 'realizzati' && !allowed.includes(page)) window.location.href = 'realizzati.html';
+})();
+
+loadData();
+</script>
+</body>
+</html>

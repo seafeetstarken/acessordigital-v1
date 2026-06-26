@@ -161,7 +161,7 @@ quadrantChart
 
 ```mermaid
 graph TD
-    A["🎯 Anúncio / Post no Instagram\n'Seu WhatsApp responde sozinho?'"] --> B["📱 Landing page\nacessordigital.com.br"]
+    A["🎯 Anúncio / Post no Instagram\n'Seu WhatsApp responde sozinho'"] --> B["📱 Landing page\nacessordigital.com.br"]
     B --> C["⚡ Criar conta grátis\n(sem cartão)"]
     C --> D["📲 Conecta WhatsApp\n(QR code em 2 min)"]
     D --> E["🧠 Ensina a IA\n(cola suas infos, FAQ, tom)"]
@@ -301,7 +301,7 @@ Agora que temos a estratégia clara, as cores precisam falar:
 ## 9. Decisão Pendente
 
 > [!IMPORTANT]
-> **Com esse contexto todo, qual direção visual faz mais sentido?**
+> **Com esse contexto todo, qual direção visual faz mais sentido**
 > 
 > Eu recomendo revisitar as 4 opções com esse novo olhar:
 > - **Roxo** → "Nubank do atendimento" — democratização, inovação

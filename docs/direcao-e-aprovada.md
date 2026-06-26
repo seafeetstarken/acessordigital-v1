@@ -169,7 +169,7 @@ Funciona em **qualquer tamanho**: de favicon 16px até outdoor.
 ## Próximo Passo
 
 > [!IMPORTANT]
-> **Qual direção vamos?** Com a aprovação, eu:
+> **Qual direção vamos** Com a aprovação, eu:
 > 1. Construo a logo final em **SVG vetorial** (código, escala infinita)
 > 2. Monto o **Brand Guide** completo (regras de uso, espaçamentos, usos proibidos)
 > 3. Gero os **assets de redes sociais** (avatar, capa, templates de post)

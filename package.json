@@ -1,0 +1,13 @@
+﻿{
+  "name": "acessordigital-v1",
+  "version": "1.0.0",
+  "description": "Acessor Digital - Hub de inteligência para clientes Starken Tech",
+  "type": "module",
+  "dependencies": {
+    "google-ads-api": "^18.0.0",
+    "google-auth-library": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}

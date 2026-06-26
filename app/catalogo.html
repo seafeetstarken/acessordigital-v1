@@ -448,11 +448,12 @@
       if (userWorkspace === 'realizzati') {
         // Redirecionamento de seguranca para travar no cockpit (suporta clean URLs sem .html)
         const allowedPages = [
-          'realizzati.html', 'realizzati',
-          'conhecimento.html', 'conhecimento',
-          'login.html', 'login',
-          ''
-        ];
+        'realizzati.html', 'realizzati',
+        'realizzati-meta.html', 'realizzati-meta',
+        'realizzati-google.html', 'realizzati-google',
+        'conhecimento.html', 'conhecimento',
+        'login.html', 'login', ''
+      ];
         if (!allowedPages.includes(page)) {
           window.location.href = 'realizzati.html';
           return;

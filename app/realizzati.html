@@ -257,7 +257,16 @@
       </div>
 
       <div class="nav-section">
-        <div class="nav-label">Cockpit</div>
+        <div class="nav-label">Performance</div>
+        <a href="realizzati-meta.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          Meta Ads
+        </a>
+        <a href="realizzati-google.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Google Ads
+        </a>
+        <div class="nav-label" style="margin-top:0.6rem;">Cockpit</div>
         <button class="nav-item active" id="nav-performance" onclick="switchTab('performance')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           Desempenho & Funil
@@ -892,11 +901,12 @@
       if (userWorkspace === 'realizzati') {
         // Redirecionamento de seguranca para travar no cockpit (suporta clean URLs sem .html)
         const allowedPages = [
-          'realizzati.html', 'realizzati',
-          'conhecimento.html', 'conhecimento',
-          'login.html', 'login',
-          ''
-        ];
+        'realizzati.html', 'realizzati',
+        'realizzati-meta.html', 'realizzati-meta',
+        'realizzati-google.html', 'realizzati-google',
+        'conhecimento.html', 'conhecimento',
+        'login.html', 'login', ''
+      ];
         if (!allowedPages.includes(page)) {
           window.location.href = 'realizzati.html';
           return;

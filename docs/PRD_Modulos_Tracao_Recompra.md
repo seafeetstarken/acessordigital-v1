@@ -56,5 +56,5 @@ O valor gerado por esse motor não pode ficar escondido. Ele precisa ser a estre
 ---
 
 ## 3. Requisitos de UX/UI
-*   **Fricção Zero:** A aba de configuração do CAPI precisa ter ícones de `( ? )` com tooltips explicativos. Configurar tokens de API assusta usuários leigos, então a interface deve incluir links diretos para tutoriais em vídeo ou artigos curtos da sua base de conhecimento.
-*   **Prevenção de Erros (Motor de Recompra):** Antes de salvar uma automação que atinge mais de 50 contatos, o Front-end deve exibir um modal de confirmação ("Você está prestes a ativar disparos para 142 clientes. A mensagem será enviada gradativamente para evitar bloqueios. Confirmar?").
+*   **Fricção Zero:** A aba de configuração do CAPI precisa ter ícones de `( )` com tooltips explicativos. Configurar tokens de API assusta usuários leigos, então a interface deve incluir links diretos para tutoriais em vídeo ou artigos curtos da sua base de conhecimento.
+*   **Prevenção de Erros (Motor de Recompra):** Antes de salvar uma automação que atinge mais de 50 contatos, o Front-end deve exibir um modal de confirmação ("Você está prestes a ativar disparos para 142 clientes. A mensagem será enviada gradativamente para evitar bloqueios. Confirmar").

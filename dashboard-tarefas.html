@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Acessor Digital — Dashboard de Tarefas & Prioridades</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #0B0B0F;
@@ -560,7 +560,7 @@
       // Sort: incomplete first, then priority high -> medium -> low
       const priorityOrder = { high: 1, medium: 2, low: 3 };
       const sortedTasks = [...tasks].sort((a, b) => {
-        if (a.completed !== b.completed) return a.completed ? 1 : -1;
+        if (a.completed !== b.completed) return a.completed 1 : -1;
         return priorityOrder[a.priority] - priorityOrder[b.priority];
       });
 
@@ -570,15 +570,15 @@
         if (task.completed) completedCount++;
 
         const taskItem = document.createElement('div');
-        taskItem.className = `task-item ${task.completed ? 'completed' : ''}`;
+        taskItem.className = `task-item ${task.completed 'completed' : ''}`;
         
         taskItem.innerHTML = `
           <div class="task-left">
-            <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})"></div>
+            <div class="task-checkbox ${task.completed 'checked' : ''}" onclick="toggleTask(${task.id})"></div>
             <span class="task-text">${task.text}</span>
           </div>
           <div class="task-badges">
-            <span class="badge priority-${task.priority}">${task.priority === 'high' ? 'Alta' : task.priority === 'medium' ? 'Média' : 'Baixa'}</span>
+            <span class="badge priority-${task.priority}">${task.priority === 'high' 'Alta' : task.priority === 'medium' 'Média' : 'Baixa'}</span>
             <button class="delete-btn" onclick="deleteTask(${task.id})">✕</button>
           </div>
         `;
@@ -594,7 +594,7 @@
     }
 
     window.toggleTask = function(id) {
-      tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+      tasks = tasks.map(t => t.id === id { ...t, completed: !t.completed } : t);
       saveTasks();
     };
 
