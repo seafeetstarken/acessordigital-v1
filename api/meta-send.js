@@ -12,9 +12,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const token = process.env.META_MARKETING_TOKEN;
+  const token = process.env.META_PAGE_ACCESS_TOKEN;
   if (!token) {
-    return res.status(500).json({ error: 'META_MARKETING_TOKEN nao configurado nas variaveis de ambiente.' });
+    return res.status(500).json({ error: 'META_PAGE_ACCESS_TOKEN nao configurado nas variaveis de ambiente.' });
   }
 
   const { recipientId, text, channel } = req.body;

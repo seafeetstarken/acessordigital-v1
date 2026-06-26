@@ -89,10 +89,10 @@ export default async function handler(req, res) {
 
                 if (contactQuery.empty) {
                   // Tentar buscar perfil do usuário no Facebook se for Messenger
-                  if (channel === 'Messenger' && process.env.META_MARKETING_TOKEN) {
+                  if (channel === 'Messenger' && process.env.META_PAGE_ACCESS_TOKEN) {
                     try {
                       const userProfileRes = await fetch(
-                        `https://graph.facebook.com/v23.0/${senderId}?fields=first_name,last_name&access_token=${process.env.META_MARKETING_TOKEN}`
+                        `https://graph.facebook.com/v23.0/${senderId}?fields=first_name,last_name&access_token=${process.env.META_PAGE_ACCESS_TOKEN}`
                       );
                       if (userProfileRes.ok) {
                         const profileData = await userProfileRes.json();
