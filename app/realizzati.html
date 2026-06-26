@@ -905,7 +905,13 @@
           'realizzati-meta.html', 'realizzati-meta',
           'realizzati-google.html', 'realizzati-google',
           'inbox.html', 'inbox',
+          'crm.html', 'crm',
+          'pipeline.html', 'pipeline',
+          'automacoes.html', 'automacoes',
+          'agenda.html', 'agenda',
+          'catalogo.html', 'catalogo',
           'conhecimento.html', 'conhecimento',
+          'configuracoes.html', 'configuracoes',
           'login.html', 'login', ''
         ];
         if (!allowedPages.includes(page)) {
@@ -931,14 +937,25 @@
           // 2. Injetar a sidebar completa, uniforme e premium da Realizzati no nav-section
           const navSection = aside.querySelector('.nav-section');
           if (navSection) {
+            const isDashboardActive = page === 'realizzati.html' || page === 'realizzati';
             const isMetaActive = page === 'realizzati-meta.html' || page === 'realizzati-meta';
             const isGoogleActive = page === 'realizzati-google.html' || page === 'realizzati-google';
             const isInboxActive = page === 'inbox.html' || page === 'inbox';
+            const isCrmActive = page === 'crm.html' || page === 'crm';
+            const isPipelineActive = page === 'pipeline.html' || page === 'pipeline';
+            const isAutomacoesActive = page === 'automacoes.html' || page === 'automacoes';
+            const isAgendaActive = page === 'agenda.html' || page === 'agenda';
+            const isCatalogoActive = page === 'catalogo.html' || page === 'catalogo';
             const isConhecimentoActive = page === 'conhecimento.html' || page === 'conhecimento';
-            const isCockpitActive = page === 'realizzati.html' || page === 'realizzati';
+            const isConfiguracoesActive = page === 'configuracoes.html' || page === 'configuracoes';
 
             navSection.innerHTML = `
-              <div class="nav-label">Performance</div>
+              <a href="realizzati.html" class="nav-item ${isDashboardActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                Dashboard
+              </a>
+              
+              <div class="nav-label" style="margin-top:0.8rem">Performance</div>
               <a href="realizzati-meta.html" class="nav-item ${isMetaActive ? 'active' : ''}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                 Meta Ads
@@ -947,19 +964,45 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 Google Ads
               </a>
-              <div class="nav-label" style="margin-top:0.8rem">Cockpit</div>
+              
+              <div class="nav-label" style="margin-top:0.8rem">Atendimento & CRM</div>
               <a href="inbox.html" class="nav-item ${isInboxActive ? 'active' : ''}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 Inbox
               </a>
-              <a href="realizzati.html" class="nav-item ${isCockpitActive ? 'active' : ''}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                Cockpit Geral
+              <a href="crm.html" class="nav-item ${isCrmActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                Contatos CRM
               </a>
+              <a href="pipeline.html" class="nav-item ${isPipelineActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0H5a2 2 0 0 1-2-2v-4m6 6h10a2 2 0 0 0 2-2v-4m0 0V9m-16 0v6"></path></svg>
+                Funil CRM
+              </a>
+              
+              <div class="nav-label" style="margin-top:0.8rem">Operação</div>
+              <a href="automacoes.html" class="nav-item ${isAutomacoesActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Automações
+              </a>
+              <a href="agenda.html" class="nav-item ${isAgendaActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Agenda
+              </a>
+              <a href="catalogo.html" class="nav-item ${isCatalogoActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                Catálogo
+              </a>
+              
               <div class="nav-label" style="margin-top:0.8rem">Inteligência</div>
               <a href="conhecimento.html" class="nav-item ${isConhecimentoActive ? 'active' : ''}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                 IA / Conhecimento
+              </a>
+              
+              <div class="nav-label" style="margin-top:0.8rem">Sistema</div>
+              <a href="configuracoes.html" class="nav-item ${isConfiguracoesActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Configurações
               </a>
             `;
           }
