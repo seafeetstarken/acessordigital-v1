@@ -144,6 +144,15 @@
       <div class="sidebar-brand">
         <a href="dashboard.html" class="brand-link">acessor<span class="brand-dot">.</span></a>
       </div>
+      
+      <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
+      <div style="padding: 0 1.2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-top: 1rem;">
+        <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.4rem;">Workspace</label>
+        <select style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: #FFF; border-radius: 6px; padding: 0.4rem; font-size: 0.85rem; outline: none; cursor: pointer;" onchange="location.href=this.value;">
+          <option value="dashboard.html" selected>Empresa BR (Demo)</option>
+          <option value="realizzati.html">Realizzati Móveis</option>
+        </select>
+      </div>
       <div class="nav-section">
         <div class="nav-label">Visão Geral</div>
         <a href="dashboard.html" class="nav-item">
@@ -177,6 +186,10 @@
         </a>
         <div class="nav-label">Inteligência</div>
         <a href="analytics.html" class="nav-item">
+        <a href="realizzati.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          Realizzati Cockpit
+        </a>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           Analytics
         </a>
@@ -545,5 +558,76 @@ Liberamos um cupom de 15% off exclusivo para você usar hoje. Bora aproveitar?</
     }
   </script>
   <script type="module" src="./session-ui.js"></script>
+  <!-- Script para adequacao de workspace dinamico (Realizzati Moveis exclusivo) -->
+  <script>
+    (function() {
+      const userWorkspace = localStorage.getItem('user_session_workspace') || 'demo';
+      const page = window.location.pathname.split('/').pop();
+      
+      if (userWorkspace === 'realizzati') {
+        // Redirecionamento de seguranca para travar no cockpit
+        if (page !== 'realizzati.html' && page !== 'conhecimento.html' && page !== 'login.html' && page !== '') {
+          window.location.href = 'realizzati.html';
+          return;
+        }
+
+        // Customizar a sidebar
+        const aside = document.querySelector('aside.sidebar');
+        if (aside) {
+          // 1. Ocultar o seletor de workspace e exibir apenas texto premium estatico
+          const divs = aside.querySelectorAll('div');
+          for (let div of divs) {
+            if (div.querySelector('select')) {
+              div.innerHTML = `
+                <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.2rem;">Workspace</label>
+                <div style="font-size: 0.95rem; font-weight: 700; color: #FFF; padding: 0.2rem 0; font-family: var(--font-display);">Realizzati Móveis</div>
+              `;
+              break;
+            }
+          }
+
+          // 2. Ocultar itens de menu irrelevantes (manter apenas Inteligencia -> Cockpit & IA / Conhecimento)
+          const navSection = aside.querySelector('.nav-section');
+          if (navSection) {
+            const children = Array.from(navSection.children);
+            children.forEach(child => {
+              if (child.classList.contains('nav-label')) {
+                if (child.textContent.trim() !== 'Inteligência') {
+                  child.style.display = 'none';
+                } else {
+                  child.style.display = 'block';
+                }
+              } else if (child.classList.contains('nav-item')) {
+                const href = child.getAttribute('href');
+                if (href === 'realizzati.html' || href === 'conhecimento.html') {
+                  child.style.display = 'flex';
+                } else {
+                  child.style.display = 'none';
+                }
+              }
+            });
+          }
+
+          // 3. Forcar o rodape da sidebar a exibir RM / Realizzati Moveis / Enterprise
+          const footer = aside.querySelector('.sidebar-footer');
+          if (footer) {
+            const avatar = footer.querySelector('.avatar');
+            if (avatar) avatar.textContent = 'RM';
+            const nameSpan = footer.querySelector('.user-info span');
+            if (nameSpan) nameSpan.textContent = 'Realizzati Móveis';
+            const planSmall = footer.querySelector('.user-info small');
+            if (planSmall) planSmall.textContent = 'Plano Enterprise';
+          }
+        }
+
+        // 4. Forcar o avatar da barra superior a RM
+        const tbAvatar = document.querySelector('.tb-avatar');
+        if (tbAvatar) {
+          tbAvatar.textContent = 'RM';
+          tbAvatar.title = 'Perfil Realizzati';
+        }
+      }
+    })();
+  </script>
 </body>
 </html>

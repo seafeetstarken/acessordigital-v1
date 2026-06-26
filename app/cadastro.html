@@ -350,7 +350,13 @@
           }));
           setStatus('success', 'Conta criada com sucesso', 'Seu acesso foi criado no Firebase. Redirecionando para o cockpit...');
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            if (email.toLowerCase().includes('realizzati')) {
+              localStorage.setItem('user_session_workspace', 'realizzati');
+              window.location.href = 'realizzati.html';
+            } else {
+              localStorage.setItem('user_session_workspace', 'demo');
+              window.location.href = 'dashboard.html';
+            }
           }, 900);
           return;
         } catch (error) {
@@ -367,7 +373,13 @@
       localStorage.setItem('registered_profile', JSON.stringify({ fullName, companyName, whatsapp, email, workspaceId: 'local-demo' }));
       setStatus('success', 'Cadastro salvo localmente', 'Estamos usando o modo local temporario. Redirecionando para o cockpit...');
       setTimeout(() => {
-        window.location.href = 'dashboard.html';
+        if (email.toLowerCase().includes('realizzati')) {
+          localStorage.setItem('user_session_workspace', 'realizzati');
+          window.location.href = 'realizzati.html';
+        } else {
+          localStorage.setItem('user_session_workspace', 'demo');
+          window.location.href = 'dashboard.html';
+        }
       }, 900);
     });
   </script>
