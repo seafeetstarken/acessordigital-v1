@@ -152,6 +152,62 @@
     .attention-content p { color: rgba(255,255,255,0.4); font-size: 0.82rem; }
     .attention-action { color: #EF4444; font-size: 0.82rem; font-weight: 600; text-decoration: none; margin-top: 0.4rem; display: inline-block; }
 
+    /* Onboarding Checklist Styles */
+    .onboarding-steps { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem; }
+    .onboarding-step {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 1.3rem; background: rgba(255,255,255,0.015);
+      border: 1px solid rgba(255,255,255,0.05); border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .onboarding-step:hover {
+      background: rgba(124,58,237,0.03); border-color: rgba(124,58,237,0.2);
+    }
+    .step-left { display: flex; align-items: center; gap: 1rem; }
+    .step-number {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.1);
+    }
+    .onboarding-step.completed .step-number {
+      background: rgba(16,185,129,0.15); color: #10b981; border-color: rgba(16,185,129,0.3);
+    }
+    .step-info h4 { color: #FFF; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .step-info p { color: var(--text-muted); font-size: 0.8rem; }
+    .step-action-btn {
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25);
+      color: var(--accent-primary); padding: 0.5rem 1rem; border-radius: 8px;
+      font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: all 0.2s;
+    }
+    .step-action-btn:hover {
+      background: var(--accent-primary); color: #000; border-color: var(--accent-primary);
+      transform: translateY(-1px);
+    }
+    
+    /* Integration Status Indicators */
+    .status-list { display: flex; flex-direction: column; gap: 0.8rem; }
+    .status-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 1rem; background: rgba(255,255,255,0.015);
+      border: 1px solid rgba(255,255,255,0.05); border-radius: 10px;
+    }
+    .status-left { display: flex; align-items: center; gap: 0.75rem; color: #FFF; font-size: 0.88rem; font-weight: 500; }
+    .status-left svg { width: 16px; height: 16px; }
+    .badge-status {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      padding: 0.25rem 0.6rem; border-radius: 6px; letter-spacing: 0.03em;
+    }
+    .badge-status.disconnected {
+      background: rgba(239,68,68,0.1); color: #EF4444; border: 1px solid rgba(239,68,68,0.2);
+    }
+    .badge-status.connected {
+      background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2);
+    }
+    .badge-status.warning {
+      background: rgba(245,158,11,0.1); color: #F59E0B; border: 1px solid rgba(245,158,11,0.2);
+    }
+
   </style>
 </head>
 <body>
@@ -306,41 +362,90 @@
           </div>
         </div>
 
-        <div class="main-grid">
+        <div class="main-grid" style="grid-template-columns: 1.8fr 1.2fr;">
+          <!-- Left Panel: Onboarding Checklist -->
           <div class="glass-panel">
-            <div class="panel-header">
-              <h3>Volume de Atendimentos</h3>
-              <button class="btn-outline">Últimos 7 dias</button>
+            <div class="panel-header" style="flex-direction: column; align-items: flex-start; gap: 0.2rem;">
+              <h3>Passo a Passo de Configuração 🚀</h3>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Complete as etapas para colocar sua IA no piloto automático</span>
             </div>
-            <svg width="100%" height="200" viewBox="0 0 600 200" preserveAspectRatio="none" style="filter: drop-shadow(0 8px 8px rgba(124,58,237,0.2));">
-              <defs><linearGradient id="g1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#7C3AED" stop-opacity="0.7"/><stop offset="100%" stop-color="#7C3AED" stop-opacity="0.0"/></linearGradient></defs>
-              <path d="M0,180 C50,150 100,190 150,120 C200,50 250,160 300,100 C350,40 400,90 450,50 C500,10 550,60 600,20 L600,200 L0,200 Z" fill="url(#g1)"/>
-              <path d="M0,180 C50,150 100,190 150,120 C200,50 250,160 300,100 C350,40 400,90 450,50 C500,10 550,60 600,20" fill="none" stroke="#7C3AED" stroke-width="3" stroke-linecap="round"/>
-              <circle cx="150" cy="120" r="5" fill="#0d0d10" stroke="#7C3AED" stroke-width="2.5"/>
-              <circle cx="300" cy="100" r="5" fill="#0d0d10" stroke="#7C3AED" stroke-width="2.5"/>
-              <circle cx="450" cy="50" r="5" fill="#0d0d10" stroke="#7C3AED" stroke-width="2.5"/>
-              <circle cx="600" cy="20" r="6" fill="#FFF" stroke="#7C3AED" stroke-width="3"/>
-            </svg>
+            
+            <div class="onboarding-steps" style="margin-top: 1rem;">
+              <!-- Step 1 -->
+              <div class="onboarding-step">
+                <div class="step-left">
+                  <div class="step-number">1</div>
+                  <div class="step-info">
+                    <h4>Conectar Canal de Atendimento</h4>
+                    <p>Conecte o seu WhatsApp Comercial, Instagram Direct ou Facebook Messenger.</p>
+                  </div>
+                </div>
+                <a href="configuracoes.html" class="step-action-btn">Conectar Canais</a>
+              </div>
+              
+              <!-- Step 2 -->
+              <div class="onboarding-step">
+                <div class="step-left">
+                  <div class="step-number">2</div>
+                  <div class="step-info">
+                    <h4>Treinar a Consciência Artificial</h4>
+                    <p>Adicione as regras da sua empresa, horários de atendimento e tabela de preços.</p>
+                  </div>
+                </div>
+                <a href="conhecimento.html" class="step-action-btn">Adicionar Regras</a>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="onboarding-step">
+                <div class="step-left">
+                  <div class="step-number">3</div>
+                  <div class="step-info">
+                    <h4>Configurar Qualificação e Status</h4>
+                    <p>Defina critérios automáticos para a IA dar notas/tags para os leads quentes.</p>
+                  </div>
+                </div>
+                <a href="automacoes.html" class="step-action-btn">Configurar IA</a>
+              </div>
+            </div>
           </div>
 
+          <!-- Right Panel: Connection Status -->
           <div class="glass-panel">
-            <div class="panel-header"><h3>Requer Atenção ⚠️</h3></div>
-            <div class="attention-list">
-              <div class="attention-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                <div class="attention-content">
-                  <h4>Sem dados reais</h4>
-                  <p>IA fora da base de conhecimento.</p>
-                  <a href="inbox.html" class="attention-action">Assumir chat →</a>
+            <div class="panel-header">
+              <h3>Status da Integração 📡</h3>
+            </div>
+            
+            <div class="status-list" style="margin-top: 1rem;">
+              <div class="status-row">
+                <div class="status-left">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: #10B981; width:16px; height:16px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                  WhatsApp
                 </div>
+                <span class="badge-status disconnected">Desconectado</span>
               </div>
-              <div class="attention-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                <div class="attention-content">
-                  <h4>Configure o Firestore</h4>
-                  <p>Filtro Anti-Stress ativado.</p>
-                  <a href="inbox.html" class="attention-action">Assumir chat →</a>
+              
+              <div class="status-row">
+                <div class="status-left">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: #F59E0B; width:16px; height:16px;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                  Instagram Direct
                 </div>
+                <span class="badge-status disconnected">Desconectado</span>
+              </div>
+              
+              <div class="status-row">
+                <div class="status-left">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: #3B82F6; width:16px; height:16px;"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                  Facebook Messenger
+                </div>
+                <span class="badge-status disconnected">Desconectado</span>
+              </div>
+
+              <div class="status-row">
+                <div class="status-left">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: #8B5CF6; width:16px; height:16px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                  Base de Conhecimento
+                </div>
+                <span class="badge-status warning">Sem Regras</span>
               </div>
             </div>
           </div>
