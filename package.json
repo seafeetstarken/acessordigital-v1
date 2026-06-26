@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "google-ads-api": "^18.0.0",
+    "google-ads-api": "^23.0.1",
     "google-auth-library": "^9.0.0"
   },
   "engines": {
