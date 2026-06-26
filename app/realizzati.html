@@ -129,6 +129,16 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; animation: fadeIn 0.4s ease-out; }
 
+    /* Nav buttons (sidebar clickable sections) */
+    button.nav-item {
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      font-family: var(--font-body);
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
@@ -247,34 +257,25 @@
       </div>
 
       <div class="nav-section">
-        <div class="nav-label">Visão Geral</div>
-        <a href="dashboard.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
-          Dashboard
-        </a>
-        <a href="inbox.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-          Inbox
-        </a>
-        <div class="nav-label">Operação</div>
-        <a href="crm.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-          Contatos
-        </a>
-        <a href="pipeline.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0H5a2 2 0 0 1-2-2v-4m6 6h10a2 2 0 0 0 2-2v-4m0 0V9m-16 0v6"></path></svg>
-          Pipeline
-        </a>
-        <a href="automacoes.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          Automações
-        </a>
-        
-        <div class="nav-label">Inteligência</div>
-        <a href="realizzati.html" class="nav-item active">
+        <div class="nav-label">Cockpit</div>
+        <button class="nav-item active" id="nav-performance" onclick="switchTab('performance')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          Realizzati Cockpit
-        </a>
+          Desempenho & Funil
+        </button>
+        <button class="nav-item" id="nav-keywords" onclick="switchTab('keywords')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="M21 2L11.5 11.5"></path><path d="M17 2h4v4"></path></svg>
+          Palavras-Chave
+        </button>
+        <button class="nav-item" id="nav-crm" onclick="switchTab('crm')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+          CRM Funil
+        </button>
+        <button class="nav-item" id="nav-tracking" onclick="switchTab('tracking')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+          Rastreamento
+        </button>
+
+        <div class="nav-label" style="margin-top: 1rem;">Inteligência</div>
         <a href="conhecimento.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
           IA / Conhecimento
@@ -348,25 +349,7 @@
           </div>
         </div>
 
-        <!-- Tab Selector -->
-        <div class="tab-bar">
-          <button class="tab-item active" onclick="switchTab('performance')">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-            Desempenho & Funil
-          </button>
-          <button class="tab-item" onclick="switchTab('keywords')">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="M21 2L11.5 11.5"></path><path d="M17 2h4v4"></path></svg>
-            Palavras-Chave
-          </button>
-          <button class="tab-item" onclick="switchTab('crm')">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
-            CRM Funil
-          </button>
-          <button class="tab-item" onclick="switchTab('tracking')">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
-            Rastreamento & Manual
-          </button>
-        </div>
+
 
         <!-- Tab contents -->
 
@@ -729,14 +712,32 @@
       renderCrm();
     }
 
-    // Gerenciamento de Abas
+    // Gerenciamento de Abas (via sidebar)
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+      // Remove active de todos os nav-items de botao do sidebar
+      document.querySelectorAll('.nav-section button.nav-item').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      
-      const selectedTabButton = Array.from(document.querySelectorAll('.tab-item')).find(btn => btn.getAttribute('onclick').includes(tabId));
-      if (selectedTabButton) selectedTabButton.classList.add('active');
-      
+
+      // Ativa o botao correto do sidebar
+      const navBtn = document.getElementById(`nav-${tabId}`);
+      if (navBtn) navBtn.classList.add('active');
+
+      // Atualiza titulo da topbar
+      const titles = {
+        performance: { title: 'Desempenho & Funil', sub: 'Tráfego, campanhas e conversões de anúncios' },
+        keywords: { title: 'Palavras-Chave', sub: 'Mapeamento de termos e oportunidades de busca' },
+        crm: { title: 'CRM Funil', sub: 'Pipeline de leads e mapeamento de contatos' },
+        tracking: { title: 'Rastreamento & Manual', sub: 'Tags, pixels, UTMs e documentação operacional' }
+      };
+      const info = titles[tabId];
+      if (info) {
+        const topbarTitle = document.querySelector('.topbar-title');
+        const topbarSub = document.querySelector('.topbar-sub');
+        if (topbarTitle) topbarTitle.textContent = info.title;
+        if (topbarSub) topbarSub.textContent = info.sub;
+      }
+
+      // Mostra o conteudo correto
       const contentEl = document.getElementById(`tab-${tabId}`);
       if (contentEl) contentEl.classList.add('active');
     }
@@ -916,27 +917,8 @@
             }
           }
 
-          // 2. Ocultar itens de menu irrelevantes (manter apenas Inteligencia -> Cockpit & IA / Conhecimento)
-          const navSection = aside.querySelector('.nav-section');
-          if (navSection) {
-            const children = Array.from(navSection.children);
-            children.forEach(child => {
-              if (child.classList.contains('nav-label')) {
-                if (child.textContent.trim() !== 'Inteligência') {
-                  child.style.display = 'none';
-                } else {
-                  child.style.display = 'block';
-                }
-              } else if (child.classList.contains('nav-item')) {
-                const href = child.getAttribute('href');
-                if (href === 'realizzati.html' || href === 'conhecimento.html') {
-                  child.style.display = 'flex';
-                } else {
-                  child.style.display = 'none';
-                }
-              }
-            });
-          }
+          // 2. Sidebar ja e dedicada ao Realizzati — nenhum item precisa ser ocultado
+          // (todos os itens do nav-section sao proprios do cockpit Realizzati)
 
           // 3. Forcar o rodape da sidebar a exibir RM / Realizzati Moveis / Enterprise
           const footer = aside.querySelector('.sidebar-footer');
