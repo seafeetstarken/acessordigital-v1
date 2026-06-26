@@ -1443,18 +1443,19 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
       if (userWorkspace === 'realizzati') {
         // Redirecionamento de seguranca para travar no cockpit (suporta clean URLs sem .html)
         const allowedPages = [
-        'realizzati.html', 'realizzati',
-        'realizzati-meta.html', 'realizzati-meta',
-        'realizzati-google.html', 'realizzati-google',
-        'conhecimento.html', 'conhecimento',
-        'login.html', 'login', ''
-      ];
+          'realizzati.html', 'realizzati',
+          'realizzati-meta.html', 'realizzati-meta',
+          'realizzati-google.html', 'realizzati-google',
+          'inbox.html', 'inbox',
+          'conhecimento.html', 'conhecimento',
+          'login.html', 'login', ''
+        ];
         if (!allowedPages.includes(page)) {
           window.location.href = 'realizzati.html';
           return;
         }
 
-        // Customizar a sidebar
+        // Customizar a sidebar dinamicamente
         const aside = document.querySelector('aside.sidebar');
         if (aside) {
           // 1. Ocultar o seletor de workspace e exibir apenas texto premium estatico
@@ -1469,26 +1470,40 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
             }
           }
 
-          // 2. Ocultar itens de menu irrelevantes (manter apenas Inteligencia -> Cockpit & IA / Conhecimento)
+          // 2. Injetar a sidebar completa, uniforme e premium da Realizzati no nav-section
           const navSection = aside.querySelector('.nav-section');
           if (navSection) {
-            const children = Array.from(navSection.children);
-            children.forEach(child => {
-              if (child.classList.contains('nav-label')) {
-                if (child.textContent.trim() !== 'Inteligência') {
-                  child.style.display = 'none';
-                } else {
-                  child.style.display = 'block';
-                }
-              } else if (child.classList.contains('nav-item')) {
-                const href = child.getAttribute('href');
-                if (href === 'realizzati.html' || href === 'conhecimento.html') {
-                  child.style.display = 'flex';
-                } else {
-                  child.style.display = 'none';
-                }
-              }
-            });
+            const isMetaActive = page === 'realizzati-meta.html' || page === 'realizzati-meta';
+            const isGoogleActive = page === 'realizzati-google.html' || page === 'realizzati-google';
+            const isInboxActive = page === 'inbox.html' || page === 'inbox';
+            const isConhecimentoActive = page === 'conhecimento.html' || page === 'conhecimento';
+            const isCockpitActive = page === 'realizzati.html' || page === 'realizzati';
+
+            navSection.innerHTML = `
+              <div class="nav-label">Performance</div>
+              <a href="realizzati-meta.html" class="nav-item ${isMetaActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                Meta Ads
+              </a>
+              <a href="realizzati-google.html" class="nav-item ${isGoogleActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Google Ads
+              </a>
+              <div class="nav-label" style="margin-top:0.8rem">Cockpit</div>
+              <a href="inbox.html" class="nav-item ${isInboxActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                Inbox
+              </a>
+              <a href="realizzati.html" class="nav-item ${isCockpitActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                Cockpit Geral
+              </a>
+              <div class="nav-label" style="margin-top:0.8rem">Inteligência</div>
+              <a href="conhecimento.html" class="nav-item ${isConhecimentoActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                IA / Conhecimento
+              </a>
+            `;
           }
 
           // 3. Forcar o rodape da sidebar a exibir RM / Realizzati Moveis / Enterprise
@@ -1510,7 +1525,7 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
           tbAvatar.title = 'Perfil Realizzati';
         }
       }
-    })();
+    })()
   </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -914,8 +914,11 @@
       const status = conversation?.status || (contact?.status === 'hot' ? 'Abertas' : contact?.status === 'active' ? 'Humano' : 'Resolvidas');
       const score = Number(contact?.aiScore ?? fallback.score ?? 0);
       const tags = Array.isArray(contact?.tags) && contact.tags.length ? contact.tags : (fallback.tags || []);
+      const isFirebase = !!(contact?.id);
       return {
-        id: fallback.id || contact?.id || `firebase-${index + 1}`,
+        id: contact?.id || fallback.id || `firebase-${index + 1}`,
+        isFirebase,
+        conversationId: conversation?.id || null,
         name,
         phone: contact?.phone || fallback.phone || 'Não informado',
         avatar: initials,
@@ -932,7 +935,7 @@
         summary,
         aiActive: conversation?.aiPaused ? false : (fallback.aiActive ?? true),
         notes: contact?.notes || fallback.notes || '',
-        messages: fallback.messages || [
+        messages: conversation?.messages || fallback.messages || [
           { sender: 'received', text: summary, time: '09:00' }
         ]
       };
@@ -1159,16 +1162,33 @@
         selectChat(id);
       };
 
+      // Helper local para persistencia de tags
+      async function saveTagsToFirestore(c) {
+        const runtime = window.ACESSOR_RUNTIME || window.ACESSOR_AUTH || null;
+        if (c.isFirebase && runtime?.firebase?.db) {
+          try {
+            const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+            const contactRef = doc(runtime.firebase.db, 'contacts', c.id);
+            await updateDoc(contactRef, {
+              tags: c.tags,
+              updatedAt: new Date().toISOString()
+            });
+            console.log('Tags salvas no Firestore.');
+          } catch(err) { console.error('Erro ao salvar tags no Firestore:', err); }
+        }
+      }
+
       // Update Tags (clickable to remove, plus a "+" button to add)
       const tagsContainer = elements.detailSection.querySelector('.tag-list');
       tagsContainer.innerHTML = '';
       chat.tags.forEach((tag, idx) => {
         const span = document.createElement('span');
-        span.className = `tag ${tag.includes('ðŸ”¥') ? 'hot' : ''}`;
+        span.className = `tag ${tag.includes('🔥') ? 'hot' : ''}`;
         span.innerHTML = `${tag} <span class="remove-tag" style="margin-left:5px; opacity:0.6; cursor:pointer; font-weight:bold;">&times;</span>`;
-        span.querySelector('.remove-tag').addEventListener('click', (e) => {
+        span.querySelector('.remove-tag').addEventListener('click', async (e) => {
           e.stopPropagation();
           chat.tags.splice(idx, 1);
+          await saveTagsToFirestore(chat);
           selectChat(id);
         });
         tagsContainer.appendChild(span);
@@ -1182,10 +1202,11 @@
       addTagBtn.style.cursor = 'pointer';
       addTagBtn.style.color = 'var(--accent-primary)';
       addTagBtn.innerHTML = '+ Nova Tag';
-      addTagBtn.onclick = () => {
+      addTagBtn.onclick = async () => {
         const newTagName = prompt('Digite o nome da nova tag:');
         if (newTagName && newTagName.trim()) {
           chat.tags.push(newTagName.trim());
+          await saveTagsToFirestore(chat);
           selectChat(id);
         }
       };
@@ -1196,10 +1217,22 @@
       summaryPara.textContent = chat.summary;
       summaryPara.style.cursor = 'pointer';
       summaryPara.title = 'Clique duas vezes para editar';
-      summaryPara.ondblclick = () => {
+      summaryPara.ondblclick = async () => {
         const newSummary = prompt('Editar Resumo da IA:', chat.summary);
         if (newSummary !== null) {
-          chat.summary = newSummary.trim() || 'Sem resumo disponÃ­vel.';
+          chat.summary = newSummary.trim() || 'Sem resumo disponível.';
+          const runtime = window.ACESSOR_RUNTIME || window.ACESSOR_AUTH || null;
+          if (chat.isFirebase && runtime?.firebase?.db && chat.conversationId) {
+            try {
+              const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+              const convRef = doc(runtime.firebase.db, 'conversations', chat.conversationId);
+              await updateDoc(convRef, {
+                summary: chat.summary,
+                updatedAt: new Date().toISOString()
+              });
+              console.log('Resumo atualizado no Firestore.');
+            } catch(err) { console.error('Erro ao atualizar resumo no Firestore:', err); }
+          }
           selectChat(id);
         }
       };
@@ -1210,21 +1243,52 @@
       // Make Name and Phone editable on double click
       elements.detailName.style.cursor = 'pointer';
       elements.detailName.title = 'Clique duas vezes para editar';
-      elements.detailName.ondblclick = () => {
+      elements.detailName.ondblclick = async () => {
         const newName = prompt('Editar Nome do Lead:', chat.name);
         if (newName && newName.trim()) {
           chat.name = newName.trim();
           chat.avatar = chat.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+          const runtime = window.ACESSOR_RUNTIME || window.ACESSOR_AUTH || null;
+          if (chat.isFirebase && runtime?.firebase?.db) {
+            try {
+              const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+              const contactRef = doc(runtime.firebase.db, 'contacts', chat.id);
+              await updateDoc(contactRef, {
+                name: chat.name,
+                updatedAt: new Date().toISOString()
+              });
+              if (chat.conversationId) {
+                const convRef = doc(runtime.firebase.db, 'conversations', chat.conversationId);
+                await updateDoc(convRef, {
+                  contactName: chat.name,
+                  updatedAt: new Date().toISOString()
+                });
+              }
+              console.log('Nome atualizado no Firestore.');
+            } catch(err) { console.error('Erro ao atualizar nome no Firestore:', err); }
+          }
           selectChat(id);
         }
       };
 
       elements.detailPhone.style.cursor = 'pointer';
       elements.detailPhone.title = 'Clique duas vezes para editar';
-      elements.detailPhone.ondblclick = () => {
+      elements.detailPhone.ondblclick = async () => {
         const newPhone = prompt('Editar Telefone:', chat.phone);
         if (newPhone && newPhone.trim()) {
           chat.phone = newPhone.trim();
+          const runtime = window.ACESSOR_RUNTIME || window.ACESSOR_AUTH || null;
+          if (chat.isFirebase && runtime?.firebase?.db) {
+            try {
+              const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+              const contactRef = doc(runtime.firebase.db, 'contacts', chat.id);
+              await updateDoc(contactRef, {
+                phone: chat.phone,
+                updatedAt: new Date().toISOString()
+              });
+              console.log('Telefone atualizado no Firestore.');
+            } catch(err) { console.error('Erro ao atualizar telefone no Firestore:', err); }
+          }
           selectChat(id);
         }
       };
@@ -1233,11 +1297,23 @@
       const scoreStrong = scoreCard.querySelector('strong');
       scoreStrong.style.cursor = 'pointer';
       scoreStrong.title = 'Clique duas vezes para editar';
-      scoreStrong.ondblclick = () => {
+      scoreStrong.ondblclick = async () => {
         const newScore = prompt('Editar Score (0 a 100):', chat.score);
         const parsed = parseInt(newScore);
         if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
           chat.score = parsed;
+          const runtime = window.ACESSOR_RUNTIME || window.ACESSOR_AUTH || null;
+          if (chat.isFirebase && runtime?.firebase?.db) {
+            try {
+              const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+              const contactRef = doc(runtime.firebase.db, 'contacts', chat.id);
+              await updateDoc(contactRef, {
+                aiScore: chat.score,
+                updatedAt: new Date().toISOString()
+              });
+              console.log('Score atualizado no Firestore.');
+            } catch(err) { console.error('Erro ao atualizar score no Firestore:', err); }
+          }
           selectChat(id);
         }
       };
@@ -1247,10 +1323,25 @@
     } // end selectChat
 
     // Toggle AI button
-    elements.toggleAiBtn.addEventListener('click', () => {
+    elements.toggleAiBtn.addEventListener('click', async () => {
       const chat = state.chats[state.activeChat];
       chat.aiActive = !chat.aiActive;
       selectChat(state.activeChat);
+
+      const runtime = window.ACESSOR_RUNTIME || window.ACESSOR_AUTH || null;
+      if (chat.isFirebase && runtime?.firebase?.db && chat.conversationId) {
+        try {
+          const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+          const convRef = doc(runtime.firebase.db, 'conversations', chat.conversationId);
+          await updateDoc(convRef, {
+            aiPaused: !chat.aiActive,
+            updatedAt: new Date().toISOString()
+          });
+          console.log('[inbox.html] Estado da IA atualizado no Firestore.');
+        } catch (err) {
+          console.error('[inbox.html] Erro ao atualizar estado da IA no Firestore:', err);
+        }
+      }
     });
 
     // Suggest response via IA
@@ -1259,12 +1350,12 @@
       let suggestion = '';
       
       if (state.activeChat === 'js') {
-        suggestion = 'OlÃ¡ JoÃ£o! Tudo confirmado para amanhÃ£ Ã s 14h. Enviarei o endereÃ§o completo e o link de acesso em instantes.';
+        suggestion = 'Olá João! Tudo confirmado para amanhã às 14h. Enviarei o endereço completo e o link de acesso em instantes.';
       } else {
-        suggestion = 'OlÃ¡ Maria! Nosso prazo de entrega para o Rio de Janeiro Ã© de 2 a 5 dias Ãºteis via frete expresso. Gostaria de cotar o frete para o seu CEP?';
+        suggestion = 'Olá Maria! Nosso prazo de entrega para o Rio de Janeiro é de 2 a 5 dias úteis via frete expresso. Gostaria de cotar o frete para o seu CEP?';
       }
 
-      elements.aiModalText.innerHTML = `<strong>SugestÃ£o da IA Acessor:</strong><br><br><span style="color:var(--text-main); font-style:italic;">"${suggestion}"</span>`;
+      elements.aiModalText.innerHTML = `<strong>Sugestão da IA Acessor:</strong><br><br><span style="color:var(--text-main); font-style:italic;">"${suggestion}"</span>`;
       elements.aiSuggestionModal.style.display = 'flex';
 
       elements.applyAiBtn.onclick = () => {
@@ -1279,7 +1370,7 @@
     }
 
     // Send message functionality
-    function sendMessage() {
+    async function sendMessage() {
       const text = elements.chatInput.value.trim();
       if (!text) return;
 
@@ -1287,27 +1378,68 @@
       const now = new Date();
       const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-      chat.messages.push({
+      const newMsg = {
         sender: 'sent',
         text: text,
         time: timeStr,
         ai: false // Sent manually by the operator
-      });
+      };
 
+      chat.messages.push(newMsg);
       elements.chatInput.value = '';
       selectChat(state.activeChat);
 
-      // Simulate a mock lead answer if AI is active
-      if (chat.aiActive) {
+      // Persistir no Firestore se for um lead real do Firebase
+      const runtime = window.ACESSOR_RUNTIME || window.ACESSOR_AUTH || null;
+      if (chat.isFirebase && runtime?.firebase?.db && chat.conversationId) {
+        try {
+          const { doc, updateDoc, arrayUnion } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+          const convRef = doc(runtime.firebase.db, 'conversations', chat.conversationId);
+          await updateDoc(convRef, {
+            messages: arrayUnion({ ...newMsg, timestamp: Date.now() }),
+            summary: text,
+            lastMessageAt: new Date().toISOString()
+          });
+          console.log('[inbox.html] Mensagem salva no Firestore.');
+        } catch (err) {
+          console.error('[inbox.html] Erro ao salvar mensagem no Firestore:', err);
+        }
+      }
+
+      // Enviar de volta para a Meta API se for Messenger ou Instagram
+      if (chat.isFirebase && (chat.channel === 'Messenger' || chat.channel === 'Instagram')) {
+        try {
+          const res = await fetch('/api/meta-send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              recipientId: chat.phone, // o ID da Meta está armazenado no campo phone do contato
+              text: text,
+              channel: chat.channel
+            })
+          });
+          const resData = await res.json();
+          if (!resData.success) {
+            console.error('[inbox.html] Erro ao enviar mensagem para Meta API:', resData.error);
+          } else {
+            console.log('[inbox.html] Mensagem enviada para Meta API com sucesso!');
+          }
+        } catch (err) {
+          console.error('[inbox.html] Erro ao conectar com api/meta-send:', err);
+        }
+      }
+
+      // Simulate a mock lead answer if AI is active and NOT firebase
+      if (!chat.isFirebase && chat.aiActive) {
         setTimeout(() => {
           const receivedTime = new Date();
           const recTimeStr = `${String(receivedTime.getHours()).padStart(2, '0')}:${String(receivedTime.getMinutes()).padStart(2, '0')}`;
           
           let responseText = "Perfeito, obrigado! Entendido.";
           if (text.toLowerCase().includes('frete') || text.toLowerCase().includes('cep')) {
-            responseText = "Meu CEP Ã© 22040-010. Quanto fica o frete expresso?";
-          } else if (text.toLowerCase().includes('horÃ¡rio') || text.toLowerCase().includes('confirmado')) {
-            responseText = "Excelente, nos vemos amanhÃ£ Ã s 14h!";
+            responseText = "Meu CEP é 22040-010. Quanto fica o frete expresso?";
+          } else if (text.toLowerCase().includes('horário') || text.toLowerCase().includes('confirmado')) {
+            responseText = "Excelente, nos vemos amanhã às 14h!";
           }
 
           chat.messages.push({
@@ -1326,10 +1458,29 @@
       if (e.key === 'Enter') sendMessage();
     });
 
-    // Notes auto-save
+    // Notes auto-save with debounce
+    let notesTimeout;
     elements.notesBox.addEventListener('input', (e) => {
       const chat = state.chats[state.activeChat];
       chat.notes = e.target.value;
+
+      const runtime = window.ACESSOR_RUNTIME || window.ACESSOR_AUTH || null;
+      if (chat.isFirebase && runtime?.firebase?.db) {
+        clearTimeout(notesTimeout);
+        notesTimeout = setTimeout(async () => {
+          try {
+            const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+            const contactRef = doc(runtime.firebase.db, 'contacts', chat.id);
+            await updateDoc(contactRef, {
+              notes: chat.notes,
+              updatedAt: new Date().toISOString()
+            });
+            console.log('[inbox.html] Notas auto-salvas no Firestore.');
+          } catch (err) {
+            console.error('[inbox.html] Erro ao salvar notas no Firestore:', err);
+          }
+        }, 800);
+      }
     });
 
     // Search Box query input event
@@ -1528,18 +1679,19 @@
       if (userWorkspace === 'realizzati') {
         // Redirecionamento de seguranca para travar no cockpit (suporta clean URLs sem .html)
         const allowedPages = [
-        'realizzati.html', 'realizzati',
-        'realizzati-meta.html', 'realizzati-meta',
-        'realizzati-google.html', 'realizzati-google',
-        'conhecimento.html', 'conhecimento',
-        'login.html', 'login', ''
-      ];
+          'realizzati.html', 'realizzati',
+          'realizzati-meta.html', 'realizzati-meta',
+          'realizzati-google.html', 'realizzati-google',
+          'inbox.html', 'inbox',
+          'conhecimento.html', 'conhecimento',
+          'login.html', 'login', ''
+        ];
         if (!allowedPages.includes(page)) {
           window.location.href = 'realizzati.html';
           return;
         }
 
-        // Customizar a sidebar
+        // Customizar a sidebar dinamicamente
         const aside = document.querySelector('aside.sidebar');
         if (aside) {
           // 1. Ocultar o seletor de workspace e exibir apenas texto premium estatico
@@ -1554,26 +1706,40 @@
             }
           }
 
-          // 2. Ocultar itens de menu irrelevantes (manter apenas Inteligencia -> Cockpit & IA / Conhecimento)
+          // 2. Injetar a sidebar completa, uniforme e premium da Realizzati no nav-section
           const navSection = aside.querySelector('.nav-section');
           if (navSection) {
-            const children = Array.from(navSection.children);
-            children.forEach(child => {
-              if (child.classList.contains('nav-label')) {
-                if (child.textContent.trim() !== 'Inteligência') {
-                  child.style.display = 'none';
-                } else {
-                  child.style.display = 'block';
-                }
-              } else if (child.classList.contains('nav-item')) {
-                const href = child.getAttribute('href');
-                if (href === 'realizzati.html' || href === 'conhecimento.html') {
-                  child.style.display = 'flex';
-                } else {
-                  child.style.display = 'none';
-                }
-              }
-            });
+            const isMetaActive = page === 'realizzati-meta.html' || page === 'realizzati-meta';
+            const isGoogleActive = page === 'realizzati-google.html' || page === 'realizzati-google';
+            const isInboxActive = page === 'inbox.html' || page === 'inbox';
+            const isConhecimentoActive = page === 'conhecimento.html' || page === 'conhecimento';
+            const isCockpitActive = page === 'realizzati.html' || page === 'realizzati';
+
+            navSection.innerHTML = `
+              <div class="nav-label">Performance</div>
+              <a href="realizzati-meta.html" class="nav-item ${isMetaActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                Meta Ads
+              </a>
+              <a href="realizzati-google.html" class="nav-item ${isGoogleActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Google Ads
+              </a>
+              <div class="nav-label" style="margin-top:0.8rem">Cockpit</div>
+              <a href="inbox.html" class="nav-item ${isInboxActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                Inbox
+              </a>
+              <a href="realizzati.html" class="nav-item ${isCockpitActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                Cockpit Geral
+              </a>
+              <div class="nav-label" style="margin-top:0.8rem">Inteligência</div>
+              <a href="conhecimento.html" class="nav-item ${isConhecimentoActive ? 'active' : ''}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                IA / Conhecimento
+              </a>
+            `;
           }
 
           // 3. Forcar o rodape da sidebar a exibir RM / Realizzati Moveis / Enterprise
@@ -1595,7 +1761,7 @@
           tbAvatar.title = 'Perfil Realizzati';
         }
       }
-    })();
+    })()
   </script>
 </body>
 </html>
