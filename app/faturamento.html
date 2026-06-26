@@ -588,6 +588,62 @@
           tbAvatar.textContent = 'RM';
           tbAvatar.title = 'Perfil Realizzati';
         }
+
+        // 5. Preencher dados de configuracoes se for a tela de configuracoes
+        if (page === 'configuracoes.html' || page === 'configuracoes') {
+          const wsNameInput = document.getElementById('config-workspace-name');
+          const wsSlugInput = document.getElementById('config-workspace-slug');
+          const wsSiteInput = document.getElementById('config-workspace-site');
+          const wsEmailInput = document.getElementById('config-support-email');
+
+          if (wsNameInput) wsNameInput.value = 'Realizzati Móveis';
+          if (wsSlugInput) wsSlugInput.value = 'realizzati-moveis';
+          if (wsSiteInput) wsSiteInput.value = 'https://realizzatimoveis.com.br';
+          if (wsEmailInput) wsEmailInput.value = 'contato@realizzatimoveis.com.br';
+
+          const logoPreview = document.querySelector('.logo-preview');
+          if (logoPreview) {
+            logoPreview.textContent = 'RM';
+            logoPreview.style.background = 'linear-gradient(135deg, var(--accent-primary), #8B5CF6)';
+            logoPreview.style.color = '#FFF';
+          }
+
+          const textareasWorkspace = document.querySelectorAll('#panel-workspace textarea');
+          if (textareasWorkspace.length >= 2) {
+            textareasWorkspace[0].value = `Segunda a Sexta: 08:00 às 18:00
+Sábado: 09:00 às 13:00
+Domingo: Fechado`;
+            textareasWorkspace[1].value = `Móveis Planejados Sob Medida Premium
+Projetos Corporativos e Residenciais sob consulta.
+Material: 100% MDF de alta densidade.
+Ferragens: Padrão internacional com amortecimento soft-close.
+Garantia: 5 anos de garantia estrutural.
+Instalação: Inclusa com montadores próprios especializados.`;
+          }
+
+          const textareasIA = document.querySelectorAll('#panel-ia-regras textarea');
+          if (textareasIA.length >= 2) {
+            textareasIA[0].value = `A Realizzati Móveis é uma marcenaria de alto padrão focada no público das classes A e B. Projetamos e fabricamos móveis sob medida premium com geometria limpa, funcionalidade milimétrica e design contemporâneo. Atendemos nos eixos metropolitanos de São Paulo e litoral de Santa Catarina (Balneário Camboriú, Itajaí, Blumenau, etc.).`;
+            textareasIA[1].value = `NUNCA use termos populares de varejo como "barato", "desconto", "promoção", "liquidação", "preço baixo" ou "grátis".
+Use termos de alto valor como "exclusividade", "sofisticação", "sob medida", "luxo silencioso", "geometria limpa", "funcionalidade milimétrica", "design contemporâneo".
+Venda a usabilidade diária, o conforto e a realização de um espaço feito exclusivamente sob medida.`;
+          }
+
+          const inputsIA = document.querySelectorAll('#panel-ia-regras input');
+          if (inputsIA.length >= 2) {
+            inputsIA[0].value = `https://orcamentos.realizzatimoveis.com.br`;
+            inputsIA[1].value = `https://realizzatimoveis.com.br/garantia`;
+          }
+
+          const labelsIA = document.querySelectorAll('#panel-ia-regras label');
+          for (let label of labelsIA) {
+            if (label.textContent === 'Link de Anamnese') {
+              label.textContent = 'Link de Briefing Inicial';
+            } else if (label.textContent === 'Link de Termos') {
+              label.textContent = 'Link de Termo de Garantia';
+            }
+          }
+        }
       }
     })()
   </script>
