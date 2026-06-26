@@ -418,8 +418,6 @@
             <div class="config-menu-item" data-config-tab="webhooks">Webhooks</div>
             <div class="config-menu-item" data-config-tab="automacao">Automação</div>
             <div class="config-menu-item" data-config-tab="trafego">Tráfego & Pixels</div>
-            <div class="config-menu-item" data-config-tab="meta">Meta Review</div>
-            <div class="config-menu-item" data-config-tab="api-keys">API Keys</div>
           </div>
 
           <!-- Right: Config Panel Content -->
@@ -567,55 +565,8 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
                     <th style="width: 50px;">Ações</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="team-member-cell">
-                        <div class="team-avatar">AG</div>
-                        <div>
-                          <div class="team-name">Atendimento GHOF</div>
-                          <div class="team-email">atendimento@ghof.com.br</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <select class="role-select">
-                        <option selected>Proprietário</option>
-                        <option>Administrador</option>
-                        <option>Agente</option>
-                      </select>
-                    </td>
-                    <td>
-                      <span class="team-status-badge active">Ativo</span>
-                    </td>
-                    <td>
-                      <button class="btn-delete-member" title="Remover"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="team-member-cell">
-                        <div class="team-avatar" style="color: #F59E0B; background: rgba(245,158,11,0.15)">NB</div>
-                        <div>
-                          <div class="team-name">Nilo Braga</div>
-                          <div class="team-email">dev@coredgtl.agency</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <select class="role-select">
-                        <option>Proprietário</option>
-                        <option selected>Administrador</option>
-                        <option>Agente</option>
-                      </select>
-                    </td>
-                    <td>
-                      <span class="team-status-badge invited">Convidado</span>
-                    </td>
-                    <td>
-                      <button class="btn-delete-member" title="Remover"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
-                    </td>
-                  </tr>
+                <tbody id="team-members-tbody">
+                  <!-- Rendered dynamically -->
                 </tbody>
               </table>
             </div>
@@ -1061,162 +1012,7 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
               <button class="btn-primary">Salvar configurações de tráfego</button>
             </div>
 
-            <!-- Panel: Meta Review -->
-            <div class="glass-card hidden" id="panel-meta">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem;">
-                <div>
-                  <h3>Meta Review</h3>
-                  <p class="subtitle">Checklist de publicação, confiança e requisitos de aprovação do app.</p>
-                </div>
-                <span class="status-badge-inline" style="background: rgba(16,185,129,0.12); color: #10b981; border-color: rgba(16,185,129,0.25);">
-                  <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span>
-                  Em revisão
-                </span>
-              </div>
 
-              <div class="integrations-card-list" style="margin-bottom: 1.5rem;">
-                <div class="integration-panel-card" style="flex-direction: column; align-items: flex-start;">
-                  <div style="display: flex; justify-content: space-between; width: 100%; gap: 1rem; align-items: center; margin-bottom: 1rem;">
-                    <div class="int-panel-left">
-                      <div class="int-panel-icon" style="background: rgba(124,58,237,0.15); color: #a855f7;">M</div>
-                      <div>
-                        <div class="int-panel-title">App Review Checklist</div>
-                        <div class="int-panel-desc">Campos obrigatórios para publicação e validação da Meta</div>
-                      </div>
-                    </div>
-                    <button class="btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">Exportar resumo</button>
-                  </div>
-
-                  <div class="form-row" style="width: 100%;">
-                    <div class="form-group">
-                      <label>App ID</label>
-                      <input type="text" class="form-control" value="123456789012345">
-                    </div>
-                    <div class="form-group">
-                      <label>Business Manager ID</label>
-                      <input type="text" class="form-control" value="987654321098765">
-                    </div>
-                  </div>
-
-                  <div class="form-row" style="width: 100%;">
-                    <div class="form-group">
-                      <label>Contato institucional</label>
-                      <input type="email" class="form-control" value="suporte@acessordigital.com.br">
-                    </div>
-                    <div class="form-group">
-                      <label>URL de Política de Privacidade</label>
-                      <input type="text" class="form-control" value="https://acessordigital.com.br/politica-de-privacidade">
-                    </div>
-                  </div>
-
-                  <div class="form-row" style="width: 100%;">
-                    <div class="form-group">
-                      <label>URL de Termos de Uso</label>
-                      <input type="text" class="form-control" value="https://acessordigital.com.br/termos-de-uso">
-                    </div>
-                    <div class="form-group">
-                      <label>URL de Exclusão de Dados</label>
-                      <input type="text" class="form-control" value="https://acessordigital.com.br/exclusao-de-dados">
-                    </div>
-                  </div>
-
-                  <div style="width: 100%; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1);">
-                    <h4 style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 0.8rem;">Checklist de aprovação</h4>
-                    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem 1rem;">
-                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
-                        <input type="checkbox" checked>
-                        Domínio publicado e SSL ativo
-                      </label>
-                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
-                        <input type="checkbox" checked>
-                        Página de privacidade acessível
-                      </label>
-                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
-                        <input type="checkbox" checked>
-                        Página de termos acessível
-                      </label>
-                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
-                        <input type="checkbox" checked>
-                        Página de exclusão de dados
-                      </label>
-                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
-                        <input type="checkbox" checked>
-                        Disclaimer de não afiliação no footer
-                      </label>
-                      <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.8);">
-                        <input type="checkbox">
-                        Verificação do App concluída
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="integration-panel-card" style="flex-direction: column; align-items: flex-start;">
-                  <div style="display: flex; justify-content: space-between; width: 100%; gap: 1rem; align-items: center; margin-bottom: 1rem;">
-                    <div class="int-panel-left">
-                      <div class="int-panel-icon" style="background: rgba(16,185,129,0.15); color: #10b981;">✓</div>
-                      <div>
-                        <div class="int-panel-title">Pronto para revisão</div>
-                        <div class="int-panel-desc">Resumo final de confiança e transmissão de dados</div>
-                      </div>
-                    </div>
-                    <label class="switch">
-                      <input type="checkbox" checked>
-                      <span class="slider"></span>
-                    </label>
-                  </div>
-
-                  <div style="display: grid; gap: 0.9rem; width: 100%;">
-                    <div style="padding: 0.95rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);">
-                      <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-bottom: 0.35rem;">Mensagem de confiança</div>
-                      <div style="font-size: 0.9rem; line-height: 1.6; color: rgba(255,255,255,0.82);">
-                        Acessor Digital opera com guardrails, repasse humano e rotas de compliance publicadas.
-                      </div>
-                    </div>
-                    <div style="padding: 0.95rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);">
-                      <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-bottom: 0.35rem;">URLs públicas</div>
-                      <div style="display: grid; gap: 0.4rem; font-size: 0.9rem; color: rgba(255,255,255,0.82);">
-                        <span>/politica-de-privacidade</span>
-                        <span>/termos-de-uso</span>
-                        <span>/exclusao-de-dados</span>
-                      </div>
-                    </div>
-                    <div style="padding: 0.95rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);">
-                      <div style="font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-bottom: 0.35rem;">Status de publicação</div>
-                      <div style="display: flex; justify-content: space-between; gap: 1rem; align-items: center; font-size: 0.9rem; color: rgba(255,255,255,0.82);">
-                        <span>Landing + rodapé + páginas legais</span>
-                        <span style="color: #10b981;">Aguardando envio</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button class="btn-primary" style="margin-top: 1rem;">Salvar checklist Meta</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Panel: API Keys -->
-            <div class="glass-card id" id="panel-api-keys">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div>
-                  <h3>API Keys</h3>
-                  <p style="font-size: 0.85rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem;">Gerencie chaves de acesso</p>
-                </div>
-                <button class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1rem;">+ Nova chave</button>
-              </div>
-
-              <div class="form-group" style="margin-top: 1.5rem;">
-                <label>Chave de produção</label>
-                <div class="api-key-display-box">
-                  <span class="api-key-field" id="productionApiKey">••••••••••••••••••••••••••••••••••••••••</span>
-                  <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn-secondary" id="btnToggleKeyVisibility" style="padding: 0.4rem 0.6rem;" title="Mostrar/Ocultar">👁️</button>
-                    <button class="btn-secondary" id="btnCopyKey" style="padding: 0.4rem 0.6rem;" title="Copiar">📋</button>
-                  </div>
-                </div>
-                <div class="api-key-meta">Criada em 01 Abr 2026 • Último uso: 2 min atrás</div>
-              </div>
-            </div>
 
           </div>
         </div>
@@ -1268,9 +1064,7 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
         integracoes: document.getElementById('panel-integracoes'),
         webhooks: document.getElementById('panel-webhooks'),
         automacao: document.getElementById('panel-automacao'),
-        trafego: document.getElementById('panel-trafego'),
-        meta: document.getElementById('panel-meta'),
-        'api-keys': document.getElementById('panel-api-keys')
+        trafego: document.getElementById('panel-trafego')
       };
 
       menuItems.forEach(item => {
@@ -1281,10 +1075,12 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
           const tabName = item.getAttribute('data-config-tab');
 
           Object.keys(panels).forEach(key => {
-            if (key === tabName) {
-              panels[key].classList.remove('hidden');
-            } else {
-              panels[key].classList.add('hidden');
+            if (panels[key]) {
+              if (key === tabName) {
+                panels[key].classList.remove('hidden');
+              } else {
+                panels[key].classList.add('hidden');
+              }
             }
           });
         });
@@ -1305,53 +1101,88 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
         });
       });
 
-      // API Key Visibility toggle
-      const btnToggleKey = document.getElementById('btnToggleKeyVisibility');
-      const keyField = document.getElementById('productionApiKey');
-      let keyHidden = true;
-      const keyPlain = 'ak_live_51Nv2jD9f1skJk89D987a6f23b72c918a';
+      // --- Equipe (Team) Persistency with LocalStorage ---
+      const DEFAULT_MEMBERS = [
+        { name: "Atendimento GHOF", email: "atendimento@ghof.com.br", role: "Proprietário", status: "Ativo" },
+        { name: "Nilo Braga", email: "dev@coredgtl.agency", role: "Administrador", status: "Convidado" }
+      ];
 
-      btnToggleKey.addEventListener('click', () => {
-        if (keyHidden) {
-          keyField.textContent = keyPlain;
-          btnToggleKey.textContent = '🙈';
-          keyHidden = false;
-        } else {
-          keyField.textContent = '••••••••••••••••••••••••••••••••••••••••';
-          btnToggleKey.textContent = '👁️';
-          keyHidden = true;
+      function loadMembers() {
+        const stored = localStorage.getItem('acessor_team_members');
+        if (!stored) {
+          localStorage.setItem('acessor_team_members', JSON.stringify(DEFAULT_MEMBERS));
+          return DEFAULT_MEMBERS;
         }
-      });
+        return JSON.parse(stored);
+      }
 
-      // Copy API Key
-      const btnCopyKey = document.getElementById('btnCopyKey');
-      btnCopyKey.addEventListener('click', () => {
-        navigator.clipboard.writeText(keyPlain);
-        const originalText = btnCopyKey.textContent;
-        btnCopyKey.textContent = '✓';
-        setTimeout(() => {
-          btnCopyKey.textContent = originalText;
-        }, 1200);
-      });
+      function saveMembers(members) {
+        localStorage.setItem('acessor_team_members', JSON.stringify(members));
+      }
 
-      // Notification Popover toggle
-      const btnNotifBell = document.getElementById('btnNotifBell');
-      const notifPopover = document.getElementById('notifPopover');
-      
-      btnNotifBell.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (notifPopover.style.display === 'block') {
-          notifPopover.style.display = 'none';
-        } else {
-          notifPopover.style.display = 'block';
-        }
-      });
+      function renderMembers() {
+        const tbody = document.getElementById('team-members-tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        
+        const members = loadMembers();
+        
+        members.forEach((member, index) => {
+          const row = document.createElement('tr');
+          const avatarLetters = member.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+          const avatarStyle = member.name === "Atendimento GHOF" ? '' : 'style="color: #F59E0B; background: rgba(245,158,11,0.15)"';
+          
+          row.innerHTML = `
+            <td>
+              <div class="team-member-cell">
+                <div class="team-avatar" ${avatarStyle}>${avatarLetters}</div>
+                <div>
+                  <div class="team-name">${member.name}</div>
+                  <div class="team-email">${member.email}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <select class="role-select" data-index="${index}">
+                <option ${member.role === 'Proprietário' ? 'selected' : ''}>Proprietário</option>
+                <option ${member.role === 'Administrador' ? 'selected' : ''}>Administrador</option>
+                <option ${member.role === 'Agente' ? 'selected' : ''}>Agente</option>
+              </select>
+            </td>
+            <td>
+              <span class="team-status-badge ${member.status === 'Ativo' ? 'active' : 'invited'}">${member.status}</span>
+            </td>
+            <td>
+              <button class="btn-delete-member" data-index="${index}" title="Remover"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
 
-      document.addEventListener('click', (e) => {
-        if (!notifPopover.contains(e.target) && e.target !== btnNotifBell) {
-          notifPopover.style.display = 'none';
-        }
-      });
+        // Event listener para alterar função
+        tbody.querySelectorAll('.role-select').forEach(select => {
+          select.addEventListener('change', (e) => {
+            const idx = parseInt(e.target.getAttribute('data-index'), 10);
+            const members = loadMembers();
+            members[idx].role = e.target.value;
+            saveMembers(members);
+          });
+        });
+
+        // Event listener para deletar membro
+        tbody.querySelectorAll('.btn-delete-member').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const idx = parseInt(e.currentTarget.getAttribute('data-index'), 10);
+            const members = loadMembers();
+            members.splice(idx, 1);
+            saveMembers(members);
+            renderMembers();
+          });
+        });
+      }
+
+      // Inicializa tabela
+      renderMembers();
 
       // Modal Triggers
       const inviteModal = document.getElementById('inviteMemberModal');
@@ -1373,43 +1204,15 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
         const role = document.getElementById('inviteRole').value;
 
         if (name && email) {
-          // Add row to table
-          const tbody = document.querySelector('.team-table tbody');
-          const newRow = document.createElement('tr');
-          
-          const avatarLetters = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-
-          newRow.innerHTML = `
-            <td>
-              <div class="team-member-cell">
-                <div class="team-avatar" style="color: #8B5CF6; background: rgba(124,58,237,0.15)">${avatarLetters}</div>
-                <div>
-                  <div class="team-name">${name}</div>
-                  <div class="team-email">${email}</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <select class="role-select">
-                <option ${role === 'Proprietário' ? 'selected' : ''}>Proprietário</option>
-                <option ${role === 'Administrador' ? 'selected' : ''}>Administrador</option>
-                <option ${role === 'Agente' ? 'selected' : ''}>Agente</option>
-              </select>
-            </td>
-            <td>
-              <span class="team-status-badge invited">Convidado</span>
-            </td>
-            <td>
-              <button class="btn-delete-member" title="Remover"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
-            </td>
-          `;
-
-          tbody.appendChild(newRow);
-
-          // Add delete action to new button
-          newRow.querySelector('.btn-delete-member').addEventListener('click', () => {
-            newRow.remove();
+          const members = loadMembers();
+          members.push({
+            name: name,
+            email: email,
+            role: role,
+            status: "Convidado"
           });
+          saveMembers(members);
+          renderMembers();
 
           // Clear inputs & hide modal
           document.getElementById('inviteName').value = '';
@@ -1418,12 +1221,26 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
         }
       });
 
-      // Bind delete action to existing buttons
-      document.querySelectorAll('.btn-delete-member').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.currentTarget.closest('tr').remove();
-        });
+      // Notification Popover toggle
+      const btnNotifBell = document.getElementById('btnNotifBell');
+      const notifPopover = document.getElementById('notifPopover');
+      
+      btnNotifBell.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (notifPopover.style.display === 'block') {
+          notifPopover.style.display = 'none';
+        } else {
+          notifPopover.style.display = 'block';
+        }
       });
+
+      document.addEventListener('click', (e) => {
+        if (!notifPopover.contains(e.target) && e.target !== btnNotifBell) {
+          notifPopover.style.display = 'none';
+        }
+      });
+
+
     });
   </script>
 
