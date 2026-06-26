@@ -482,6 +482,9 @@ Liberamos um cupom de 15% off exclusivo para você usar hoje. Bora aproveitar?</
     hydrateCockpitPage(runtime);
 
     const autoListEl = document.getElementById('auto-list');
+    if (localStorage.getItem('acessor_session') && autoListEl) {
+      autoListEl.innerHTML = '';
+    }
     const metricRefs = {
       active: document.getElementById('auto-active-count'),
       exec: document.getElementById('auto-exec-count'),
@@ -528,7 +531,18 @@ Liberamos um cupom de 15% off exclusivo para você usar hoje. Bora aproveitar?</
 
     function renderAutomations(items) {
       if (!autoListEl) return;
-      if (!Array.isArray(items) || !items.length) return;
+      if (!Array.isArray(items) || !items.length) {
+        autoListEl.innerHTML = `
+          <div style="text-align: center; padding: 3rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
+            Nenhuma automação ativa ou criada.
+          </div>
+        `;
+        if (metricRefs.active) metricRefs.active.textContent = '0';
+        if (metricRefs.exec) metricRefs.exec.textContent = '0';
+        if (metricRefs.success) metricRefs.success.textContent = '0%';
+        if (metricRefs.saved) metricRefs.saved.textContent = '0h';
+        return;
+      }
       autoListEl.innerHTML = items.map(renderAutomationCard).join('');
       if (metricRefs.active) metricRefs.active.textContent = String(items.filter((item) => item.isActive ?? item.active).length);
       if (metricRefs.exec) metricRefs.exec.textContent = items.reduce((sum, item) => sum + Number(item.triggerCount ?? item.triggers ?? item.trigger_count ?? 0), 0).toLocaleString('pt-BR');
@@ -552,9 +566,7 @@ Liberamos um cupom de 15% off exclusivo para você usar hoje. Bora aproveitar?</
 
     if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id) {
       const automations = await loadCollectionForWorkspace(runtime.firebase, 'automations', runtime.snapshot.workspace.id);
-      if (automations.length) {
-        renderAutomations(automations);
-      }
+      renderAutomations(automations || []);
     }
   </script>
   <script type="module" src="./session-ui.js"></script>

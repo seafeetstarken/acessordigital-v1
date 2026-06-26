@@ -538,16 +538,8 @@
       { id: 'fechado', name: 'Fechado 🎉', color: '#10b981' },
     ];
 
-    let deals = [
-      { id: 1, name: 'Carlos Oliveira', value: 450, stage: 'prospecção', tag: 'default', channel: 'WhatsApp', meta: 'Últ. msg há 2h' },
-      { id: 2, name: 'Empresa Beta LTDA', value: 800, stage: 'prospecção', tag: 'hot', channel: 'Instagram', meta: 'IA aguardando resp.' },
-      { id: 3, name: 'João Silva', value: 2400, stage: 'qualificado', tag: 'warm', channel: 'WhatsApp', meta: 'Reunião amanhã 14h' },
-      { id: 4, name: 'Startup XYZ', value: 1800, stage: 'proposta', tag: 'warm', channel: 'Telegram', meta: 'Enviado ontem' },
-      { id: 5, name: 'Maria Consultoria', value: 1500, stage: 'fechado', tag: 'won', channel: 'WhatsApp', meta: 'Fechado via link de pag.' },
-      { id: 6, name: 'TechCorp Brasil', value: 4200, stage: 'fechado', tag: 'won', channel: 'Indicação', meta: 'Contrato assinado' },
-    ];
-
-    let nextId = 7;
+    let deals = [];
+    let nextId = 1;
     let searchQuery = '';
 
     function formatCurrency(v) {
@@ -738,7 +730,7 @@
     hydrateCockpitPage(runtime);
     if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id && window.ACESSOR_PIPELINE?.setDeals) {
       const deals = await loadCollectionForWorkspace(runtime.firebase, 'deals', runtime.snapshot.workspace.id);
-      if (deals.length) window.ACESSOR_PIPELINE.setDeals(deals);
+      window.ACESSOR_PIPELINE.setDeals(deals || []);
     }
   </script>
   <script type="module" src="./session-ui.js"></script>

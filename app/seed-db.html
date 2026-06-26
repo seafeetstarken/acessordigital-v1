@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Firestore Control Panel — Realizzati</title>
+  <style>
+    body {
+      background-color: #0c0d12;
+      color: #f1f3f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: rgba(20, 22, 33, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 480px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+    }
+    h2 {
+      margin-top: 0;
+      color: #9d4edd;
+      font-size: 1.6rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.8rem;
+    }
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .status-item:last-child {
+      border-bottom: none;
+    }
+    .status-name {
+      font-weight: 500;
+    }
+    .status-badge {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .pending { background: rgba(255, 193, 7, 0.15); color: #ffc107; }
+    .success { background: rgba(40, 167, 69, 0.15); color: #28a745; }
+    .cleared { background: rgba(108, 117, 125, 0.15); color: #adb5bd; }
+    .error { background: rgba(220, 53, 69, 0.15); color: #dc3545; }
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .btn {
+      flex: 1;
+      color: white;
+      border: none;
+      padding: 0.9rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-seed {
+      background: linear-gradient(135deg, #8a2be2, #9d4edd);
+    }
+    .btn-clear {
+      background: rgba(220, 53, 69, 0.2);
+      color: #dc3545;
+      border: 1px solid rgba(220, 53, 69, 0.4);
+    }
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+    .btn:disabled {
+      background: #3a3b45 !important;
+      color: #727485 !important;
+      border: none !important;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .log-box {
+      background: #050608;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.75rem;
+      height: 120px;
+      overflow-y: auto;
+      margin-top: 1rem;
+      color: #a0aec0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Painel do Banco — Realizzati Móveis</h2>
+    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.4;">
+      Controle o banco de dados na nuvem da Realizzati. Você pode popular com dados simulados ou limpar todas as coleções do workspace.
+    </p>
+
+    <div id="status-list">
+      <!-- Injetado dinamicamente -->
+    </div>
+
+    <div class="log-box" id="log">Aguardando início...</div>
+
+    <div class="btn-group">
+      <button class="btn btn-seed" id="run-btn">Popular Banco</button>
+      <button class="btn btn-clear" id="clear-btn">Limpar Tudo</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+    import { getFirestore, doc, setDoc, collection, addDoc, getDocs, deleteDoc, query, where } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+    import { FIREBASE_CONFIG } from './firebase-config.js';
+
+    const runBtn = document.getElementById('run-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const logBox = document.getElementById('log');
+    const statusList = document.getElementById('status-list');
+
+    const collections = [
+      'workspaces',
+      'contacts',
+      'conversations',
+      'deals',
+      'automations',
+      'knowledge_base',
+      'session_notes',
+      'changelog_events'
+    ];
+
+    function log(msg) {
+      logBox.innerHTML += `<br>[${new Date().toLocaleTimeString()}] ${msg}`;
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function renderStatus(states) {
+      statusList.innerHTML = collections.map(col => {
+        const state = states[col] || { status: 'Pendente', class: 'pending' };
+        return `
+          <div class="status-item">
+            <span class="status-name">${col}</span>
+            <span class="status-badge ${state.class}">${state.status}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    const states = {};
+    collections.forEach(col => {
+      states[col] = { status: 'Pendente', class: 'pending' };
+    });
+    renderStatus(states);
+
+    // --- FUNÇÃO PARA LIMPAR TUDO ---
+    clearBtn.addEventListener('click', async () => {
+      if (!confirm('Deseja realmente ZERAR todos os dados da Realizzati Móveis? Essa ação não pode ser desfeita.')) {
+        return;
+      }
+
+      runBtn.disabled = true;
+      clearBtn.disabled = true;
+      log('Inicializando Firebase App para limpeza...');
+
+      const app = initializeApp(FIREBASE_CONFIG);
+      const db = getFirestore(app);
+
+      try {
+        const clearWorkspaceData = async (name) => {
+          log(`Limpando coleção "${name}"...`);
+          states[name] = { status: 'Limpando...', class: 'pending' };
+          renderStatus(states);
+
+          const snap = await getDocs(query(collection(db, name), where('workspaceId', '==', 'realizzati')));
+          let count = 0;
+          for (let document of snap.docs) {
+            await deleteDoc(doc(db, name, document.id));
+            count++;
+          }
+          states[name] = { status: `Zerado (${count})`, class: 'cleared' };
+          renderStatus(states);
+          log(`Coleção "${name}": ${count} documentos removidos.`);
+        };
+
+        // Limpar todas as sub-coleções vinculadas a 'realizzati'
+        for (let col of collections.slice(1)) {
+          await clearWorkspaceData(col);
+        }
+
+        // Limpar o registro do próprio workspace se desejar (ou redefinir)
+        log('Limpando registro do workspace "realizzati"...');
+        states['workspaces'] = { status: 'Limpando...', class: 'pending' };
+        renderStatus(states);
+        await deleteDoc(doc(db, 'workspaces', 'realizzati'));
+        states['workspaces'] = { status: 'Zerado', class: 'cleared' };
+        renderStatus(states);
+        log('Registro do workspace Realizzati removido.');
+
+        log('--- LIMPEZA DO BANCO CONCLUÍDA! ---');
+        clearBtn.innerText = 'Banco Limpo!';
+        clearBtn.style.background = '#6c757d';
+        clearBtn.style.color = '#fff';
+      } catch (err) {
+        log(`ERRO DURANTE LIMPEZA: ${err.message}`);
+        console.error(err);
+        clearBtn.disabled = false;
+        runBtn.disabled = false;
+      }
+    });
+
+    // --- FUNÇÃO PARA POPULAR BANCO ---
+    runBtn.addEventListener('click', async () => {
+      runBtn.disabled = true;
+      clearBtn.disabled = true;
+      runBtn.innerText = 'Processando...';
+      log('Inicializando Firebase App...');
+
+      const app = initializeApp(FIREBASE_CONFIG);
+      const db = getFirestore(app);
+      log('Conectado ao Firestore com sucesso.');
+
+      try {
+        // --- 1. WORKSPACES ---
+        log('Gravando workspace "realizzati"...');
+        states['workspaces'] = { status: 'Processando...', class: 'pending' };
+        renderStatus(states);
+
+        await setDoc(doc(db, 'workspaces', 'realizzati'), {
+          name: 'Realizzati Móveis',
+          slug: 'realizzati-moveis',
+          cnpj: '42.792.893/0001-03',
+          billingPlan: 'Enterprise',
+          creditsBalance: 2500,
+          businessHours: {
+            monday: ['08:00', '19:00'],
+            tuesday: ['08:00', '19:00'],
+            wednesday: ['08:00', '19:00'],
+            thursday: ['08:00', '19:00'],
+            friday: ['08:00', '19:00'],
+            saturday: ['09:00', '13:00'],
+            sunday: []
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+        states['workspaces'] = { status: 'Sucesso', class: 'success' };
+        renderStatus(states);
+        log('Workspace gravado.');
+
+        // Limpar dados antigos do workspace 'realizzati' para evitar duplicatas nas tabelas
+        const clearSubCollection = async (name) => {
+          log(`Limpando dados antigos da coleção "${name}"...`);
+          const snap = await getDocs(query(collection(db, name), where('workspaceId', '==', 'realizzati')));
+          for (let document of snap.docs) {
+            await deleteDoc(doc(db, name, document.id));
+          }
+        };
+
+        for (let col of collections.slice(1)) {
+          await clearSubCollection(col);
+        }
+
+        // --- 2. CONTACTS ---
+        log('Gravando contatos...');
+        states['contacts'] = { status: 'Processando...', class: 'pending' };
+        renderStatus(states);
+
+        const contactsData = [
+          {
+            workspaceId: 'realizzati',
+            name: 'Patrícia Peixoto',
+            phone: '+55 47 99122-3091',
+            email: 'patricia@gmail.com',
+            channel: 'WhatsApp',
+            aiScore: 95,
+            status: 'hot',
+            tags: ['Premium', 'Itapema', 'Orçamento'],
+            notes: 'Interesse em projeto completo para apartamento em Itapema.',
+            createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
+            updatedAt: new Date().toISOString(),
+            lastMessageAt: new Date().toISOString()
+          },
+          {
+            workspaceId: 'realizzati',
+            name: 'Carlos Eduardo',
+            phone: '+55 47 98831-2900',
+            email: 'carlos@construtora.com.br',
+            channel: 'Instagram',
+            aiScore: 88,
+            status: 'active',
+            tags: ['Parceria', 'Blumenau', 'Arquiteto'],
+            notes: 'Arquiteto solicitando catálogo de acabamentos premium.',
+            createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
+            updatedAt: new Date().toISOString(),
+            lastMessageAt: new Date(Date.now() - 3600000 * 4).toISOString()
+          },
+          {
+            workspaceId: 'realizzati',
+            name: 'Mariana Werner',
+            phone: '+55 47 99244-1560',
+            email: 'mari@werner.design',
+            channel: 'WhatsApp',
+            aiScore: 75,
+            status: 'active',
+            tags: ['Móveis Cozinha', 'Itajaí'],
+            notes: 'Solicitou orçamento de móveis sob medida para área gourmet.',
+            createdAt: new Date(Date.now() - 3600000 * 72).toISOString(),
+            updatedAt: new Date().toISOString(),
+            lastMessageAt: new Date(Date.now() - 3600000 * 24).toISOString()
+          }
+        ];
+
+        const contactIds = [];
+        for (let contact of contactsData) {
+          const docRef = await addDoc(collection(db, 'contacts'), contact);
+          contactIds.push({ name: contact.name, id: docRef.id });
+          log(`Contato "${contact.name}" criado.`);
+        }
+        states['contacts'] = { status: 'Sucesso', class: 'success' };
+        renderStatus(states);
+
+        // --- 3. CONVERSATIONS ---
+        log('Gravando conversas...');
+        states['conversations'] = { status: 'Processando...', class: 'pending' };
+        renderStatus(states);
+
+        const patriciaId = contactIds.find(c => c.name === 'Patrícia Peixoto').id;
+        const carlosId = contactIds.find(c => c.name === 'Carlos Eduardo').id;
+
+        await addDoc(collection(db, 'conversations'), {
+          workspaceId: 'realizzati',
+          contactId: patriciaId,
+          contactName: 'Patrícia Peixoto',
+          status: 'Abertas',
+          aiPaused: false,
+          summary: 'Lead deseja orçamento para apartamento em Itapema. Aguarda retorno do projetista técnico.',
+          lastMessageAt: new Date().toISOString(),
+          messages: [
+            { sender: 'received', text: 'Olá, gostaria de saber se vocês fazem móveis sob medida para Itapema?', time: '14:30', timestamp: Date.now() - 600000 },
+            { sender: 'sent', text: 'Olá Patrícia! Sim, atendemos Itapema e todo o litoral com projetos residenciais de alto padrão. Qual ambiente você gostaria de projetar?', time: '14:32', timestamp: Date.now() - 500000 },
+            { sender: 'received', text: 'Seria para a cozinha gourmet e as suítes do meu apartamento novo.', time: '14:35', timestamp: Date.now() - 400000 }
+          ],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+
+        await addDoc(collection(db, 'conversations'), {
+          workspaceId: 'realizzati',
+          contactId: carlosId,
+          contactName: 'Carlos Eduardo',
+          status: 'Abertas',
+          aiPaused: true,
+          summary: 'Arquiteto solicitou catálogo técnico. IA pausada para atendimento humano especializado.',
+          lastMessageAt: new Date(Date.now() - 3600000 * 4).toISOString(),
+          messages: [
+            { sender: 'received', text: 'Olá, sou arquiteto aqui em Blumenau. Vocês trabalham com MDF naval e ferragens Blum com amortecimento?', time: '10:15', timestamp: Date.now() - 3600000 * 4 },
+            { sender: 'sent', text: 'Com certeza, Carlos! Trabalhamos exclusivamente com marcas referência como Blum e Hettich, e 100% de MDF de alta densidade. Vou te enviar nosso catálogo de acabamentos.', time: '10:17', timestamp: Date.now() - 3600000 * 4 }
+          ],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+
+        states['conversations'] = { status: 'Sucesso', class: 'success' };
+        renderStatus(states);
+        log('Conversas criadas.');
+
+        // --- 4. DEALS ---
+        log('Gravando deals...');
+        states['deals'] = { status: 'Processando...', class: 'pending' };
+        renderStatus(states);
+
+        const dealsData = [
+          {
+            workspaceId: 'realizzati',
+            contactId: patriciaId,
+            contactName: 'Patrícia Peixoto',
+            stage: 'Proposta',
+            value: 85000,
+            ownerName: 'Vendas Realizzati',
+            source: 'WhatsApp',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          },
+          {
+            workspaceId: 'realizzati',
+            contactId: carlosId,
+            contactName: 'Carlos Eduardo',
+            stage: 'Negociação',
+            value: 145000,
+            ownerName: 'Comercial Parcerias',
+            source: 'Instagram',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          }
+        ];
+
+        for (let deal of dealsData) {
+          await addDoc(collection(db, 'deals'), deal);
+        }
+        states['deals'] = { status: 'Sucesso', class: 'success' };
+        renderStatus(states);
+        log('Deals gravados no funil.');
+
+        // --- 5. AUTOMATIONS ---
+        log('Gravando automações...');
+        states['automations'] = { status: 'Processando...', class: 'pending' };
+        renderStatus(states);
+
+        await addDoc(collection(db, 'automations'), {
+          workspaceId: 'realizzati',
+          type: 'welcome',
+          name: 'Boas-vindas Premium',
+          isActive: true,
+          triggerCount: 154,
+          conversionRate: 38.5,
+          config: {
+            message: 'Olá! Seja bem-vindo à Realizzati Móveis. Como podemos ajudar com seus móveis planejados hoje?'
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+
+        await addDoc(collection(db, 'automations'), {
+          workspaceId: 'realizzati',
+          type: 'reminder',
+          name: 'Resgate de Projetos',
+          isActive: false,
+          triggerCount: 42,
+          conversionRate: 15.2,
+          config: {
+            message: 'Olá! Passando para saber se conseguiu analisar o esboço 3D que te enviamos.'
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+
+        states['automations'] = { status: 'Sucesso', class: 'success' };
+        renderStatus(states);
+        log('Automações gravadas.');
+
+        // --- 6. KNOWLEDGE_BASE ---
+        log('Gravando base de conhecimento...');
+        states['knowledge_base'] = { status: 'Processando...', class: 'pending' };
+        renderStatus(states);
+
+        await addDoc(collection(db, 'knowledge_base'), {
+          workspaceId: 'realizzati',
+          type: 'Texto',
+          title: 'Sobre a Realizzati',
+          content: 'A Realizzati Móveis é uma marcenaria de alto padrão focada no público das classes A e B. Projetamos e fabricamos móveis sob medida premium com geometria limpa, funcionalidade milimétrica e design contemporâneo. Atendemos nos eixos metropolitanos de São Paulo e litoral de Santa Catarina (Balneário Camboriú, Itapema, Itajaí, Blumenau, etc.).',
+          status: 'Indexado',
+          sourceUrl: 'manual://sobre',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+
+        await addDoc(collection(db, 'knowledge_base'), {
+          workspaceId: 'realizzati',
+          type: 'Texto',
+          title: 'Garantia e Prazos',
+          content: 'Prazo de entrega padrão: 45 dias úteis após assinatura do projeto técnico final. Garantia: 5 anos para estrutura de MDF e ferragens Blum/Hettich.',
+          status: 'Indexado',
+          sourceUrl: 'manual://garantia',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+
+        states['knowledge_base'] = { status: 'Sucesso', class: 'success' };
+        renderStatus(states);
+        log('Base de conhecimento indexada.');
+
+        // --- 7. SESSION_NOTES ---
+        log('Gravando notas de sessão...');
+        states['session_notes'] = { status: 'Processando...', class: 'pending' };
+        renderStatus(states);
+
+        await addDoc(collection(db, 'session_notes'), {
+          workspaceId: 'realizzati',
+          author: 'system',
+          note: 'Configuração do workspace premium concluída com base de conhecimento ativa.',
+          context: { source: 'seed', environment: 'production' },
+          createdAt: new Date().toISOString()
+        });
+
+        states['session_notes'] = { status: 'Sucesso', class: 'success' };
+        renderStatus(states);
+
+        // --- 8. CHANGELOG_EVENTS ---
+        log('Gravando eventos de histórico...');
+        states['changelog_events'] = { status: 'Processando...', class: 'pending' };
+        renderStatus(states);
+
+        await addDoc(collection(db, 'changelog_events'), {
+          workspaceId: 'realizzati',
+          source: 'seed-script',
+          eventType: 'setup',
+          title: 'Instalação do Banco Realizzati',
+          description: 'Carga inicial de dados de demonstração executada com sucesso.',
+          payload: { count: 8, status: 'completed' },
+          createdAt: new Date().toISOString()
+        });
+
+        states['changelog_events'] = { status: 'Sucesso', class: 'success' };
+        renderStatus(states);
+
+        log('--- SEED COMPLETO COM SUCESSO! ---');
+        runBtn.innerText = 'Banco Populado!';
+        runBtn.style.background = '#28a745';
+        clearBtn.disabled = false;
+
+      } catch (err) {
+        log(`ERRO DURANTE O SEED: ${err.message}`);
+        console.error(err);
+        runBtn.disabled = false;
+        clearBtn.disabled = false;
+        runBtn.innerText = 'Tentar Novamente';
+        runBtn.style.background = '#dc3545';
+        
+        // Marcar pendentes como erro
+        collections.forEach(col => {
+          if (states[col].status !== 'Sucesso') {
+            states[col] = { status: 'Erro', class: 'error' };
+          }
+        });
+        renderStatus(states);
+      }
+    });
+  </script>
+</body>
+</html>

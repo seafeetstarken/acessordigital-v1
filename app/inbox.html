@@ -805,96 +805,14 @@
   <script>
     // State management for mock inbox
     const state = {
-      activeChat: 'js',
+      activeChat: null,
       currentFilter: 'Todas',
       currentStatus: 'Todas',
       searchQuery: '',
       recording: false,
       recordingTimer: null,
       recordingSeconds: 0,
-      chats: {
-        'js': {
-          id: 'js',
-          name: 'João Silva',
-          phone: '+55 11 99999-9999',
-          avatar: 'JS',
-          channel: 'WhatsApp',
-          status: 'Abertas',
-          date: '12/05/2026',
-          messagesCount: 25,
-          score: 92,
-          tags: ['ðŸ”¥ Quente', 'Agendado', 'Instagram Ads'],
-          summary: 'Lead chegou através do anúncio do Instagram. Demonstrou interesse imediato em agendamento. Foi qualificado e marcou horário para amanhã às 14h.',
-          aiActive: true,
-          notes: 'Cliente demonstrou muito interesse no produto de automação corporativa.',
-          messages: [
-            { sender: 'received', text: 'Olá! Vi o anúncio no Instagram e queria saber se vocês tem horário para amanhã à tarde.', time: '10:35' },
-            { sender: 'sent', text: 'Olá João! Temos disponibilidade sim. Prefere às 14h ou às 16h?', time: '10:36', ai: true },
-            { sender: 'received', text: 'Pode ser às 14h.', time: '10:41' },
-            { sender: 'sent', text: 'Certo, agendado para amanhã às 14h! 🎉 Mais alguma dúvida?', time: '10:42', ai: true }
-          ]
-        },
-        'mo': {
-          id: 'mo',
-          name: 'Maria Oliveira',
-          phone: '+55 21 98888-8888',
-          avatar: 'MO',
-          channel: 'Telegram',
-          status: 'Humano',
-          date: '12/05/2026',
-          messagesCount: 12,
-          score: 45,
-          tags: ['Dúvida', 'Suporte'],
-          summary: 'Maria quer saber o prazo de entrega dos produtos e as formas de envio disponíveis para o Rio de Janeiro.',
-          aiActive: false,
-          notes: 'Enviar tabela de prazos do frete expresso assim que possível.',
-          messages: [
-            { sender: 'received', text: 'Olá, gostaria de saber se vocês entregam em todo o Brasil?', time: '09:10' },
-            { sender: 'sent', text: 'Olá Maria! Sim, enviamos para todo o país via Correios ou transportadora.', time: '09:12' },
-            { sender: 'received', text: 'Qual é o prazo de entrega?', time: '09:15' }
-          ]
-        },
-        'ar': {
-          id: 'ar',
-          name: 'Ana Rodrigues',
-          phone: '+55 31 97777-7777',
-          avatar: 'AR',
-          channel: 'Instagram',
-          status: 'Abertas',
-          date: '12/05/2026',
-          messagesCount: 8,
-          score: 78,
-          tags: ['Instagram Ads', 'Quente'],
-          summary: 'Ana viu o anúncio no Instagram e tem interesse em fechar o plano anual com desconto.',
-          aiActive: true,
-          notes: '',
-          messages: [
-            { sender: 'received', text: 'Oi! Vi o anúncio de vocês e fiquei interessada. Como funciona o plano anual?', time: '08:55' },
-            { sender: 'sent', text: 'Olá Ana! No plano anual você tem 20% de desconto e acesso a todos os recursos premium.', time: '08:57', ai: true },
-            { sender: 'received', text: 'Tem suporte por WhatsApp incluso?', time: '09:00' }
-          ]
-        },
-        'cf': {
-          id: 'cf',
-          name: 'Carlos Ferreira',
-          phone: '+55 85 96666-6666',
-          avatar: 'CF',
-          channel: 'Messenger',
-          status: 'Resolvidas',
-          date: '11/05/2026',
-          messagesCount: 5,
-          score: 60,
-          tags: ['Messenger', 'Resolvido'],
-          summary: 'Carlos tinha dúvida sobre integração com e-commerce. Foi resolvido com sucesso.',
-          aiActive: false,
-          notes: 'Cliente satisfeito, pode virar indicação.',
-          messages: [
-            { sender: 'received', text: 'Vocês integram com Shopify?', time: '14:10' },
-            { sender: 'sent', text: 'Olá Carlos! Sim, temos integração nativa com Shopify e WooCommerce.', time: '14:12' },
-            { sender: 'received', text: 'Show! Obrigado pela informação.', time: '14:15' }
-          ]
-        }
-      }
+      chats: {}
     };
 
     function normalizeKey(value) {
@@ -958,7 +876,6 @@
 
       contacts.forEach((contact, index) => {
         const fallback = fallbackChats.find((chat) => normalizeKey(chat.name) === normalizeKey(contact.name))
-          || fallbackChats[index % Math.max(fallbackChats.length, 1)]
           || null;
         const conversation = conversationMap.get(normalizeKey(contact.name))
           || conversationMap.get(normalizeKey(contact.id))
@@ -1081,6 +998,15 @@
     function selectChat(id) {
       state.activeChat = id;
       const chat = state.chats[id];
+      if (!chat) {
+        elements.chatTitleInfo.querySelector('h3').textContent = 'Selecione uma conversa';
+        const statusSpan = elements.chatTitleInfo.querySelector('span');
+        if (statusSpan) statusSpan.innerHTML = 'Aguardando atendimento';
+        elements.messagesContainer.innerHTML = '<div style="text-align:center; padding:5rem; color:var(--text-muted);">Selecione uma conversa para ver o histórico.</div>';
+        elements.detailName.textContent = 'Nenhum selecionado';
+        elements.detailPhone.textContent = '';
+        return;
+      }
 
       // Update UI title and header actions
       elements.chatTitleInfo.querySelector('h3').textContent = chat.name;
@@ -1649,8 +1575,14 @@
     }
 
     // Initialize Page
-    renderChatList();
-    selectChat('js');
+    if (localStorage.getItem('acessor_session')) {
+      state.chats = {};
+      state.activeChat = null;
+      renderChatList();
+    } else {
+      renderChatList();
+      selectChat('js');
+    }
   </script>
 
   <script type="module">
