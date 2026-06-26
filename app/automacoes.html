@@ -558,15 +558,21 @@ Liberamos um cupom de 15% off exclusivo para você usar hoje. Bora aproveitar?</
     }
   </script>
   <script type="module" src="./session-ui.js"></script>
-  <!-- Script para adequacao de workspace dinamico (Realizzati Moveis exclusivo) -->
+    <!-- Script para adequacao de workspace dinamico (Realizzati Moveis exclusivo) -->
   <script>
     (function() {
       const userWorkspace = localStorage.getItem('user_session_workspace') || 'demo';
       const page = window.location.pathname.split('/').pop();
       
       if (userWorkspace === 'realizzati') {
-        // Redirecionamento de seguranca para travar no cockpit
-        if (page !== 'realizzati.html' && page !== 'conhecimento.html' && page !== 'login.html' && page !== '') {
+        // Redirecionamento de seguranca para travar no cockpit (suporta clean URLs sem .html)
+        const allowedPages = [
+          'realizzati.html', 'realizzati',
+          'conhecimento.html', 'conhecimento',
+          'login.html', 'login',
+          ''
+        ];
+        if (!allowedPages.includes(page)) {
           window.location.href = 'realizzati.html';
           return;
         }
