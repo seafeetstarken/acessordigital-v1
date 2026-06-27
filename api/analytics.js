@@ -1,4 +1,4 @@
-﻿/**
+/**
  * api/analytics.js - Vercel Serverless Function
  * Proxy seguro para a Google Analytics Data API v1beta.
  * Service account JSON nunca exposta ao frontend.
@@ -15,10 +15,10 @@ export default async function handler(req, res) {
 
   const { GA_SERVICE_ACCOUNT_KEY, GA_PROPERTY_ID } = process.env;
 
-  if (!GA_SERVICE_ACCOUNT_KEY || !GA_PROPERTY_ID) {
+  if (!GA_SERVICE_ACCOUNT_KEY) {
     return res.status(500).json({
-      error: 'GA_SERVICE_ACCOUNT_KEY ou GA_PROPERTY_ID nao configurado.',
-      hint: 'Adicione as variaveis de ambiente no painel Vercel.'
+      error: 'GA_SERVICE_ACCOUNT_KEY nao configurado.',
+      hint: 'Adicione a variavel de ambiente no painel Vercel.'
     });
   }
 
@@ -32,7 +32,37 @@ export default async function handler(req, res) {
   }
 
   const query = req.method === 'POST' ? req.body : req.query;
-  const { report = 'overview', start_date = '30daysAgo', end_date = 'today' } = query;
+  const { workspaceId, report = 'overview', start_date = '30daysAgo', end_date = 'today' } = query;
+
+  let propertyId = GA_PROPERTY_ID;
+
+  if (workspaceId) {
+    try {
+      const { default: admin } = await import('firebase-admin');
+      if (!admin.apps.length) {
+        admin.initializeApp({
+          credential: admin.credential.cert(serviceAccount)
+        });
+      }
+      const db = admin.firestore();
+      const workspaceSnap = await db.collection('workspaces').doc(workspaceId).get();
+      if (workspaceSnap.exists) {
+        const data = workspaceSnap.data() || {};
+        if (data.gaPropertyId) {
+          propertyId = data.gaPropertyId;
+        }
+      }
+    } catch (dbErr) {
+      console.error('[analytics] Erro ao carregar gaPropertyId do workspace no Firestore:', dbErr);
+    }
+  }
+
+  if (!propertyId) {
+    return res.status(500).json({
+      error: 'GA_PROPERTY_ID nao configurado.',
+      hint: 'Configure a propriedade do Google Analytics no painel ou adicione a variavel de ambiente.'
+    });
+  }
 
   // Definicoes de reports disponiveis
   const REPORTS = {
@@ -86,7 +116,7 @@ export default async function handler(req, res) {
     const client = await auth.getClient();
     const accessToken = await client.getAccessToken();
 
-    const apiUrl = `https://analyticsdata.googleapis.com/v1beta/properties/${GA_PROPERTY_ID}:runReport`;
+    const apiUrl = `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`;
 
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -125,7 +155,7 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=120');
     return res.status(200).json({
       success: true,
-      property_id: GA_PROPERTY_ID,
+      property_id: propertyId,
       report,
       start_date,
       end_date,
