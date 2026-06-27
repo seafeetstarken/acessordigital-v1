@@ -57,6 +57,17 @@ export function hydrateCockpitPage(runtime) {
     ? `Visão geral das suas operações e performance da Inteligência Artificial.`
     : `Visão geral da sua conta recém-criada e do seu plano.`);
 
+  const workspaceSelect = document.querySelector('aside.sidebar select');
+  if (workspaceSelect) {
+    const parent = workspaceSelect.parentElement;
+    if (parent && window.localStorage.getItem('acessor_session')) {
+      parent.innerHTML = `
+        <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.2rem;">Workspace</label>
+        <div style="font-size: 0.95rem; font-weight: 700; color: #FFF; padding: 0.2rem 0; font-family: var(--font-display);">${displayName}</div>
+      `;
+    }
+  }
+
   if (!workspace) {
     setText('metric-revenue', currency.format(0));
     setText('metric-conversations', '0');
