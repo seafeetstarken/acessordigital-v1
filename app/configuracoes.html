@@ -695,7 +695,7 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
                       <div class="int-panel-desc">WhatsApp • Instagram • Messenger — um clique só</div>
                     </div>
                   </div>
-                  <button class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1rem;">Conectar com Facebook</button>
+                  <button id="connectFacebookBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1rem;">Conectar com Facebook</button>
                 </div>
 
                 <div class="integration-panel-card">
@@ -1249,6 +1249,47 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
+
+    // Configurar ação do botão de Conexão com Facebook/Meta
+    const connectFacebookBtn = document.getElementById('connectFacebookBtn');
+    if (connectFacebookBtn) {
+      const workspace = runtime?.snapshot?.workspace;
+      
+      // Se o workspace já estiver conectado a uma página real, mudar layout para verde/conectado
+      if (workspace?.activeMetaPageName) {
+        connectFacebookBtn.textContent = `Conectado: ${workspace.activeMetaPageName}`;
+        connectFacebookBtn.style.background = '#10B981';
+        connectFacebookBtn.style.borderColor = '#10B981';
+      }
+
+      connectFacebookBtn.addEventListener('click', () => {
+        const workspaceId = workspace?.id || 'demo';
+        const clientId = '1005343792207733';
+        const redirectUri = encodeURIComponent(`${window.location.protocol}//${window.location.host}/api/auth-meta-callback`);
+        const scopes = 'pages_show_list,pages_read_engagement,pages_manage_metadata,pages_messaging,instagram_basic,instagram_manage_messages';
+        
+        // Redirecionar para o login social do Facebook
+        window.location.href = `https://www.facebook.com/v23.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&state=${workspaceId}&scope=${scopes}`;
+      });
+    }
+
+    // Exibir feedback de sucesso caso venha do redirecionamento
+    if (new URLSearchParams(window.location.search).get('meta_connection') === 'success') {
+      const panel = document.getElementById('panel-integracoes');
+      if (panel) {
+        const alertDiv = document.createElement('div');
+        alertDiv.style.cssText = 'background: rgba(16,185,129,0.15); border: 1px solid #10b981; color: #10b981; padding: 0.8rem 1.2rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.6rem;';
+        alertDiv.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <div><strong>Integração Concluída!</strong> Suas páginas do Facebook e Instagram Direct foram sincronizadas.</div>
+        `;
+        // Inserir alerta antes da lista de cards de integrações
+        const cardList = panel.querySelector('.integrations-card-list');
+        if (cardList) {
+          panel.insertBefore(alertDiv, cardList);
+        }
+      }
+    }
   </script>
   <script type="module" src="./session-ui.js"></script>
     <!-- Script para adequacao de workspace dinamico (Realizzati Moveis exclusivo) -->
