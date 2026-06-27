@@ -414,7 +414,7 @@
             <div class="config-menu-item" data-config-tab="equipe">Equipe</div>
             <div class="config-menu-item" data-config-tab="notificacoes">Notificações</div>
             <div class="config-menu-item" data-config-tab="seguranca">Segurança</div>
-            <div class="config-menu-item" data-config-tab="integracoes">Integrações</div>
+            <div class="config-menu-item" data-config-tab="integracoes">Contas Conectadas</div>
             <div class="config-menu-item" data-config-tab="webhooks">Webhooks</div>
             <div class="config-menu-item" data-config-tab="automacao">Automação</div>
             <div class="config-menu-item" data-config-tab="trafego">Tráfego & Pixels</div>
@@ -682,122 +682,126 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
 
             <!-- Panel: Integrações -->
             <div class="glass-card hidden" id="panel-integracoes">
-              <h3>Integrações</h3>
-              <p class="subtitle">Conecte e configure suas ferramentas</p>
+              <h3>Contas Conectadas</h3>
+              <p class="subtitle">Gerencie suas conexões de atendimento e tráfego pago</p>
               
-              <div class="integrations-card-list">
+              <div class="integrations-card-list" id="accountsIntegrationList">
                 
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(24,119,242,0.15); color: #1877f2;">M</div>
-                    <div>
-                      <div class="int-panel-title">Conectar com Meta</div>
-                      <div class="int-panel-desc">WhatsApp • Instagram • Messenger — um clique só</div>
+                <!-- 1. WHATSAPP (Evolution API) -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(16,185,129,0.15); color: #10b981; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">WhatsApp</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Evolution API VPS Instance</div>
+                      </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.8rem;">
+                      <span class="status-badge-inline" style="background: rgba(16,185,129,0.15); color: #10b981; padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 500;">
+                        <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span> Conectado
+                      </span>
+                      <button class="btn-ghost" style="padding: 0.4rem; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer;" onclick="alert('Instância de segurança ativa. A alteração do número de atendimento do WhatsApp requer suporte técnico.')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                      </button>
                     </div>
                   </div>
-                  <button id="connectFacebookBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1rem;">Conectar com Facebook</button>
-                </div>
-
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(16,185,129,0.15); color: #10b981;">W</div>
-                    <div>
-                      <div class="int-panel-title">WhatsApp</div>
-                      <div class="int-panel-desc">Número conectado</div>
-                    </div>
-                  </div>
-                  <span class="status-badge-inline"><span style="width: 5px; height: 5px; background: #10b981; border-radius: 50%;"></span> Conectado</span>
-                </div>
-
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(0,136,204,0.15); color: #0088cc;">T</div>
-                    <div>
-                      <div class="int-panel-title">Telegram</div>
-                      <div class="int-panel-desc">@AtendGhofBot</div>
-                    </div>
-                  </div>
-                  <span class="status-badge-inline"><span style="width: 5px; height: 5px; background: #10b981; border-radius: 50%;"></span> Conectado</span>
-                </div>
-
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4);">W</div>
-                    <div>
-                      <div class="int-panel-title">WhatsApp API Oficial</div>
-                      <div class="int-panel-desc">Meta Business API (Cloud API)</div>
-                    </div>
-                  </div>
-                  <span class="status-badge-inline soon">Em breve</span>
-                </div>
-
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4);">I</div>
-                    <div>
-                      <div class="int-panel-title">Instagram Direct</div>
-                      <div class="int-panel-desc">Mensagens via Instagram DM</div>
-                    </div>
-                  </div>
-                  <span class="status-badge-inline soon">Em breve</span>
-                </div>
-
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4);">M</div>
-                    <div>
-                      <div class="int-panel-title">Messenger</div>
-                      <div class="int-panel-desc">Facebook Messenger</div>
-                    </div>
-                  </div>
-                  <span class="status-badge-inline soon">Em breve</span>
-                </div>
-
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(124,58,237,0.15); color: var(--accent-primary);">P</div>
-                    <div>
-                      <div class="int-panel-title">Pagar.me</div>
-                      <div class="int-panel-desc">PIX • Boleto • Cartão de crédito</div>
-                    </div>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 0.8rem;">
-                    <span class="status-badge-inline not-configured">Não configurado</span>
-                    <button class="btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">Configurar</button>
+                  <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); display: flex; flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Número:</strong> <span style="color: #FFF;">+55 (47) 98813-9147 (WhatsApp Business)</span></div>
+                    <div><strong>Servidor API:</strong> <code style="color: var(--accent-primary); font-size: 0.78rem;">https://evolution-api.acessordigital.com.br/</code></div>
                   </div>
                 </div>
 
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(59,130,246,0.15); color: #3b82f6;">B</div>
-                    <div>
-                      <div class="int-panel-title">Brevo</div>
-                      <div class="int-panel-desc">Email transacional</div>
+                <!-- 2. MESSENGER (Facebook Page) -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;" id="cardMessenger">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(24,119,242,0.15); color: #1877f2; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">Facebook Messenger</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Chatbot de Atendimento Messenger</div>
+                      </div>
+                    </div>
+                    <div id="messengerStatusMount">
+                      <button id="connectMessengerBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>
                     </div>
                   </div>
-                  <span class="status-badge-inline"><span style="width: 5px; height: 5px; background: #10b981; border-radius: 50%;"></span> Conectado</span>
+                  <div id="messengerDetailsMount" style="display:none; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Página Vinculada:</strong> <span id="messengerPageName" style="color: #FFF;">Nenhuma</span></div>
+                    <div><strong>Webhook Status:</strong> <span style="color: #10B981;">Ativo (messages, postbacks)</span></div>
+                  </div>
                 </div>
 
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(245,158,11,0.15); color: #f59e0b;">G</div>
-                    <div>
-                      <div class="int-panel-title">Google Calendar</div>
-                      <div class="int-panel-desc">Sincronização de agenda</div>
+                <!-- 3. INSTAGRAM DIRECT -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;" id="cardInstagram">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(225,48,108,0.15); color: #e1306c; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">Instagram Direct</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Chatbot de Atendimento Direct</div>
+                      </div>
+                    </div>
+                    <div id="instagramStatusMount">
+                      <button id="connectInstagramBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>
                     </div>
                   </div>
-                  <button class="btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">Conectar</button>
+                  <div id="instagramDetailsMount" style="display:none; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Conta Conectada:</strong> <span id="instagramAccountName" style="color: #FFF;">Nenhuma</span></div>
+                    <div><strong>Webhook Status:</strong> <span style="color: #10B981;">Ativo (instagram_messages)</span></div>
+                  </div>
                 </div>
 
-                <div class="integration-panel-card">
-                  <div class="int-panel-left">
-                    <div class="int-panel-icon" style="background: rgba(239,68,68,0.15); color: #ef4444;">S</div>
-                    <div>
-                      <div class="int-panel-title">Slack</div>
-                      <div class="int-panel-desc">Notificações de equipe</div>
+                <!-- 4. FACEBOOK ADS (Meta Ads) -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;" id="cardFacebookAds">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(24,119,242,0.15); color: #1877f2; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">Facebook Ads</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Meta Business Suite Ads Insights</div>
+                      </div>
+                    </div>
+                    <div id="fbAdsStatusMount">
+                      <button id="connectFbAdsBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>
                     </div>
                   </div>
-                  <button class="btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">Conectar</button>
+                  <div id="fbAdsDetailsMount" style="display:none; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Conectado como:</strong> <span id="fbAdsUser" style="color: #FFF;">Nenhum</span></div>
+                    <div><strong>Conta de Anúncios Ativa:</strong> <span id="fbAdsAccount" style="color: #FFF;">Nenhuma</span></div>
+                    <div><strong>Servidor de Integração (MCP):</strong> <code style="color: var(--accent-primary); font-size: 0.78rem;">https://meta-ads.mcp.acessordigital.com.br/</code></div>
+                  </div>
+                </div>
+
+                <!-- 5. GOOGLE ADS -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;" id="cardGoogleAds">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(245,158,11,0.15); color: #f59e0b; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">Google Ads</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Google Advertising Platform Insights</div>
+                      </div>
+                    </div>
+                    <div id="googleAdsStatusMount">
+                      <button id="connectGoogleAdsBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>
+                    </div>
+                  </div>
+                  <div id="googleAdsDetailsMount" style="display:none; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Conectado como:</strong> <span id="googleAdsUser" style="color: #FFF;">Nenhum</span></div>
+                    <div><strong>Conta de Anúncios Ativa:</strong> <span id="googleAdsAccount" style="color: #FFF;">Nenhuma</span></div>
+                    <div><strong>Servidor de Integração (MCP):</strong> <code style="color: var(--accent-primary); font-size: 0.78rem;">https://google-ads.mcp.acessordigital.com.br/</code></div>
+                  </div>
                 </div>
 
               </div>
@@ -1250,27 +1254,116 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
 
-    // Configurar ação do botão de Conexão com Facebook/Meta
-    const connectFacebookBtn = document.getElementById('connectFacebookBtn');
-    if (connectFacebookBtn) {
-      const workspace = runtime?.snapshot?.workspace;
-      
-      // Se o workspace já estiver conectado a uma página real, mudar layout para verde/conectado
-      if (workspace?.activeMetaPageName) {
-        connectFacebookBtn.textContent = `Conectado: ${workspace.activeMetaPageName}`;
-        connectFacebookBtn.style.background = '#10B981';
-        connectFacebookBtn.style.borderColor = '#10B981';
-      }
+    // Dynamic Accounts Controller (Evolution, Meta, Google)
+    const workspace = runtime?.snapshot?.workspace;
+    const isMetaConnected = Boolean(workspace?.metaUserAccessToken);
 
-      connectFacebookBtn.addEventListener('click', () => {
-        const workspaceId = workspace?.id || 'demo';
-        const clientId = '1005343792207733';
-        const redirectUri = encodeURIComponent(`${window.location.protocol}//${window.location.host}/api/auth-meta-callback`);
-        const scopes = 'pages_show_list,pages_read_engagement,pages_manage_metadata,pages_messaging,instagram_basic,instagram_manage_messages';
-        
-        // Redirecionar para o login social do Facebook
-        window.location.href = `https://www.facebook.com/v23.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&state=${workspaceId}&scope=${scopes}`;
+    // Auxiliar trigger function for Meta OAuth redirection
+    function triggerMetaOAuth() {
+      const workspaceId = workspace?.id || 'demo';
+      const clientId = '1005343792207733';
+      const redirectUri = encodeURIComponent(`${window.location.protocol}//${window.location.host}/api/auth-meta-callback`);
+      const scopes = 'pages_show_list,pages_read_engagement,pages_manage_metadata,pages_messaging,instagram_basic,instagram_manage_messages';
+      window.location.href = `https://www.facebook.com/v23.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&state=${workspaceId}&scope=${scopes}`;
+    }
+
+    // Dynamic hydration helper
+    const setupMetaCard = (statusMountId, detailsMountId, textElementId, defaultText) => {
+      const statusMount = document.getElementById(statusMountId);
+      const detailsMount = document.getElementById(detailsMountId);
+      const textElement = document.getElementById(textElementId);
+
+      if (isMetaConnected) {
+        if (statusMount) {
+          statusMount.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.8rem;">
+              <span class="status-badge-inline" style="background: rgba(16,185,129,0.15); color: #10b981; padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 500;">
+                <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span> Conectado
+              </span>
+              <button class="btn-ghost disconnectMetaBtn" style="padding: 0.4rem; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          `;
+        }
+        if (detailsMount) detailsMount.style.display = 'flex';
+        if (textElement) textElement.textContent = workspace.activeMetaPageName || defaultText;
+      } else {
+        if (statusMount) {
+          statusMount.innerHTML = `<button class="btn-primary connectMetaTrigger" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>`;
+        }
+      }
+    };
+
+    // Hydrate Messenger, Instagram, and Facebook Ads
+    setupMetaCard('messengerStatusMount', 'messengerDetailsMount', 'messengerPageName', 'Página do Facebook');
+    setupMetaCard('instagramStatusMount', 'instagramDetailsMount', 'instagramAccountName', '@instagram_business');
+    setupMetaCard('fbAdsStatusMount', 'fbAdsDetailsMount', 'fbAdsUser', 'Conta de Anúncios');
+
+    if (isMetaConnected) {
+      const fbAdsUser = document.getElementById('fbAdsUser');
+      const fbAdsAccount = document.getElementById('fbAdsAccount');
+      if (fbAdsUser) fbAdsUser.textContent = runtime?.profile?.displayName || runtime?.profile?.email || 'Usuário Meta';
+      if (fbAdsAccount) fbAdsAccount.textContent = workspace.activeMetaPageName ? `${workspace.activeMetaPageName} Ads Account` : 'Conta de Anúncios';
+    }
+
+    // Bind Connect triggers
+    document.querySelectorAll('.connectMetaTrigger').forEach(el => {
+      el.addEventListener('click', triggerMetaOAuth);
+    });
+
+    // Bind Disconnect triggers
+    document.querySelectorAll('.disconnectMetaBtn').forEach(el => {
+      el.addEventListener('click', async () => {
+        if (confirm('Tem certeza que deseja desconectar o Acessor Digital de todas as contas e canais da Meta?')) {
+          try {
+            const [{ doc, updateDoc }] = await Promise.all([
+              import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js')
+            ]);
+            const db = runtime.firebase.db;
+            await updateDoc(doc(db, 'workspaces', workspace.id), {
+              metaUserAccessToken: null,
+              metaPages: null,
+              activeMetaPageId: null,
+              activeMetaPageAccessToken: null,
+              activeMetaPageName: null,
+              activeInstagramAccountId: null,
+              updatedAt: new Date().toISOString()
+            });
+            alert('Contas Meta desconectadas com sucesso!');
+            window.location.reload();
+          } catch (err) {
+            alert('Erro ao desconectar: ' + err.message);
+          }
+        }
       });
+    });
+
+    // Hydrate Google Ads
+    const googleAdsStatusMount = document.getElementById('googleAdsStatusMount');
+    const googleAdsDetailsMount = document.getElementById('googleAdsDetailsMount');
+    const googleAdsUser = document.getElementById('googleAdsUser');
+    const googleAdsAccount = document.getElementById('googleAdsAccount');
+
+    const isGoogleAdsConnected = true; // Por padrão ativo para a conta global Acessor
+    if (isGoogleAdsConnected) {
+      if (googleAdsStatusMount) {
+        googleAdsStatusMount.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 0.8rem;">
+            <span class="status-badge-inline" style="background: rgba(16,185,129,0.15); color: #10b981; padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 500;">
+              <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span> Conectado
+            </span>
+            <button class="btn-ghost" style="padding: 0.4rem; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center;" onclick="alert('Conexão Google Ads ativa na plataforma Acessor Digital.')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
+        `;
+      }
+      if (googleAdsDetailsMount) {
+        googleAdsDetailsMount.style.display = 'flex';
+        if (googleAdsUser) googleAdsUser.textContent = 'acessor.digital@seafeetlabs.tech';
+        if (googleAdsAccount) googleAdsAccount.textContent = 'Acessor Digital Ads (530-771-7268)';
+      }
     }
 
     // Exibir feedback de sucesso caso venha do redirecionamento
@@ -1283,7 +1376,6 @@ Sempre ofereça horários nas quintas e sextas-feiras antes de abrir a agenda co
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"></polyline></svg>
           <div><strong>Integração Concluída!</strong> Suas páginas do Facebook e Instagram Direct foram sincronizadas.</div>
         `;
-        // Inserir alerta antes da lista de cards de integrações
         const cardList = panel.querySelector('.integrations-card-list');
         if (cardList) {
           panel.insertBefore(alertDiv, cardList);
