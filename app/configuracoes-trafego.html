@@ -439,75 +439,50 @@
           </div>
           <!-- Right: Config Panel Content -->
           <div class="config-panels-wrapper">
-<!-- Panel: Workspace (G-HOF structure reference) -->
-            <div class="glass-card" id="panel-workspace">
-              <h3>Workspace</h3>
-              <p class="subtitle">Configurações gerais do seu workspace</p>
-
-              <!-- Logo Upload Row -->
-              <div class="logo-uploader">
-                <div class="logo-preview">A</div>
-                <div class="upload-btn-group">
-                  <button class="btn-upload">Alterar imagem</button>
+            <!-- Panel: Tráfego e Pixels -->
+            <div class="glass-card" id="panel-trafego">
+              <h3>Tráfego & Pixels</h3>
+              <p class="subtitle">Configure os pixels de rastreamento de anúncios para otimizar suas campanhas e conversões</p>
+              
+              <div style="display:flex; flex-direction:column; gap:1.5rem; margin-top:1.5rem;">
+                
+                <!-- 1. Meta Pixel & Conversions API -->
+                <div style="border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding:1.5rem; background:rgba(255,255,255,0.01);">
+                  <h4 style="color:#FFF; font-size:0.95rem; margin-bottom:1rem; display:flex; align-items:center; gap:8px;">
+                    <span style="color:#1877F2;">📘</span> Meta Pixel (Facebook Ads)
+                  </h4>
+                  
+                  <div style="display:flex; flex-direction:column; gap:1rem;">
+                    <div>
+                      <label style="display:block; font-size:0.75rem; color:rgba(255,255,255,0.6); text-transform:uppercase; margin-bottom:0.4rem; font-weight:600;">ID do Pixel Meta</label>
+                      <input type="text" id="meta-pixel-id" placeholder="Ex: 123456789012345" style="width:100%; padding:0.6rem 0.8rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:#FFF; font-size:0.85rem; outline:none;">
+                    </div>
+                    <div>
+                      <label style="display:block; font-size:0.75rem; color:rgba(255,255,255,0.6); text-transform:uppercase; margin-bottom:0.4rem; font-weight:600;">Token da API de Conversões (CAPI)</label>
+                      <textarea id="meta-capi-token" placeholder="Ex: EAAG..." style="width:100%; padding:0.6rem 0.8rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:#FFF; font-size:0.85rem; outline:none; resize:none; min-height:60px; font-family:'JetBrains Mono', monospace;"></textarea>
+                    </div>
+                  </div>
                 </div>
+
+                <!-- 2. Google Tag (Ads & Analytics) -->
+                <div style="border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding:1.5rem; background:rgba(255,255,255,0.01);">
+                  <h4 style="color:#FFF; font-size:0.95rem; margin-bottom:1rem; display:flex; align-items:center; gap:8px;">
+                    <span style="color:#F59E0B;">💛</span> Google Ads / Google Tag
+                  </h4>
+                  
+                  <div>
+                    <label style="display:block; font-size:0.75rem; color:rgba(255,255,255,0.6); text-transform:uppercase; margin-bottom:0.4rem; font-weight:600;">ID da Google Tag</label>
+                    <input type="text" id="google-tag-id" placeholder="Ex: AW-123456789 ou G-XXXXXX" style="width:100%; padding:0.6rem 0.8rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:#FFF; font-size:0.85rem; outline:none;">
+                  </div>
+                </div>
+
+                <!-- Save Actions -->
+                <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:0.5rem; border-top:1px solid rgba(255,255,255,0.05); padding-top:1.5rem;">
+                  <button id="btn-save-pixels" class="btn-primary" style="padding:0.6rem 2rem; font-weight:700;">Salvar Alterações</button>
+                </div>
+
               </div>
-
-              <!-- General details fields -->
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Nome do workspace</label>
-                  <input type="text" class="form-control" id="config-workspace-name" placeholder="Ex: Starken Tecnologia" value="">
-                </div>
-                <div class="form-group">
-                  <label>Slug</label>
-                  <input type="text" class="form-control" id="config-workspace-slug" placeholder="Ex: starken-tecnologia" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Website</label>
-                  <input type="text" class="form-control" id="config-workspace-site" placeholder="Ex: https://starkentech.com" value="">
-                </div>
-                <div class="form-group">
-                  <label>E-mail de suporte</label>
-                  <input type="email" class="form-control" id="config-support-email" placeholder="Ex: suporte@starkentech.com" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Fuso horário</label>
-                  <select class="form-control">
-                    <option>America/Sao_Paulo (GMT -3)</option>
-                    <option>America/Bahia (GMT -3)</option>
-                    <option>America/Manaus (GMT -4)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Idioma da Plataforma</label>
-                  <select class="form-control">
-                    <option>Português (BR)</option>
-                    <option>English (US)</option>
-                    <option>Español</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Horários de atendimento (A IA usa para responder)</label>
-                <textarea class="form-control" placeholder="Ex: Segunda a Sexta: 8h às 18h&#10;Sábado: 9h às 13h"></textarea>
-              </div>
-
-              <div class="form-group">
-                <label>Tabela de valores (A IA usa para informar preços)</label>
-                <textarea class="form-control" placeholder="Ex: Botox: R$600 a R$1.200&#10;Preenchimento labial: R$1.500"></textarea>
-              </div>
-
-              <button class="btn-primary">Salvar Alterações</button>
             </div>
-
-            
           </div>
         </div>
       </div>
@@ -517,8 +492,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Setup active menu item style
-      const tab = document.getElementById('tab-workspace');
+      const tab = document.getElementById('tab-trafego');
       if (tab) tab.classList.add('active');
     });
   </script>
@@ -528,12 +502,61 @@
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
 
-    const workspace = runtime?.snapshot?.workspace;
-    if (workspace) {
-      document.getElementById('config-workspace-name').value = workspace.name || '';
-      document.getElementById('config-workspace-slug').value = workspace.slug || '';
-      document.getElementById('config-workspace-site').value = workspace.website || '';
-      document.getElementById('config-support-email').value = workspace.ownerEmail || '';
+    const db = runtime?.firebase?.db;
+    const workspaceId = runtime?.snapshot?.workspace?.id;
+
+    if (db && workspaceId) {
+      const { doc, getDoc, updateDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+      
+      const docRef = doc(db, 'workspaces', workspaceId);
+
+      // Load initial values
+      try {
+        const snap = await getDoc(docRef);
+        if (snap.exists()) {
+          const data = snap.data();
+          
+          const metaPixelIdInput = document.getElementById('meta-pixel-id');
+          const metaCapiTokenInput = document.getElementById('meta-capi-token');
+          const googleTagIdInput = document.getElementById('google-tag-id');
+
+          if (metaPixelIdInput) metaPixelIdInput.value = data.metaPixelId || '';
+          if (metaCapiTokenInput) metaCapiTokenInput.value = data.metaCapiToken || '';
+          if (googleTagIdInput) googleTagIdInput.value = data.googleTagId || '';
+        }
+      } catch (err) {
+        console.error('Error loading pixels:', err);
+      }
+
+      // Save listener
+      const btnSave = document.getElementById('btn-save-pixels');
+      if (btnSave) {
+        btnSave.addEventListener('click', async () => {
+          const metaPixelId = document.getElementById('meta-pixel-id').value.trim();
+          const metaCapiToken = document.getElementById('meta-capi-token').value.trim();
+          const googleTagId = document.getElementById('google-tag-id').value.trim();
+
+          btnSave.textContent = 'Salvando...';
+          btnSave.disabled = true;
+
+          try {
+            await updateDoc(docRef, {
+              metaPixelId: metaPixelId || null,
+              metaCapiToken: metaCapiToken || null,
+              googleTagId: googleTagId || null,
+              updatedAt: serverTimestamp()
+            });
+
+            alert('✅ Pixels e chaves de tráfego salvos com sucesso!');
+          } catch (err) {
+            console.error('Error saving pixels:', err);
+            alert('Erro ao salvar configurações de pixels.');
+          } finally {
+            btnSave.textContent = 'Salvar Alterações';
+            btnSave.disabled = false;
+          }
+        });
+      }
     }
   </script>
     

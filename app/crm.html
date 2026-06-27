@@ -328,12 +328,10 @@
       </div>
       
       <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
+      <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
       <div style="padding: 0 1.2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-top: 1rem;">
         <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.4rem;">Workspace</label>
-        <select style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: #FFF; border-radius: 6px; padding: 0.4rem; font-size: 0.85rem; outline: none; cursor: pointer;" onchange="location.href=this.value;">
-          <option value="dashboard.html" selected>Empresa BR (Demo)</option>
-          <option value="realizzati.html">Realizzati Móveis</option>
-        </select>
+        <div id="sidebar-workspace-name" class="skeleton-text" style="font-weight:600;font-size:0.95rem;"></div>
       </div>
 
       <div class="nav-section" style="flex-grow:1; overflow-y:auto;">
@@ -370,10 +368,7 @@
         </a>
 
         <div class="nav-label">Inteligência</div>
-        <a href="realizzati.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          Realizzati Cockpit
-        </a>
+        
         <a href="analytics.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           Analytics
@@ -398,16 +393,25 @@
         </a>
       </div>
 
-      <div class="sidebar-footer">
-        <div class="user-profile">
-          <div class="avatar">?</div>
-          <div class="user-info">
-            <span>Conta ativa</span>
-            <small>Plano pendente</small>
-          </div>
-        </div>
-      </div>
-    </aside>
+      <div class="sidebar-footer" id="sidebar-footer" style="margin-top:auto; padding:1rem 0.8rem; border-top:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; gap:0.6rem;">
+  <div style="display:flex; align-items:center; gap:0.65rem;">
+    <div class="avatar" id="sidebar-avatar" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--accent-primary), #8B5CF6); display:flex; align-items:center; justify-content:center; font-weight:700; color:#FFF; font-size:0.8rem; flex-shrink:0;">?</div>
+    <div class="user-info" style="display:flex; flex-direction:column; flex-grow:1; min-width:0;">
+      <span id="sidebar-name" style="display:block; font-weight:600; color:#FFF; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+      <small id="sidebar-plan" style="color:var(--text-muted); font-size:0.72rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+      <small id="sidebar-email" style="color:rgba(255,255,255,0.3); font-size:0.65rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; justify-content:space-between; padding-top:0.4rem; border-top:1px solid rgba(255,255,255,0.02);">
+    <div id="sidebar-credits" style="display:flex; align-items:center; gap:4px; font-size:0.75rem; color:rgba(255,255,255,0.5);">
+      <span>⚡</span>
+      <span id="sidebar-credits-value" class="skeleton-text" style="width:60px; height:12px;"></span>
+    </div>
+    <button id="btn-logout" class="sidebar-logout" title="Sair" style="background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; padding:4px; border-radius:6px; display:flex; align-items:center; transition:all 0.2s;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+</div></aside>
 
     <!-- Main Content -->
     <main class="main-wrapper">
@@ -425,6 +429,19 @@
           <button class="tb-btn" title="Pesquisar" onclick="document.querySelector('.crm-search input').focus()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </button>
+          <!-- Period Selector Dropdown -->
+          <div class="period-selector" id="period-selector" style="position:relative; display:inline-block; margin-right: 0.5rem;">
+            <button id="period-trigger" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); padding:0.4rem 0.8rem; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.75rem;">
+              <span id="period-label">Últimos 7 dias</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div id="period-menu" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; background:rgba(15,15,35,0.98); border:1px solid rgba(255,255,255,0.1); border-radius:8px; min-width:140px; z-index:100; overflow:hidden;">
+              <button data-period="today" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Hoje</button>
+              <button data-period="week" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Esta semana</button>
+              <button data-period="month" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Este mês</button>
+              <button data-period="custom" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Personalizado</button>
+            </div>
+          </div>
           <button class="tb-btn" title="Notificações">
             <div class="notif-dot"></div>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
@@ -554,7 +571,7 @@
               <option value="WhatsApp">WhatsApp</option>
               <option value="Instagram">Instagram</option>
               <option value="Messenger">Messenger</option>
-              <option value="Telegram">Telegram</option>
+              
               <option value="Indicação">Indicação</option>
               <option value="Orgânico">Orgânico</option>
             </select>
@@ -606,7 +623,7 @@
     if (!localStorage.getItem('acessor_session')) {
       contacts = [
         { id: 1, name: 'João Silva', phone: '+55 11 99999-9999', channel: 'WhatsApp', status: 'hot', score: 92, lastMsg: 'Há 10 min', email: 'joao@empresa.com', notes: 'Lead via Instagram Ads. Agendou para amanhã 14h.' },
-        { id: 2, name: 'Maria Oliveira', phone: '+55 21 98888-8888', channel: 'Telegram', status: 'active', score: 45, lastMsg: 'Há 2h', email: '', notes: 'Dúvida sobre prazo de entrega.' },
+        { id: 2, name: 'Maria Oliveira', phone: '+55 21 98888-8888', channel: 'WhatsApp', status: 'active', score: 45, lastMsg: 'Há 2h', email: '', notes: 'Dúvida sobre prazo de entrega.' },
         { id: 3, name: 'Carlos Oliveira', phone: '+55 31 97777-7777', channel: 'Instagram', status: 'lead', score: 65, lastMsg: 'Há 3h', email: '', notes: 'Novo lead, aguardando qualificação.' },
         { id: 4, name: 'Ana Rodrigues', phone: '+55 31 96666-6666', channel: 'Instagram', status: 'active', score: 78, lastMsg: 'Ontem', email: 'ana@startup.com', notes: 'Interesse no plano anual.' },
         { id: 5, name: 'Carlos Ferreira', phone: '+55 85 95555-5555', channel: 'Messenger', status: 'cold', score: 60, lastMsg: 'Há 2 dias', email: '', notes: 'Resolvido, pode virar indicação.' },
@@ -1072,5 +1089,36 @@ Venda a usabilidade diária, o conforto e a realização de um espaço feito exc
       }
     })()
   </script>
+
+  <script>
+    (function() {
+      const trigger = document.getElementById('period-trigger');
+      const menu = document.getElementById('period-menu');
+      const label = document.getElementById('period-label');
+      
+      if (trigger && menu) {
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        menu.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-period]');
+          if (btn) {
+            label.textContent = btn.textContent.trim();
+            menu.style.display = 'none';
+            // Custom event trigger if needed by metrics
+            const event = new CustomEvent('periodChange', { detail: btn.getAttribute('data-period') });
+            window.dispatchEvent(event);
+          }
+        });
+        
+        document.addEventListener('click', () => {
+          menu.style.display = 'none';
+        });
+      }
+    })();
+  </script>
+
 </body>
 </html>

@@ -293,6 +293,16 @@
       gap: 0.4rem;
     }
     .empty-col svg { opacity: 0.2; }
+  
+    /* Ocultar setas do input de número */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
   </style>
 </head>
 <body>
@@ -305,12 +315,10 @@
       </div>
       
       <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
+      <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
       <div style="padding: 0 1.2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-top: 1rem;">
         <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.4rem;">Workspace</label>
-        <select style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: #FFF; border-radius: 6px; padding: 0.4rem; font-size: 0.85rem; outline: none; cursor: pointer;" onchange="location.href=this.value;">
-          <option value="dashboard.html" selected>Empresa BR (Demo)</option>
-          <option value="realizzati.html">Realizzati Móveis</option>
-        </select>
+        <div id="sidebar-workspace-name" class="skeleton-text" style="font-weight:600;font-size:0.95rem;"></div>
       </div>
 
       <div class="nav-section" style="flex-grow:1; overflow-y:auto;">
@@ -347,10 +355,7 @@
         </a>
 
         <div class="nav-label">Inteligência</div>
-        <a href="realizzati.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          Realizzati Cockpit
-        </a>
+        
         <a href="analytics.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           Analytics
@@ -375,16 +380,25 @@
         </a>
       </div>
 
-      <div class="sidebar-footer">
-        <div class="user-profile">
-          <div class="avatar">?</div>
-          <div class="user-info">
-            <span>Conta ativa</span>
-            <small>Plano pendente</small>
-          </div>
-        </div>
-      </div>
-    </aside>
+      <div class="sidebar-footer" id="sidebar-footer" style="margin-top:auto; padding:1rem 0.8rem; border-top:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; gap:0.6rem;">
+  <div style="display:flex; align-items:center; gap:0.65rem;">
+    <div class="avatar" id="sidebar-avatar" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--accent-primary), #8B5CF6); display:flex; align-items:center; justify-content:center; font-weight:700; color:#FFF; font-size:0.8rem; flex-shrink:0;">?</div>
+    <div class="user-info" style="display:flex; flex-direction:column; flex-grow:1; min-width:0;">
+      <span id="sidebar-name" style="display:block; font-weight:600; color:#FFF; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+      <small id="sidebar-plan" style="color:var(--text-muted); font-size:0.72rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+      <small id="sidebar-email" style="color:rgba(255,255,255,0.3); font-size:0.65rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; justify-content:space-between; padding-top:0.4rem; border-top:1px solid rgba(255,255,255,0.02);">
+    <div id="sidebar-credits" style="display:flex; align-items:center; gap:4px; font-size:0.75rem; color:rgba(255,255,255,0.5);">
+      <span>⚡</span>
+      <span id="sidebar-credits-value" class="skeleton-text" style="width:60px; height:12px;"></span>
+    </div>
+    <button id="btn-logout" class="sidebar-logout" title="Sair" style="background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; padding:4px; border-radius:6px; display:flex; align-items:center; transition:all 0.2s;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+</div></aside>
 
     <!-- Main -->
     <main class="main-wrapper">
@@ -396,7 +410,7 @@
             <div class="page-subtitle">Funil de negócios</div>
           </div>
           <div class="topbar-divider"></div>
-          <span style="font-size:0.75rem; color:rgba(255,255,255,0.25);" id="topbar-deal-count">0 deals</span>
+          <span style="font-size:0.75rem; color:rgba(255,255,255,0.25);" id="topbar-deal-count">0 oportunidades</span>
         </div>
         <div class="topbar-right">
           <button class="tb-btn" title="Pesquisar" onclick="document.querySelector('.pt-search input').focus()">
@@ -419,12 +433,12 @@
               Pipeline Total
             </div>
             <div class="summary-value" id="pipeline-total">R$ 0</div>
-            <div class="summary-sub" id="pipeline-deals">0 deals no funil</div>
+            <div class="summary-sub" id="pipeline-deals">0 oportunidades no funil</div>
           </div>
           <div class="summary-card">
             <div class="summary-label">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="9" height="9"></rect><rect x="13" y="2" width="9" height="9"></rect><rect x="13" y="13" width="9" height="9"></rect><rect x="2" y="13" width="9" height="9"></rect></svg>
-              Deals Abertos
+              Oportunidades Abertas
             </div>
             <div class="summary-value" id="pipeline-open">0</div>
             <div class="summary-sub">ativos no funil</div>
@@ -443,7 +457,7 @@
               Ticket Médio
             </div>
             <div class="summary-value" id="pipeline-average">R$ 0</div>
-            <div class="summary-sub">por deal</div>
+            <div class="summary-sub">por oportunidade</div>
           </div>
         </div>
 
@@ -452,12 +466,12 @@
           <div class="pipeline-toolbar-left">
             <div class="pt-search">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              <input type="text" id="pipeline-search" placeholder="Buscar deal ou contato..." oninput="filterDeals()">
+              <input type="text" id="pipeline-search" placeholder="Buscar oportunidade ou contato..." oninput="filterDeals()">
             </div>
           </div>
           <button class="btn-primary" onclick="openModal()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            Adicionar Deal
+            Adicionar Oportunidade
           </button>
         </div>
 
@@ -475,7 +489,7 @@
   <div class="modal-overlay" id="deal-modal">
     <div class="modal">
       <div class="modal-header">
-        <h3>✦ Novo Deal</h3>
+        <h3>✦ Nova Oportunidade</h3>
         <button class="modal-close" onclick="closeModal()">&times;</button>
       </div>
       <div class="modal-body">
@@ -515,7 +529,7 @@
               <option value="WhatsApp">WhatsApp</option>
               <option value="Instagram">Instagram</option>
               <option value="Messenger">Messenger</option>
-              <option value="Telegram">Telegram</option>
+              
               <option value="Indicação">Indicação</option>
             </select>
           </div>
@@ -523,7 +537,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-        <button class="btn-primary" onclick="addDeal()">Criar Deal</button>
+        <button class="btn-primary" onclick="addDeal()">Criar Oportunidade</button>
       </div>
     </div>
   </div>
@@ -604,7 +618,7 @@
                 Nenhum deal
               </div>` : ''}
             ${stageDeals.map(deal => `
-              <div class="deal-card" draggable="true" data-deal-id="${deal.id}" ondragstart="dragStart(event, ${deal.id})">
+              <div class="deal-card" draggable="true" data-deal-id="${deal.id}" ondragstart="dragStart(event, '${deal.id}')">
                 <div class="deal-name">${deal.name}</div>
                 <div class="deal-meta-row">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
@@ -634,15 +648,20 @@
         cardsContainer.addEventListener('dragleave', () => {
           col.style.background = '';
         });
-        cardsContainer.addEventListener('drop', e => {
+        cardsContainer.addEventListener('drop', async e => {
           e.preventDefault();
           col.style.background = '';
-          const dealId = parseInt(e.dataTransfer.getData('dealId'));
-          const deal = deals.find(d => d.id === dealId);
-          if (deal) {
-            deal.stage = stage.id;
-            renderBoard();
-            updateStats();
+          const dealId = e.dataTransfer.getData('dealId');
+          if (window.ACESSOR_PIPELINE?.updateDealStage) {
+            window.ACESSOR_PIPELINE.updateDealStage(dealId, stage.id);
+          } else {
+            const numericId = parseInt(dealId, 10);
+            const deal = deals.find(d => d.id === numericId);
+            if (deal) {
+              deal.stage = stage.id;
+              renderBoard();
+              updateStats();
+            }
           }
         });
 
@@ -689,10 +708,14 @@
         return;
       }
 
-      deals.push({ id: nextId++, name, value, stage, tag, channel, meta: 'Adicionado agora' });
-      closeModal();
-      renderBoard();
-      updateStats();
+      if (window.ACESSOR_PIPELINE?.createDeal) {
+        window.ACESSOR_PIPELINE.createDeal({ name, value, stage, tag, channel });
+      } else {
+        deals.push({ id: nextId++, name, value, stage, tag, channel, meta: 'Adicionado agora' });
+        closeModal();
+        renderBoard();
+        updateStats();
+      }
     }
 
     window.ACESSOR_PIPELINE = {
@@ -704,7 +727,7 @@
           stage: deal.stage || 'prospecção',
           tag: deal.tag || 'default',
           channel: deal.channel || 'WhatsApp',
-          meta: deal.meta || 'Atualizado agora'
+          meta: deal.meta || 'Atualizado'
         }));
         nextId = deals.length ? Math.max(...deals.map(d => Number(d.id) || 0)) + 1 : 1;
         renderBoard();
@@ -726,11 +749,72 @@
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
-    const { loadCollectionForWorkspace } = await import('./firebase-data.js');
     hydrateCockpitPage(runtime);
-    if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id && window.ACESSOR_PIPELINE?.setDeals) {
-      const deals = await loadCollectionForWorkspace(runtime.firebase, 'deals', runtime.snapshot.workspace.id);
-      window.ACESSOR_PIPELINE.setDeals(deals || []);
+
+    const db = runtime?.firebase?.db;
+    const workspaceId = runtime?.snapshot?.workspace?.id;
+
+    if (db && workspaceId) {
+      const { 
+        collection, 
+        addDoc, 
+        updateDoc, 
+        doc, 
+        onSnapshot, 
+        serverTimestamp 
+      } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+
+      const dealsRef = collection(db, 'workspaces', workspaceId, 'deals');
+
+      // Listen for deals updates
+      onSnapshot(dealsRef, (snapshot) => {
+        const list = [];
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          list.push({
+            id: docSnap.id,
+            name: data.name || data.title || 'Sem nome',
+            value: Number(data.value || data.estimatedValue || 0),
+            stage: data.stage || 'prospecção',
+            tag: data.tag || 'default',
+            channel: data.channel || 'WhatsApp',
+            meta: data.meta || 'Atualizado'
+          });
+        });
+        window.ACESSOR_PIPELINE.setDeals(list);
+      });
+
+      // Bind create
+      window.ACESSOR_PIPELINE.createDeal = async (dealData) => {
+        try {
+          await addDoc(dealsRef, {
+            name: dealData.name,
+            value: dealData.value,
+            stage: dealData.stage,
+            tag: dealData.tag,
+            channel: dealData.channel,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+          closeModal();
+        } catch (err) {
+          console.error('Erro ao adicionar oportunidade:', err);
+          alert('Erro ao criar oportunidade.');
+        }
+      };
+
+      // Bind update stage
+      window.ACESSOR_PIPELINE.updateDealStage = async (dealId, newStage) => {
+        try {
+          const dealDocRef = doc(db, 'workspaces', workspaceId, 'deals', dealId);
+          await updateDoc(dealDocRef, {
+            stage: newStage,
+            updatedAt: serverTimestamp()
+          });
+        } catch (err) {
+          console.error('Erro ao atualizar estágio:', err);
+        }
+      };
     }
   </script>
   <script type="module" src="./session-ui.js"></script>

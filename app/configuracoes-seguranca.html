@@ -439,72 +439,39 @@
           </div>
           <!-- Right: Config Panel Content -->
           <div class="config-panels-wrapper">
-<!-- Panel: Workspace (G-HOF structure reference) -->
-            <div class="glass-card" id="panel-workspace">
-              <h3>Workspace</h3>
-              <p class="subtitle">Configurações gerais do seu workspace</p>
-
-              <!-- Logo Upload Row -->
-              <div class="logo-uploader">
-                <div class="logo-preview">A</div>
-                <div class="upload-btn-group">
-                  <button class="btn-upload">Alterar imagem</button>
-                </div>
-              </div>
-
-              <!-- General details fields -->
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Nome do workspace</label>
-                  <input type="text" class="form-control" id="config-workspace-name" placeholder="Ex: Starken Tecnologia" value="">
-                </div>
-                <div class="form-group">
-                  <label>Slug</label>
-                  <input type="text" class="form-control" id="config-workspace-slug" placeholder="Ex: starken-tecnologia" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Website</label>
-                  <input type="text" class="form-control" id="config-workspace-site" placeholder="Ex: https://starkentech.com" value="">
-                </div>
-                <div class="form-group">
-                  <label>E-mail de suporte</label>
-                  <input type="email" class="form-control" id="config-support-email" placeholder="Ex: suporte@starkentech.com" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Fuso horário</label>
-                  <select class="form-control">
-                    <option>America/Sao_Paulo (GMT -3)</option>
-                    <option>America/Bahia (GMT -3)</option>
-                    <option>America/Manaus (GMT -4)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Idioma da Plataforma</label>
-                  <select class="form-control">
-                    <option>Português (BR)</option>
-                    <option>English (US)</option>
-                    <option>Español</option>
-                  </select>
-                </div>
-              </div>
-
+<!-- Panel: Segurança -->
+            <div class="glass-card" id="panel-seguranca">
+              <h3>Segurança</h3>
+              <p class="subtitle">Altere sua senha de acesso à plataforma.</p>
+              
               <div class="form-group">
-                <label>Horários de atendimento (A IA usa para responder)</label>
-                <textarea class="form-control" placeholder="Ex: Segunda a Sexta: 8h às 18h&#10;Sábado: 9h às 13h"></textarea>
+                <label>Senha atual</label>
+                <div class="input-password-wrapper">
+                  <input type="password" id="currentPassword" class="form-control" placeholder="Sua senha atual" value="">
+                  <button class="eye-toggle-btn" type="button" data-input-id="currentPassword">👁️</button>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label>Tabela de valores (A IA usa para informar preços)</label>
-                <textarea class="form-control" placeholder="Ex: Botox: R$600 a R$1.200&#10;Preenchimento labial: R$1.500"></textarea>
+              <div class="form-group" style="margin-top: 1rem;">
+                <label>Nova senha</label>
+                <div class="input-password-wrapper">
+                  <input type="password" id="newPassword" class="form-control" placeholder="Mínimo 8 caracteres">
+                  <button class="eye-toggle-btn" type="button" data-input-id="newPassword">👁️</button>
+                </div>
               </div>
 
-              <button class="btn-primary">Salvar Alterações</button>
+              <div class="form-group" style="margin-top: 1rem;">
+                <label>Confirmar nova senha</label>
+                <div class="input-password-wrapper">
+                  <input type="password" id="confirmPassword" class="form-control" placeholder="Repita a nova senha">
+                  <button class="eye-toggle-btn" type="button" data-input-id="confirmPassword">👁️</button>
+                </div>
+              </div>
+
+              <div style="margin-top: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
+                <button class="btn-primary" id="btnChangePassword">Alterar senha</button>
+                <button class="btn-ghost" id="btnForgotPassword" style="border:none; background:none; color:var(--accent-primary); cursor:pointer; font-size:0.85rem; font-weight:600;">Esqueci minha senha</button>
+              </div>
             </div>
 
             
@@ -517,9 +484,23 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Setup active menu item style
-      const tab = document.getElementById('tab-workspace');
+      const tab = document.getElementById('tab-seguranca');
       if (tab) tab.classList.add('active');
+
+      // Password eye toggle
+      document.querySelectorAll('.eye-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const inputId = btn.getAttribute('data-input-id');
+          const input = document.getElementById(inputId);
+          if (input.type === 'password') {
+            input.type = 'text';
+            btn.textContent = '🙈';
+          } else {
+            input.type = 'password';
+            btn.textContent = '👁️';
+          }
+        });
+      });
     });
   </script>
   <script type="module">
@@ -528,12 +509,91 @@
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
 
-    const workspace = runtime?.snapshot?.workspace;
-    if (workspace) {
-      document.getElementById('config-workspace-name').value = workspace.name || '';
-      document.getElementById('config-workspace-slug').value = workspace.slug || '';
-      document.getElementById('config-workspace-site').value = workspace.website || '';
-      document.getElementById('config-support-email').value = workspace.ownerEmail || '';
+    // Firebase Auth Change Password & Reset Password Logic
+    import { 
+      getAuth, 
+      EmailAuthProvider, 
+      reauthenticateWithCredential, 
+      updatePassword, 
+      sendPasswordResetEmail 
+    } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+
+    const auth = getAuth();
+
+    // Alterar Senha
+    const btnChange = document.getElementById('btnChangePassword');
+    if (btnChange) {
+      btnChange.addEventListener('click', async () => {
+        const currentPass = document.getElementById('currentPassword').value;
+        const newPass = document.getElementById('newPassword').value;
+        const confirmPass = document.getElementById('confirmPassword').value;
+
+        if (!currentPass || !newPass || !confirmPass) {
+          alert('⚠️ Preencha todos os campos.');
+          return;
+        }
+
+        if (newPass.length < 8) {
+          alert('⚠️ A nova senha deve ter no mínimo 8 caracteres.');
+          return;
+        }
+
+        if (newPass !== confirmPass) {
+          alert('⚠️ A nova senha e a confirmação não conferem.');
+          return;
+        }
+
+        btnChange.textContent = 'Processando...';
+        btnChange.disabled = true;
+
+        try {
+          const user = auth.currentUser;
+          if (!user) throw new Error('Nenhum usuário logado.');
+
+          const cred = EmailAuthProvider.credential(user.email, currentPass);
+          await reauthenticateWithCredential(user, cred);
+          await updatePassword(user, newPass);
+
+          alert('✅ Senha alterada com sucesso!');
+          document.getElementById('currentPassword').value = '';
+          document.getElementById('newPassword').value = '';
+          document.getElementById('confirmPassword').value = '';
+        } catch (err) {
+          console.error(err);
+          let errMsg = err.message;
+          if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+            errMsg = 'Senha atual incorreta.';
+          }
+          alert('⚠️ Erro ao alterar senha: ' + errMsg);
+        } finally {
+          btnChange.textContent = 'Alterar senha';
+          btnChange.disabled = false;
+        }
+      });
+    }
+
+    // Esqueci minha senha
+    const btnForgot = document.getElementById('btnForgotPassword');
+    if (btnForgot) {
+      btnForgot.addEventListener('click', async () => {
+        const user = auth.currentUser;
+        const email = user ? user.email : prompt('Digite seu e-mail de acesso para o envio do link de recuperação:');
+        if (!email) return;
+
+        btnForgot.textContent = 'Enviando...';
+        btnForgot.disabled = true;
+
+        try {
+          await sendPasswordResetEmail(auth, email);
+          alert('✅ Um e-mail de redefinição de senha foi enviado para: ' + email);
+        } catch (err) {
+          console.error(err);
+          alert('⚠️ Erro ao enviar e-mail: ' + err.message);
+        } finally {
+          btnForgot.textContent = 'Esqueci minha senha';
+          btnForgot.disabled = false;
+        }
+      });
     }
   </script>
     

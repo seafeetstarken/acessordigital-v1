@@ -439,72 +439,52 @@
           </div>
           <!-- Right: Config Panel Content -->
           <div class="config-panels-wrapper">
-<!-- Panel: Workspace (G-HOF structure reference) -->
-            <div class="glass-card" id="panel-workspace">
-              <h3>Workspace</h3>
-              <p class="subtitle">Configurações gerais do seu workspace</p>
-
-              <!-- Logo Upload Row -->
-              <div class="logo-uploader">
-                <div class="logo-preview">A</div>
-                <div class="upload-btn-group">
-                  <button class="btn-upload">Alterar imagem</button>
-                </div>
-              </div>
-
-              <!-- General details fields -->
+<!-- Panel: IA & Regras -->
+            <div class="glass-card" id="panel-ia-regras">
+              <h3>IA & Regras</h3>
+              <p class="subtitle">Configurações de comportamento da inteligência artificial</p>
+              
               <div class="form-row">
                 <div class="form-group">
-                  <label>Nome do workspace</label>
-                  <input type="text" class="form-control" id="config-workspace-name" placeholder="Ex: Starken Tecnologia" value="">
-                </div>
-                <div class="form-group">
-                  <label>Slug</label>
-                  <input type="text" class="form-control" id="config-workspace-slug" placeholder="Ex: starken-tecnologia" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Website</label>
-                  <input type="text" class="form-control" id="config-workspace-site" placeholder="Ex: https://starkentech.com" value="">
-                </div>
-                <div class="form-group">
-                  <label>E-mail de suporte</label>
-                  <input type="email" class="form-control" id="config-support-email" placeholder="Ex: suporte@starkentech.com" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Fuso horário</label>
+                  <label>Persona da IA</label>
                   <select class="form-control">
-                    <option>America/Sao_Paulo (GMT -3)</option>
-                    <option>America/Bahia (GMT -3)</option>
-                    <option>America/Manaus (GMT -4)</option>
+                    <option>Informal (Padrão Comercial)</option>
+                    <option>Formal (Técnico / Clínico)</option>
+                    <option>Super Descontraído</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label>Idioma da Plataforma</label>
+                  <label>Idioma Principal</label>
                   <select class="form-control">
                     <option>Português (BR)</option>
                     <option>English (US)</option>
-                    <option>Español</option>
                   </select>
                 </div>
               </div>
 
               <div class="form-group">
-                <label>Horários de atendimento (A IA usa para responder)</label>
-                <textarea class="form-control" placeholder="Ex: Segunda a Sexta: 8h às 18h&#10;Sábado: 9h às 13h"></textarea>
+                <label>Serviços Prestados</label>
+                <textarea class="form-control" placeholder="Ex: A clínica só realiza botox e preenchimento facial... Descreva seus serviços, produtos e especialidades" style="min-height: 120px;"></textarea>
               </div>
 
               <div class="form-group">
-                <label>Tabela de valores (A IA usa para informar preços)</label>
-                <textarea class="form-control" placeholder="Ex: Botox: R$600 a R$1.200&#10;Preenchimento labial: R$1.500"></textarea>
+                <label>Regras Customizadas</label>
+                <textarea class="form-control" placeholder="Ex: Não responda 'Bom dia' ou 'Boa noite'. Seja extremamente direto..." style="min-height: 120px;"></textarea>
               </div>
 
-              <button class="btn-primary">Salvar Alterações</button>
+              <div style="margin-top: 2rem;">
+                <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 1rem;">Links de Formulários</h4>
+                <div class="form-group">
+                  <label>Link de Anamnese</label>
+                  <input type="text" class="form-control" placeholder="Ex: https://seusite.com/anamnese" value="">
+                </div>
+                <div class="form-group">
+                  <label>Link de Termos</label>
+                  <input type="text" class="form-control" placeholder="Ex: https://seusite.com/termos" value="">
+                </div>
+              </div>
+
+              <button class="btn-primary">Salvar alterações</button>
             </div>
 
             
@@ -517,8 +497,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Setup active menu item style
-      const tab = document.getElementById('tab-workspace');
+      const tab = document.getElementById('tab-ia-regras');
       if (tab) tab.classList.add('active');
     });
   </script>
@@ -527,14 +506,6 @@
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
-
-    const workspace = runtime?.snapshot?.workspace;
-    if (workspace) {
-      document.getElementById('config-workspace-name').value = workspace.name || '';
-      document.getElementById('config-workspace-slug').value = workspace.slug || '';
-      document.getElementById('config-workspace-site').value = workspace.website || '';
-      document.getElementById('config-support-email').value = workspace.ownerEmail || '';
-    }
   </script>
     
   <script type="module" src="./session-ui.js"></script>

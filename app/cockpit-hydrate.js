@@ -46,9 +46,11 @@ export function hydrateCockpitPage(runtime) {
   const ownerEmail = profile.email || workspace?.ownerEmail || '';
 
   setText('sidebar-name', displayName);
+  setText('sidebar-workspace-name', displayName);
   setText('sidebar-plan', planName);
   setText('sidebar-avatar', String(displayName).trim().charAt(0).toUpperCase() || '?');
-  setText('sidebar-owner', ownerEmail ? `Conectado como ${ownerEmail}` : 'Sessão ativa');
+  setText('sidebar-email', ownerEmail);
+  setText('sidebar-credits-value', `${credits} / ${workspace?.credits_total ?? 500} crd`);
   setText('topbar-title', snapshot.workspace?.name ? `Dashboard · ${snapshot.workspace.name}` : 'Dashboard');
   setText('topbar-sub', isFallbackWorkspace ? 'Conta recém-criada' : (snapshot.workspace?.name ? 'Cockpit de operações' : 'Acesso autenticado'));
   setText('topbar-avatar', String(displayName).trim().charAt(0).toUpperCase() || '?');
@@ -57,17 +59,7 @@ export function hydrateCockpitPage(runtime) {
     ? `Visão geral das suas operações e performance da Inteligência Artificial.`
     : `Visão geral da sua conta recém-criada e do seu plano.`);
 
-  const workspaceSelect = document.querySelector('aside.sidebar select');
-  if (workspaceSelect) {
-    const parent = workspaceSelect.parentElement;
-    if (parent && window.localStorage.getItem('acessor_session')) {
-      parent.innerHTML = `
-        <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.2rem;">Workspace</label>
-        <div style="font-size: 0.95rem; font-weight: 700; color: #FFF; padding: 0.2rem 0; font-family: var(--font-display);">${displayName}</div>
-      `;
-    }
-  }
-
+  
   if (!workspace) {
     setText('metric-revenue', currency.format(0));
     setText('metric-conversations', '0');
@@ -111,14 +103,14 @@ export function hydrateCockpitPage(runtime) {
   setText('auto-saved-actions', String((counts.conversations || 0) * 3 + (counts.dealsOpen || 0)));
 
   setText('pipeline-total', currency.format((snapshot.pipelineTotal || metrics.revenueRecovered || 0)));
-  setText('pipeline-deals', `${counts.dealsOpen || 0} deals no funil`);
+  setText('pipeline-deals', `${counts.dealsOpen || 0} oportunidades no funil`);
   setText('pipeline-open', String(counts.dealsOpen || 0));
   setText('pipeline-rate', `${Math.min(100, 20 + (metrics.averageAiScore || 0) / 4).toFixed(0)}%`);
   setText('pipeline-average', currency.format((snapshot.pipelineAverage || 0)));
-  setText('topbar-deal-count', `${counts.dealsOpen || 0} deals`);
+  setText('topbar-deal-count', `${counts.dealsOpen || 0} oportunidades`);
 
   setText('knowledge-docs-count', String(counts.knowledge || 0));
-  setText('knowledge-sync-status', `Base conectada • ${counts.knowledge || 0} documentos • sync local ativo`);
+  setText('knowledge-sync-status', `Base conectada • ${counts.knowledge || 0} documentos • sync nuvem ativo`);
   setText('knowledge-quality', `${Math.max(50, 90 - (counts.knowledge || 0) / 10).toFixed(0)}%`);
   setText('knowledge-sources', String(Math.max(1, Math.min(5, Math.ceil((counts.knowledge || 0) / 10) || 3))));
 

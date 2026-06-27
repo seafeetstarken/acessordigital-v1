@@ -266,6 +266,12 @@
     .btn-secondary-btn:hover { background: rgba(255,255,255,0.09); }
 
     .hidden { display: none !important; }
+  
+    .btn-builder-add:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      filter: brightness(1.2);
+    }
   </style>
 </head>
 <body>
@@ -368,19 +374,6 @@
           <div class="topbar-sep"></div>
         </div>
         <div class="topbar-right">
-          <!-- Period Selector Dropdown -->
-          <div class="period-selector" id="period-selector" style="position:relative; display:inline-block; margin-right: 0.5rem;">
-            <button id="period-trigger" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); padding:0.4rem 0.8rem; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.75rem;">
-              <span id="period-label">Últimos 7 dias</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div id="period-menu" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; background:rgba(15,15,35,0.98); border:1px solid rgba(255,255,255,0.1); border-radius:8px; min-width:140px; z-index:100; overflow:hidden;">
-              <button data-period="today" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Hoje</button>
-              <button data-period="week" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Esta semana</button>
-              <button data-period="month" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Este mês</button>
-              <button data-period="custom" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Personalizado</button>
-            </div>
-          </div>
           <button class="tb-btn" id="btnNotifBell" title="Notificações">
             <div class="n-dot"></div>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
@@ -439,75 +432,38 @@
           </div>
           <!-- Right: Config Panel Content -->
           <div class="config-panels-wrapper">
-<!-- Panel: Workspace (G-HOF structure reference) -->
-            <div class="glass-card" id="panel-workspace">
-              <h3>Workspace</h3>
-              <p class="subtitle">Configurações gerais do seu workspace</p>
-
-              <!-- Logo Upload Row -->
-              <div class="logo-uploader">
-                <div class="logo-preview">A</div>
-                <div class="upload-btn-group">
-                  <button class="btn-upload">Alterar imagem</button>
+            <!-- Panel: Automações Builder -->
+            <div class="glass-card" id="panel-automacao">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem;">
+                <div>
+                  <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #FFF; margin-bottom: 0.3rem;">Automação Inteligente (Flow Builder)</h3>
+                  <p class="subtitle" style="margin-bottom:0;">Desenhe a régua de relacionamento e comportamento do atendimento do seu cliente.</p>
+                </div>
+                <div id="builder-save-status" style="font-size:0.75rem; color:rgba(255,255,255,0.35); display:flex; align-items:center; gap:6px;">
+                  <span style="width:6px; height:6px; background:#10B981; border-radius:50%; display:inline-block;" id="save-status-dot"></span> <span id="save-status-text">Salvo no Firebase</span>
                 </div>
               </div>
 
-              <!-- General details fields -->
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Nome do workspace</label>
-                  <input type="text" class="form-control" id="config-workspace-name" placeholder="Ex: Starken Tecnologia" value="">
+              <!-- Builder Canvas -->
+              <div class="builder-section" style="margin-top:1.5rem;">
+                <div class="builder-list" id="builder-canvas">
+                  <!-- Blocks are dynamically loaded here -->
                 </div>
-                <div class="form-group">
-                  <label>Slug</label>
-                  <input type="text" class="form-control" id="config-workspace-slug" placeholder="Ex: starken-tecnologia" value="">
+
+                <!-- Add Block Controls -->
+                <div style="display:flex; justify-content:center; gap:1.2rem; margin-top:2rem; border-top:1px solid rgba(255,255,255,0.05); padding-top:1.5rem;">
+                  <button class="btn-builder-add" onclick="addBuilderBlock('Gatilho')" style="background:rgba(245,158,11,0.03); border:1.5px dashed rgba(245,158,11,0.4); color:#F59E0B; padding:0.65rem 1.2rem; border-radius:8px; cursor:pointer; font-size:0.8rem; font-weight:700; display:flex; align-items:center; gap:6px; transition:all 0.2s; outline:none;">
+                    ⚡ Adicionar Gatilho
+                  </button>
+                  <button class="btn-builder-add" onclick="addBuilderBlock('Ação')" style="background:rgba(124,58,237,0.03); border:1.5px dashed rgba(124,58,237,0.4); color:var(--accent-primary); padding:0.65rem 1.2rem; border-radius:8px; cursor:pointer; font-size:0.8rem; font-weight:700; display:flex; align-items:center; gap:6px; transition:all 0.2s; outline:none;">
+                    🚀 Adicionar Ação
+                  </button>
+                  <button class="btn-builder-add" onclick="addBuilderBlock('Controle')" style="background:rgba(59,130,246,0.03); border:1.5px dashed rgba(59,130,246,0.4); color:#3B82F6; padding:0.65rem 1.2rem; border-radius:8px; cursor:pointer; font-size:0.8rem; font-weight:700; display:flex; align-items:center; gap:6px; transition:all 0.2s; outline:none;">
+                    ⏱️ Adicionar Controle
+                  </button>
                 </div>
               </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Website</label>
-                  <input type="text" class="form-control" id="config-workspace-site" placeholder="Ex: https://starkentech.com" value="">
-                </div>
-                <div class="form-group">
-                  <label>E-mail de suporte</label>
-                  <input type="email" class="form-control" id="config-support-email" placeholder="Ex: suporte@starkentech.com" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Fuso horário</label>
-                  <select class="form-control">
-                    <option>America/Sao_Paulo (GMT -3)</option>
-                    <option>America/Bahia (GMT -3)</option>
-                    <option>America/Manaus (GMT -4)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Idioma da Plataforma</label>
-                  <select class="form-control">
-                    <option>Português (BR)</option>
-                    <option>English (US)</option>
-                    <option>Español</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Horários de atendimento (A IA usa para responder)</label>
-                <textarea class="form-control" placeholder="Ex: Segunda a Sexta: 8h às 18h&#10;Sábado: 9h às 13h"></textarea>
-              </div>
-
-              <div class="form-group">
-                <label>Tabela de valores (A IA usa para informar preços)</label>
-                <textarea class="form-control" placeholder="Ex: Botox: R$600 a R$1.200&#10;Preenchimento labial: R$1.500"></textarea>
-              </div>
-
-              <button class="btn-primary">Salvar Alterações</button>
             </div>
-
-            
           </div>
         </div>
       </div>
@@ -517,57 +473,203 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Setup active menu item style
-      const tab = document.getElementById('tab-workspace');
+      const tab = document.getElementById('tab-automacao');
       if (tab) tab.classList.add('active');
     });
   </script>
+  <script>
+    // Global functions for builder UI interactions
+    let activeBlocks = [];
+    let saveBlocksCallback = null;
+
+    window.addBuilderBlock = function(type) {
+      const newBlock = {
+        id: crypto.randomUUID(),
+        type: type,
+        title: type === 'Gatilho' ? 'Primeira mensagem recebida' : type === 'Ação' ? 'Enviar resposta da IA' : 'Aguardar tempo (minutos)',
+        value: type === 'Controle' ? '10' : ''
+      };
+
+      activeBlocks.push(newBlock);
+      renderBuilderCanvas();
+      if (saveBlocksCallback) saveBlocksCallback(activeBlocks);
+    };
+
+    window.removeBuilderBlock = function(id) {
+      activeBlocks = activeBlocks.filter(b => b.id !== id);
+      renderBuilderCanvas();
+      if (saveBlocksCallback) saveBlocksCallback(activeBlocks);
+    };
+
+    window.updateBlockTitle = function(id, title) {
+      const block = activeBlocks.find(b => b.id === id);
+      if (block) {
+        block.title = title;
+        if (saveBlocksCallback) saveBlocksCallback(activeBlocks);
+      }
+    };
+
+    window.updateBlockValue = function(id, val) {
+      const block = activeBlocks.find(b => b.id === id);
+      if (block) {
+        block.value = val;
+        if (saveBlocksCallback) saveBlocksCallback(activeBlocks);
+      }
+    };
+
+    function renderBuilderCanvas() {
+      const canvas = document.getElementById('builder-canvas');
+      if (!canvas) return;
+
+      if (activeBlocks.length === 0) {
+        canvas.innerHTML = `
+          <div style="border: 1px dashed rgba(255,255,255,0.06); border-radius: 12px; padding: 3rem 1.5rem; text-align: center; color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.005);">
+            <strong style="display:block; color:#FFF; margin-bottom:0.3rem;">Fluxo Vazio</strong>
+            <span>Use os botões abaixo para montar sua automação bloco a bloco.</span>
+          </div>
+        `;
+        return;
+      }
+
+      canvas.innerHTML = activeBlocks.map((block, index) => {
+        let optionsHTML = '';
+        let inputHTML = '';
+        let colorIndicator = '';
+
+        if (block.type === 'Gatilho') {
+          colorIndicator = '#F59E0B';
+          optionsHTML = `
+            <option value="Primeira mensagem recebida" ${block.title === 'Primeira mensagem recebida' ? 'selected' : ''}>Primeira mensagem recebida</option>
+            <option value="Lead criado no CRM" ${block.title === 'Lead criado no CRM' ? 'selected' : ''}>Lead criado no CRM</option>
+            <option value="Webhook acionado" ${block.title === 'Webhook acionado' ? 'selected' : ''}>Webhook acionado</option>
+          `;
+        } else if (block.type === 'Ação') {
+          colorIndicator = '#8B5CF6';
+          optionsHTML = `
+            <option value="Enviar resposta da IA" ${block.title === 'Enviar resposta da IA' ? 'selected' : ''}>Enviar resposta da IA</option>
+            <option value="Mudar etapa do funil" ${block.title === 'Mudar etapa do funil' ? 'selected' : ''}>Mudar etapa do funil</option>
+            <option value="Adicionar Tag ao Lead" ${block.title === 'Adicionar Tag ao Lead' ? 'selected' : ''}>Adicionar Tag ao Lead</option>
+          `;
+          
+          if (block.title === 'Enviar resposta da IA') {
+            inputHTML = `<textarea placeholder="Digite o prompt do bot..." style="width:100%; padding:0.5rem; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#FFF; font-size:0.8rem; outline:none; resize:none; min-height:45px; margin-top:0.5rem;" oninput="updateBlockValue('${block.id}', this.value)">${block.value || ''}</textarea>`;
+          } else if (block.title === 'Adicionar Tag ao Lead') {
+            inputHTML = `<input type="text" placeholder="Nome da Tag (Ex: VIP)" value="${block.value || ''}" style="width:100%; padding:0.4rem; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#FFF; font-size:0.8rem; outline:none; margin-top:0.5rem;" oninput="updateBlockValue('${block.id}', this.value)">`;
+          } else {
+            inputHTML = `<select style="width:100%; padding:0.4rem; background:rgba(15,15,35,0.98); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#FFF; font-size:0.8rem; outline:none; margin-top:0.5rem;" onchange="updateBlockValue('${block.id}', this.value)">
+              <option value="Sem contato" ${block.value === 'Sem contato' ? 'selected' : ''}>Sem contato</option>
+              <option value="Em andamento" ${block.value === 'Em andamento' ? 'selected' : ''}>Em andamento</option>
+              <option value="Ganho" ${block.value === 'Ganho' ? 'selected' : ''}>Ganho</option>
+            </select>`;
+          }
+        } else if (block.type === 'Controle') {
+          colorIndicator = '#3B82F6';
+          optionsHTML = `
+            <option value="Aguardar tempo (minutos)" ${block.title === 'Aguardar tempo (minutos)' ? 'selected' : ''}>Aguardar tempo (minutos)</option>
+            <option value="Se dia for útil" ${block.title === 'Se dia for útil' ? 'selected' : ''}>Se dia for útil</option>
+            <option value="Dividir tráfego (A/B)" ${block.title === 'Dividir tráfego (A/B)' ? 'selected' : ''}>Dividir tráfego (A/B)</option>
+          `;
+
+          if (block.title === 'Aguardar tempo (minutos)') {
+            inputHTML = `<div style="display:flex; align-items:center; gap:8px; margin-top:0.5rem;">
+              <span style="font-size:0.8rem; color:rgba(255,255,255,0.5);">Esperar</span>
+              <input type="number" value="${block.value || '10'}" style="width:60px; padding:0.3rem; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:#FFF; font-size:0.8rem; outline:none; text-align:center;" oninput="updateBlockValue('${block.id}', this.value)">
+              <span style="font-size:0.8rem; color:rgba(255,255,255,0.5);">minutos</span>
+            </div>`;
+          }
+        }
+
+        return `
+          <div class="builder-item-row" style="display: flex; flex-direction: column; align-items: stretch; gap: 0.4rem; padding: 1rem 1.2rem; background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; position:relative;">
+            
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div class="builder-item-left">
+                <div class="builder-color-indicator" style="background: ${colorIndicator};"></div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="builder-badge-pattern" style="background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5);">${block.type}</span>
+                  <select style="background:none; border:none; color:#FFF; font-size:0.88rem; font-weight:600; outline:none; cursor:pointer;" onchange="updateBlockTitle('${block.id}', this.value)">
+                    ${optionsHTML}
+                  </select>
+                </div>
+              </div>
+              
+              <button onclick="removeBuilderBlock('${block.id}')" style="background:none; border:none; color:rgba(255,255,255,0.3); cursor:pointer; padding:4px;" title="Remover Bloco">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+              </button>
+            </div>
+
+            ${inputHTML}
+
+            ${index < activeBlocks.length - 1 ? `
+              <div style="position: absolute; bottom: -18px; left: 18px; height: 18px; border-left: 2px dashed rgba(255,255,255,0.1); z-index: 1;"></div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+  </script>
+
   <script type="module">
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
 
-    const workspace = runtime?.snapshot?.workspace;
-    if (workspace) {
-      document.getElementById('config-workspace-name').value = workspace.name || '';
-      document.getElementById('config-workspace-slug').value = workspace.slug || '';
-      document.getElementById('config-workspace-site').value = workspace.website || '';
-      document.getElementById('config-support-email').value = workspace.ownerEmail || '';
+    const db = runtime?.firebase?.db;
+    const workspaceId = runtime?.snapshot?.workspace?.id;
+
+    if (db && workspaceId) {
+      const { doc, getDoc, updateDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+      
+      const docRef = doc(db, 'workspaces', workspaceId);
+
+      // Load initial builderBlocks state
+      try {
+        const snap = await getDoc(docRef);
+        if (snap.exists()) {
+          const data = snap.data();
+          activeBlocks = data.builderBlocks || [];
+          renderBuilderCanvas();
+        }
+      } catch (err) {
+        console.error('Error loading builderBlocks:', err);
+      }
+
+      // Save handler callback
+      saveBlocksCallback = async (blocks) => {
+        const dot = document.getElementById('save-status-dot');
+        const text = document.getElementById('save-status-text');
+
+        if (dot && text) {
+          dot.style.background = '#F59E0B';
+          text.textContent = 'Salvando...';
+        }
+
+        try {
+          await updateDoc(docRef, {
+            builderBlocks: blocks,
+            updatedAt: serverTimestamp()
+          });
+
+          setTimeout(() => {
+            if (dot && text) {
+              dot.style.background = '#10B981';
+              text.textContent = 'Salvo no Firebase';
+            }
+          }, 800);
+        } catch (err) {
+          console.error('Error saving builderBlocks:', err);
+          if (dot && text) {
+            dot.style.background = '#EF4444';
+            text.textContent = 'Erro ao salvar';
+          }
+        }
+      };
+    } else {
+      renderBuilderCanvas();
     }
   </script>
     
   <script type="module" src="./session-ui.js"></script>
-
-  <script>
-    (function() {
-      const trigger = document.getElementById('period-trigger');
-      const menu = document.getElementById('period-menu');
-      const label = document.getElementById('period-label');
-      
-      if (trigger && menu) {
-        trigger.addEventListener('click', (e) => {
-          e.stopPropagation();
-          menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-        });
-        
-        menu.addEventListener('click', (e) => {
-          const btn = e.target.closest('[data-period]');
-          if (btn) {
-            label.textContent = btn.textContent.trim();
-            menu.style.display = 'none';
-            // Custom event trigger if needed by metrics
-            const event = new CustomEvent('periodChange', { detail: btn.getAttribute('data-period') });
-            window.dispatchEvent(event);
-          }
-        });
-        
-        document.addEventListener('click', () => {
-          menu.style.display = 'none';
-        });
-      }
-    })();
-  </script>
-
 </body>
 </html>

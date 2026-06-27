@@ -87,3 +87,21 @@ body {
   color: var(--text-muted);
   border: 1px solid var(--border-subtle);
 }
+
+/* ===== Skeleton Loader System ===== */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 8px;
+  color: transparent !important;
+}
+.skeleton * { visibility: hidden; }
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skeleton-text { height: 14px; width: 120px; display: inline-block; }
+.skeleton-metric { height: 32px; width: 80px; display: inline-block; }
+.skeleton-card { height: 80px; width: 100%; }
+

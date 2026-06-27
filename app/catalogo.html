@@ -157,6 +157,16 @@
 
     /* Hidden state for filtering */
     .product-card.hidden { display: none !important; }
+  
+    /* Ocultar setas do input de número */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
   </style>
 </head>
 <body>
@@ -168,12 +178,10 @@
       </div>
       
       <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
+      <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
       <div style="padding: 0 1.2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-top: 1rem;">
         <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.4rem;">Workspace</label>
-        <select style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: #FFF; border-radius: 6px; padding: 0.4rem; font-size: 0.85rem; outline: none; cursor: pointer;" onchange="location.href=this.value;">
-          <option value="dashboard.html" selected>Empresa BR (Demo)</option>
-          <option value="realizzati.html">Realizzati Móveis</option>
-        </select>
+        <div id="sidebar-workspace-name" class="skeleton-text" style="font-weight:600;font-size:0.95rem;"></div>
       </div>
       <div class="nav-section">
         <div class="nav-label">Visão Geral</div>
@@ -207,10 +215,7 @@
           Catálogo
         </a>
         <div class="nav-label">Inteligência</div>
-        <a href="realizzati.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          Realizzati Cockpit
-        </a>
+        
         <a href="analytics.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           Analytics
@@ -233,16 +238,25 @@
           Notificações
         </a>
       </div>
-      <div class="sidebar-footer">
-        <div class="user-profile">
-          <div class="avatar">?</div>
-          <div class="user-info">
-            <span>Conta ativa</span>
-            <small>Plano pendente</small>
-          </div>
-        </div>
-      </div>
-    </aside>
+      <div class="sidebar-footer" id="sidebar-footer" style="margin-top:auto; padding:1rem 0.8rem; border-top:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; gap:0.6rem;">
+  <div style="display:flex; align-items:center; gap:0.65rem;">
+    <div class="avatar" id="sidebar-avatar" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--accent-primary), #8B5CF6); display:flex; align-items:center; justify-content:center; font-weight:700; color:#FFF; font-size:0.8rem; flex-shrink:0;">?</div>
+    <div class="user-info" style="display:flex; flex-direction:column; flex-grow:1; min-width:0;">
+      <span id="sidebar-name" style="display:block; font-weight:600; color:#FFF; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+      <small id="sidebar-plan" style="color:var(--text-muted); font-size:0.72rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+      <small id="sidebar-email" style="color:rgba(255,255,255,0.3); font-size:0.65rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; justify-content:space-between; padding-top:0.4rem; border-top:1px solid rgba(255,255,255,0.02);">
+    <div id="sidebar-credits" style="display:flex; align-items:center; gap:4px; font-size:0.75rem; color:rgba(255,255,255,0.5);">
+      <span>⚡</span>
+      <span id="sidebar-credits-value" class="skeleton-text" style="width:60px; height:12px;"></span>
+    </div>
+    <button id="btn-logout" class="sidebar-logout" title="Sair" style="background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; padding:4px; border-radius:6px; display:flex; align-items:center; transition:all 0.2s;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+</div></aside>
 
     <main class="main-wrapper">
       <header class="topbar">
@@ -284,59 +298,105 @@
           <input type="text" id="catalogSearch" placeholder="Buscar no catálogo...">
         </div>
 
-        <div class="products-grid">
-          <!-- Empty State -->
-          <div class="empty-state-card" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; background: rgba(255,255,255,0.015); border: 1px dashed rgba(255,255,255,0.08); border-radius: 14px; text-align: center; color: var(--text-muted);">
-            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏷️</div>
-            <h4 style="color: #FFF; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem;">Seu catálogo está vazio</h4>
-            <p style="font-size: 0.9rem; max-width: 320px; margin-bottom: 1.5rem; line-height: 1.6;">Cadastre seus primeiros produtos ou serviços para que a IA possa apresentá-los aos seus clientes.</p>
-            <button class="btn-primary" style="width: auto; padding: 0.6rem 1.2rem; font-size: 0.85rem;" onclick="alert('Simulação: Formulário de cadastro de item aberto.')">Adicionar Primeiro Item</button>
-          </div>
+        <div class="products-grid" id="catalog-grid-container">
+          <!-- Dynamic catalog items list -->
         </div>
       </div>
     </main>
   </div>
 
   <script>
+    // State management for Catalog items
+    const catalogState = {
+      items: [],
+      currentTab: 'produtos',
+      searchQuery: ''
+    };
+
+    // Toggle fields inside modal based on selection
+    document.getElementById('new-item-category').addEventListener('change', (e) => {
+      const isProduct = e.target.value === 'produtos';
+      document.getElementById('field-product-stock').style.display = isProduct ? 'block' : 'none';
+      document.getElementById('field-service-duration').style.display = isProduct ? 'none' : 'block';
+    });
+
+    function renderCatalogGrid() {
+      const container = document.getElementById('catalog-grid-container');
+      if (!container) return;
+
+      const query = catalogState.searchQuery.toLowerCase().trim();
+      const filtered = catalogState.items.filter(item => {
+        const matchesTab = (item.category || 'produtos') === catalogState.currentTab;
+        const matchesSearch = !query || 
+          (item.name || '').toLowerCase().includes(query) || 
+          (item.description || '').toLowerCase().includes(query);
+        return matchesTab && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state-card" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; background: rgba(255,255,255,0.015); border: 1px dashed rgba(255,255,255,0.08); border-radius: 14px; text-align: center; color: var(--text-muted);">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏷️</div>
+            <h4 style="color: #FFF; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem;">Nenhum item encontrado</h4>
+            <p style="font-size: 0.9rem; max-width: 320px; margin-bottom: 1.5rem; line-height: 1.6;">Cadastre novos itens ou altere a aba de filtros acima.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const isProduct = item.category === 'produtos';
+        const detailText = isProduct 
+          ? `Estoque: ${item.stock || 0} unid` 
+          : `Duração: ${item.duration || 'N/A'}`;
+        
+        const priceText = isProduct
+          ? `R$ ${Number(item.price || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+          : `R$ ${Number(item.price || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` + (item.duration ? ` / ${item.duration}` : '');
+
+        return `
+          <div class="product-card" data-category="${item.category || 'produtos'}">
+            <div class="product-header" style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="product-badge" style="background: ${isProduct ? 'rgba(59,130,246,0.1)' : 'rgba(16,185,129,0.1)'}; color: ${isProduct ? '#3b82f6' : '#10b981'}; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600;">
+                ${isProduct ? 'Produto' : 'Serviço'}
+              </span>
+            </div>
+            <h3 class="product-name" style="color: #FFF; font-size: 1rem; margin-top: 0.8rem; margin-bottom: 0.4rem; font-weight: 600;">${item.name}</h3>
+            <p class="product-desc" style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; line-height: 1.4;">${item.description || 'Sem descrição cadastrada.'}</p>
+            <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.8rem;">
+              <div style="display: flex; flex-direction: column;">
+                <small style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase;">${isProduct ? 'Preço' : 'Valor'}</small>
+                <strong style="color: var(--accent-primary); font-size: 1.1rem; font-weight: 700;">${priceText}</strong>
+              </div>
+              <div style="text-align: right;">
+                <small style="color: var(--text-muted); font-size: 0.75rem; display: block; font-weight:600;">${detailText}</small>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const tabs = document.querySelectorAll('.cat-tab');
-      const cards = document.querySelectorAll('.product-card');
       const searchInput = document.getElementById('catalogSearch');
-
-      let currentTab = 'produtos';
-
-      function filterCatalog() {
-        const query = searchInput.value.toLowerCase().trim();
-
-        cards.forEach(card => {
-          const category = card.getAttribute('data-category');
-          const name = card.querySelector('.product-name').textContent.toLowerCase();
-          const desc = card.querySelector('.product-desc').textContent.toLowerCase();
-
-          const matchesTab = category === currentTab;
-          const matchesSearch = name.includes(query) || desc.includes(query);
-
-          if (matchesTab && matchesSearch) {
-            card.classList.remove('hidden');
-          } else {
-            card.classList.add('hidden');
-          }
-        });
-      }
 
       tabs.forEach(tab => {
         tab.addEventListener('click', () => {
           tabs.forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
-          currentTab = tab.getAttribute('data-tab');
-          filterCatalog();
+          catalogState.currentTab = tab.getAttribute('data-tab');
+          renderCatalogGrid();
         });
       });
 
-      searchInput.addEventListener('input', filterCatalog);
+      searchInput.addEventListener('input', (e) => {
+        catalogState.searchQuery = e.target.value;
+        renderCatalogGrid();
+      });
 
-      // Initialize filter
-      filterCatalog();
+      // Default empty rendering
+      renderCatalogGrid();
     });
   </script>
 
@@ -345,6 +405,93 @@
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
+
+    const db = runtime?.firebase?.db;
+    const workspaceId = runtime?.snapshot?.workspace?.id;
+
+    if (db && workspaceId) {
+      const { 
+        collection, 
+        addDoc, 
+        onSnapshot, 
+        serverTimestamp 
+      } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+
+      const catalogRef = collection(db, 'workspaces', workspaceId, 'catalog_items');
+
+      // Realtime listener
+      onSnapshot(catalogRef, (snapshot) => {
+        const items = [];
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          items.push({
+            id: docSnap.id,
+            category: data.category || 'produtos',
+            name: data.name || 'Sem nome',
+            description: data.description || '',
+            price: Number(data.price || 0),
+            stock: Number(data.stock || 0),
+            duration: data.duration || ''
+          });
+        });
+        catalogState.items = items;
+        renderCatalogGrid();
+      });
+
+      // Bind creation listener
+      document.getElementById('btn-save-catalog-item').addEventListener('click', async () => {
+        const categorySelect = document.getElementById('new-item-category');
+        const nameInput = document.getElementById('new-item-name');
+        const descInput = document.getElementById('new-item-desc');
+        const priceInput = document.getElementById('new-item-price');
+        const stockInput = document.getElementById('new-item-stock');
+        const durationInput = document.getElementById('new-item-duration');
+
+        const category = categorySelect.value;
+        const name = nameInput.value.trim();
+        const description = descInput.value.trim();
+        const price = parseFloat(priceInput.value) || 0;
+        const stock = parseInt(stockInput.value, 10) || 0;
+        const duration = durationInput.value.trim();
+
+        if (!name) {
+          nameInput.focus();
+          nameInput.style.borderColor = '#EF4444';
+          setTimeout(() => nameInput.style.borderColor = '', 1500);
+          return;
+        }
+
+        try {
+          const itemPayload = {
+            category,
+            name,
+            description,
+            price,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          };
+
+          if (category === 'produtos') {
+            itemPayload.stock = stock;
+          } else {
+            itemPayload.duration = duration;
+          }
+
+          await addDoc(catalogRef, itemPayload);
+
+          // Reset inputs and close modal
+          nameInput.value = '';
+          descInput.value = '';
+          priceInput.value = '';
+          stockInput.value = '10';
+          durationInput.value = '';
+          document.getElementById('modal-create-catalog-item').style.display = 'none';
+        } catch (err) {
+          console.error('Erro ao adicionar item ao catálogo:', err);
+          alert('Erro ao salvar item.');
+        }
+      });
+    }
   </script>
   <script type="module" src="./session-ui.js"></script>
     <!-- Script para adequacao de workspace dinamico (Realizzati Moveis exclusivo) -->
@@ -539,5 +686,51 @@ Venda a usabilidade diária, o conforto e a realização de um espaço feito exc
       }
     })()
   </script>
+
+  <!-- Modal: Adicionar Item ao Catálogo -->
+  <div id="modal-create-catalog-item" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div style="background: #111114; border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; width: 480px; max-width: 95vw; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); padding: 1.5rem 2rem;">
+      <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: #FFF; margin-bottom: 1.2rem;">Adicionar Item ao Catálogo</h3>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">Tipo de Item</label>
+          <select id="new-item-category" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(15,15,35,0.98); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none; cursor: pointer;">
+            <option value="produtos">Produto</option>
+            <option value="servicos">Serviço / Consultoria</option>
+          </select>
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">Nome</label>
+          <input type="text" id="new-item-name" placeholder="Ex: Armário Planejado de Cozinha" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">Descrição</label>
+          <textarea id="new-item-desc" placeholder="Ex: Detalhes do material, prazos, etc." style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none; resize: none; min-height: 70px;"></textarea>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">Preço (R$)</label>
+            <input type="number" id="new-item-price" placeholder="0.00" step="0.01" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+          </div>
+          <!-- Dynamic field for Products -->
+          <div id="field-product-stock">
+            <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">Estoque Inicial</label>
+            <input type="number" id="new-item-stock" value="10" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+          </div>
+          <!-- Dynamic field for Services -->
+          <div id="field-service-duration" style="display: none;">
+            <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">Duração Estimada</label>
+            <input type="text" id="new-item-duration" placeholder="Ex: 1 hora" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; justify-content: flex-end; gap: 0.8rem;">
+        <button onclick="document.getElementById('modal-create-catalog-item').style.display='none'" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 500;">Cancelar</button>
+        <button id="btn-save-catalog-item" style="background: var(--accent-primary); border: none; color: #000; padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 700;">Salvar Item</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

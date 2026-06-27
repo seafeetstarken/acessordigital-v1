@@ -44,7 +44,7 @@ export default async function handler(req, res) {
   try {
     // 1. Trocar o código de autorização pelo User Access Token de longa duração
     const tokenResponse = await fetch(
-      `https://graph.facebook.com/v23.0/oauth/access_token?` + 
+      `https://graph.facebook.com/v20.0/oauth/access_token?` + 
       new URLSearchParams({
         client_id: clientId,
         client_secret: clientSecret,
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
 
     // 2. Buscar as Páginas do Facebook vinculadas ao usuário
     const pagesResponse = await fetch(
-      `https://graph.facebook.com/v23.0/me/accounts?` + 
+      `https://graph.facebook.com/v20.0/me/accounts?` + 
       new URLSearchParams({
         access_token: userAccessToken,
         limit: '100'
@@ -92,7 +92,7 @@ export default async function handler(req, res) {
       let instagramAccountId = null;
       try {
         const igResponse = await fetch(
-          `https://graph.facebook.com/v23.0/${page.id}?fields=instagram_business_account&access_token=${page.access_token}`
+          `https://graph.facebook.com/v20.0/${page.id}?fields=instagram_business_account&access_token=${page.access_token}`
         );
         if (igResponse.ok) {
           const igData = await igResponse.json();
@@ -152,9 +152,27 @@ export default async function handler(req, res) {
       createdAt: new Date().toISOString()
     });
 
-    // 7. Redirecionar o usuário de volta para a tela de configurações com flag de sucesso
-    res.writeHead(302, { Location: `/app/configuracoes.html?meta_connection=success` });
-    res.end();
+    // 7. Responder com postMessage para fechar o popup e notificar o painel pai
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Conectando Meta...</title>
+      </head>
+      <body>
+        <p style="font-family:sans-serif; text-align:center; margin-top:3rem; color:#FFF; background:#0F172A; padding:2rem; border-radius:8px;">
+          Autenticação efetuada com sucesso! Fechando janela...
+        </p>
+        <script>
+          if (window.opener) {
+            window.opener.postMessage('meta_oauth_success', window.location.origin);
+          }
+          window.close();
+        </script>
+      </body>
+      </html>
+    `);
 
   } catch (err) {
     console.error('[auth-meta-callback] Erro crítico no callback do Meta Auth:', err);

@@ -146,12 +146,10 @@
       </div>
       
       <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
+      <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
       <div style="padding: 0 1.2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-top: 1rem;">
         <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.4rem;">Workspace</label>
-        <select style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: #FFF; border-radius: 6px; padding: 0.4rem; font-size: 0.85rem; outline: none; cursor: pointer;" onchange="location.href=this.value;">
-          <option value="dashboard.html" selected>Empresa BR (Demo)</option>
-          <option value="realizzati.html">Realizzati Móveis</option>
-        </select>
+        <div id="sidebar-workspace-name" class="skeleton-text" style="font-weight:600;font-size:0.95rem;"></div>
       </div>
       <div class="nav-section">
         <div class="nav-label">Visão Geral</div>
@@ -185,10 +183,7 @@
           Catálogo
         </a>
         <div class="nav-label">Inteligência</div>
-        <a href="realizzati.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          Realizzati Cockpit
-        </a>
+        
         <a href="analytics.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           Analytics
@@ -211,16 +206,25 @@
           Notificações
         </a>
       </div>
-      <div class="sidebar-footer">
-        <div class="user-profile">
-          <div class="avatar">?</div>
-          <div class="user-info">
-            <span>Conta ativa</span>
-            <small>Plano pendente</small>
-          </div>
-        </div>
-      </div>
-    </aside>
+      <div class="sidebar-footer" id="sidebar-footer" style="margin-top:auto; padding:1rem 0.8rem; border-top:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; gap:0.6rem;">
+  <div style="display:flex; align-items:center; gap:0.65rem;">
+    <div class="avatar" id="sidebar-avatar" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--accent-primary), #8B5CF6); display:flex; align-items:center; justify-content:center; font-weight:700; color:#FFF; font-size:0.8rem; flex-shrink:0;">?</div>
+    <div class="user-info" style="display:flex; flex-direction:column; flex-grow:1; min-width:0;">
+      <span id="sidebar-name" style="display:block; font-weight:600; color:#FFF; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+      <small id="sidebar-plan" style="color:var(--text-muted); font-size:0.72rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+      <small id="sidebar-email" style="color:rgba(255,255,255,0.3); font-size:0.65rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; justify-content:space-between; padding-top:0.4rem; border-top:1px solid rgba(255,255,255,0.02);">
+    <div id="sidebar-credits" style="display:flex; align-items:center; gap:4px; font-size:0.75rem; color:rgba(255,255,255,0.5);">
+      <span>⚡</span>
+      <span id="sidebar-credits-value" class="skeleton-text" style="width:60px; height:12px;"></span>
+    </div>
+    <button id="btn-logout" class="sidebar-logout" title="Sair" style="background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; padding:4px; border-radius:6px; display:flex; align-items:center; transition:all 0.2s;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+</div></aside>
 
     <main class="main-wrapper">
             <header class="topbar">
@@ -233,6 +237,19 @@
         </div>
         <div class="topbar-right">
           
+          <!-- Period Selector Dropdown -->
+          <div class="period-selector" id="period-selector" style="position:relative; display:inline-block; margin-right: 0.5rem;">
+            <button id="period-trigger" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); padding:0.4rem 0.8rem; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.75rem;">
+              <span id="period-label">Últimos 7 dias</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div id="period-menu" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; background:rgba(15,15,35,0.98); border:1px solid rgba(255,255,255,0.1); border-radius:8px; min-width:140px; z-index:100; overflow:hidden;">
+              <button data-period="today" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Hoje</button>
+              <button data-period="week" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Esta semana</button>
+              <button data-period="month" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Este mês</button>
+              <button data-period="custom" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Personalizado</button>
+            </div>
+          </div>
           <button class="tb-btn" title="Notificações">
             <div class="n-dot"></div>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
@@ -271,111 +288,10 @@
         </div>
 
         <div class="auto-list" id="auto-list">
-          
-          <div class="auto-item">
-            <div class="auto-info">
-              <div class="auto-icon">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22 4 12 14.01 9 11.01" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div class="auto-text">
-                <h4>Boas-vindas (WhatsApp)</h4>
-                <p>Aciona quando o lead manda a primeira mensagem.</p>
-              </div>
-            </div>
-            <div class="auto-stats">
-              <div class="stat-block">
-                <span>Gatilhos (7d)</span>
-                <strong>4,502</strong>
-              </div>
-              <div class="stat-block" style="margin-right: 1.5rem;">
-                <span>Conversão</span>
-                <strong>42%</strong>
-              </div>
-              <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="auto-item">
-            <div class="auto-info">
-              <div class="auto-icon">
-                <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="2" x2="16" y2="6" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="2" x2="8" y2="6" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="10" x2="21" y2="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div class="auto-text">
-                <h4>Lembrete de Reunião/Agendamento</h4>
-                <p>Envia WhatsApp 2 horas antes do compromisso e pede confirmação.</p>
-              </div>
-            </div>
-            <div class="auto-stats">
-              <div class="stat-block">
-                <span>Gatilhos (7d)</span>
-                <strong>120</strong>
-              </div>
-              <div class="stat-block" style="margin-right: 1.5rem;">
-                <span>Confirm.</span>
-                <strong>98%</strong>
-              </div>
-              <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="auto-item" style="opacity: 0.6;">
-            <div class="auto-info">
-              <div class="auto-icon" style="background: rgba(255,255,255,0.05);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#666"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div class="auto-text">
-                <h4>Resgate de Carrinho Abandonado (Integração)</h4>
-                <p>Envia oferta após 24h sem fechamento.</p>
-              </div>
-            </div>
-            <div class="auto-stats">
-              <div class="stat-block">
-                <span>Gatilhos (7d)</span>
-                <strong>0</strong>
-              </div>
-              <div class="stat-block" style="margin-right: 1.5rem;">
-                <span>Conversão</span>
-                <strong>0%</strong>
-              </div>
-              <label class="switch">
-                <input type="checkbox">
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="auto-item" style="border-color: rgba(124,58,237,0.3); background: rgba(124,58,237,0.02);">
-            <div class="auto-info">
-              <div class="auto-icon" style="background: rgba(124,58,237,0.15);">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round" stroke-linejoin="round" stroke="var(--accent-primary)"/></svg>
-              </div>
-              <div class="auto-text">
-                <h4>Motor de Recompra (LTV) <span class="tag hot" style="background:rgba(239,68,68,0.1);color:#EF4444;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;margin-left:0.5rem;vertical-align:middle;">Novo</span></h4>
-                <p>Resgata clientes inativos automaticamente via WhatsApp.</p>
-              </div>
-            </div>
-            <div class="auto-stats">
-              <button class="btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; margin-right: 1rem; cursor: pointer; background: rgba(255,255,255,0.05); color: #FFF; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;" onclick="document.getElementById('modal-ltv').style.display='flex'">Configurar Campanha</button>
-              <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-
+          <!-- Dynamic automations list -->
         </div>
-      </div>
-    </main>
-  </div>
 
-  <!-- Modal: Motor de Recompra (LTV) -->
-  <div id="modal-ltv" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+        <div id="modal-ltv" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
     <div style="background: #111114; border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; width: 800px; max-width: 95vw; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8);">
       <div style="padding: 1.5rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; background: rgba(124,58,237,0.05);">
         <div>
@@ -563,10 +479,96 @@ Liberamos um cupom de 15% off exclusivo para você usar hoje. Bora aproveitar?</
         renderAutomations(items);
       }
     };
+  </script>
 
-    if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id) {
-      const automations = await loadCollectionForWorkspace(runtime.firebase, 'automations', runtime.snapshot.workspace.id);
-      renderAutomations(automations || []);
+  <script type="module">
+    import { initCockpitRuntime } from './cockpit-runtime.js';
+    const runtime = await initCockpitRuntime();
+    const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    hydrateCockpitPage(runtime);
+
+    const db = runtime?.firebase?.db;
+    const workspaceId = runtime?.snapshot?.workspace?.id;
+
+    if (db && workspaceId) {
+      const { 
+        collection, 
+        addDoc, 
+        updateDoc, 
+        doc, 
+        onSnapshot, 
+        serverTimestamp 
+      } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+
+      const autosRef = collection(db, 'workspaces', workspaceId, 'automations');
+
+      // Listen for automations in real time
+      onSnapshot(autosRef, (snapshot) => {
+        const list = [];
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          list.push({
+            id: docSnap.id,
+            name: data.name || 'Sem nome',
+            description: data.description || `Gatilho: ${data.trigger || 'Personalizado'}`,
+            isActive: Boolean(data.isActive ?? true),
+            triggerCount: Number(data.triggerCount || 0),
+            conversionRate: Number(data.conversionRate || 100)
+          });
+        });
+        window.ACESSOR_AUTOMACOES.setAutomations(list);
+      });
+
+      // Bind toggle active
+      window.ACESSOR_AUTOMACOES.toggleActive = async (autoId, isChecked) => {
+        try {
+          const autoDocRef = doc(db, 'workspaces', workspaceId, 'automations', autoId);
+          await updateDoc(autoDocRef, {
+            isActive: isChecked,
+            updatedAt: serverTimestamp()
+          });
+          console.log(`Automação ${autoId} toggled: ${isChecked}`);
+        } catch (err) {
+          console.error('Erro ao alternar status da automação:', err);
+        }
+      };
+
+      // Bind create
+      document.getElementById('btn-save-automation').addEventListener('click', async () => {
+        const nameInput = document.getElementById('new-auto-name');
+        const triggerSelect = document.getElementById('new-auto-trigger');
+        const activeCheck = document.getElementById('new-auto-active');
+
+        const name = nameInput.value.trim();
+        const trigger = triggerSelect.value;
+        const isActive = activeCheck.checked;
+
+        if (!name) {
+          nameInput.focus();
+          nameInput.style.borderColor = '#EF4444';
+          setTimeout(() => nameInput.style.borderColor = '', 1500);
+          return;
+        }
+
+        try {
+          await addDoc(autosRef, {
+            name,
+            trigger,
+            description: `Gatilho acionado ao detectar ${trigger}.`,
+            isActive,
+            triggerCount: 0,
+            conversionRate: 100,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+          
+          nameInput.value = '';
+          document.getElementById('modal-create-automation').style.display = 'none';
+        } catch (err) {
+          console.error('Erro ao salvar automação:', err);
+          alert('Erro ao criar automação.');
+        }
+      });
     }
   </script>
   <script type="module" src="./session-ui.js"></script>
@@ -762,5 +764,73 @@ Venda a usabilidade diária, o conforto e a realização de um espaço feito exc
       }
     })()
   </script>
+
+  <script>
+    (function() {
+      const trigger = document.getElementById('period-trigger');
+      const menu = document.getElementById('period-menu');
+      const label = document.getElementById('period-label');
+      
+      if (trigger && menu) {
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        menu.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-period]');
+          if (btn) {
+            label.textContent = btn.textContent.trim();
+            menu.style.display = 'none';
+            // Custom event trigger if needed by metrics
+            const event = new CustomEvent('periodChange', { detail: btn.getAttribute('data-period') });
+            window.dispatchEvent(event);
+          }
+        });
+        
+        document.addEventListener('click', () => {
+          menu.style.display = 'none';
+        });
+      }
+    })();
+  </script>
+
+
+  <!-- Modal: Criar Automação -->
+  <div id="modal-create-automation" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div style="background: #111114; border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; width: 500px; max-width: 95vw; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); padding: 1.5rem 2rem;">
+      <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: #FFF; margin-bottom: 1rem;">Criar Nova Automação</h3>
+      
+      <div style="display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 1.5rem;">
+        <div>
+          <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">Nome da Automação</label>
+          <input type="text" id="new-auto-name" placeholder="Ex: Boas-vindas WhatsApp" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">Gatilho (Trigger)</label>
+          <select id="new-auto-trigger" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(15,15,35,0.98); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none; cursor: pointer;">
+            <option value="Primeira Mensagem">Primeira Mensagem</option>
+            <option value="Novo Lead Ganho">Novo Lead Ganho</option>
+            <option value="Agendamento Confirmado">Agendamento Confirmado</option>
+          </select>
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">Status Inicial</label>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <label class="switch">
+              <input type="checkbox" id="new-auto-active" checked>
+              <span class="slider"></span>
+            </label>
+            <span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">Ativa por padrão</span>
+          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; justify-content: flex-end; gap: 0.8rem;">
+        <button onclick="document.getElementById('modal-create-automation').style.display='none'" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 500;">Cancelar</button>
+        <button id="btn-save-automation" style="background: var(--accent-primary); border: none; color: #000; padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 700;">Salvar Automação</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

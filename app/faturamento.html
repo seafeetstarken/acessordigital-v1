@@ -227,12 +227,10 @@
       </div>
       
       <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
+      <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
       <div style="padding: 0 1.2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-top: 1rem;">
         <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.4rem;">Workspace</label>
-        <select style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: #FFF; border-radius: 6px; padding: 0.4rem; font-size: 0.85rem; outline: none; cursor: pointer;" onchange="location.href=this.value;">
-          <option value="dashboard.html" selected>Empresa BR (Demo)</option>
-          <option value="realizzati.html">Realizzati Móveis</option>
-        </select>
+        <div id="sidebar-workspace-name" class="skeleton-text" style="font-weight:600;font-size:0.95rem;"></div>
       </div>
       <div class="nav-section">
         <div class="nav-label">Visão Geral</div>
@@ -266,10 +264,7 @@
           Catálogo
         </a>
         <div class="nav-label">Inteligência</div>
-        <a href="realizzati.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          Realizzati Cockpit
-        </a>
+        
         <a href="analytics.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           Analytics
@@ -292,16 +287,25 @@
           Notificações
         </a>
       </div>
-      <div class="sidebar-footer">
-        <div class="user-profile">
-          <div class="avatar">?</div>
-          <div class="user-info">
-            <span>Conta ativa</span>
-            <small>Plano pendente</small>
-          </div>
-        </div>
-      </div>
-    </aside>
+      <div class="sidebar-footer" id="sidebar-footer" style="margin-top:auto; padding:1rem 0.8rem; border-top:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; gap:0.6rem;">
+  <div style="display:flex; align-items:center; gap:0.65rem;">
+    <div class="avatar" id="sidebar-avatar" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--accent-primary), #8B5CF6); display:flex; align-items:center; justify-content:center; font-weight:700; color:#FFF; font-size:0.8rem; flex-shrink:0;">?</div>
+    <div class="user-info" style="display:flex; flex-direction:column; flex-grow:1; min-width:0;">
+      <span id="sidebar-name" style="display:block; font-weight:600; color:#FFF; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+      <small id="sidebar-plan" style="color:var(--text-muted); font-size:0.72rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+      <small id="sidebar-email" style="color:rgba(255,255,255,0.3); font-size:0.65rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; justify-content:space-between; padding-top:0.4rem; border-top:1px solid rgba(255,255,255,0.02);">
+    <div id="sidebar-credits" style="display:flex; align-items:center; gap:4px; font-size:0.75rem; color:rgba(255,255,255,0.5);">
+      <span>⚡</span>
+      <span id="sidebar-credits-value" class="skeleton-text" style="width:60px; height:12px;"></span>
+    </div>
+    <button id="btn-logout" class="sidebar-logout" title="Sair" style="background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; padding:4px; border-radius:6px; display:flex; align-items:center; transition:all 0.2s;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+</div></aside>
 
     <!-- Main Content Wrapper -->
     <main class="main-wrapper">
@@ -342,7 +346,7 @@
           </div>
           <div class="current-plan-right">
             <div class="current-plan-price"><sup>R$</sup><span id="faturamento-price">129</span><span>/mês</span></div>
-            <button class="btn-outline">Cancelar Plano</button>
+            <button class="btn-outline" onclick="document.getElementById('modal-cancel-subscription').style.display='flex'; document.getElementById('cancel-reason').focus();">Cancelar Plano</button>
           </div>
         </div>
 
@@ -387,7 +391,7 @@
               <li>Consciência IA + Lead Scoring</li>
               <li>Suporte IA 24/7 + Tickets</li>
             </ul>
-            <button class="btn-plan btn-plan-purple">Assinar Semestral</button>
+            <button class="btn-plan btn-plan-purple" onclick="openUpgradeModal('Semestral (A Tração)', 109, 6)">Assinar Semestral</button>
           </div>
 
           <!-- Plano 3: A Escala -->
@@ -409,7 +413,7 @@
               <li>Consciência IA + Lead Scoring</li>
               <li>Suporte IA 24/7 + Tickets</li>
             </ul>
-            <button class="btn-plan btn-plan-orange">Assinar Anual</button>
+            <button class="btn-plan btn-plan-orange" onclick="openUpgradeModal('Anual (A Escala)', 89, 12)">Assinar Anual</button>
           </div>
 
         </div>
@@ -417,7 +421,7 @@
 
         <!-- Invoice History -->
         <div class="section-title" style="margin-top:2rem;">Histórico de Faturas</div>
-        <div class="invoice-list">
+        <div class="invoice-list" id="invoice-list-container">
           <div class="invoice-item">
             <div>
               <div class="invoice-date">Junho 2026</div>
@@ -447,11 +451,226 @@
     </main>
   </div>
 
+  <script>
+    // Global functions for modal UI interaction
+    let activeProrataUpgrade = null;
+    let activeBuyCredits = null;
+
+    window.openUpgradeModal = function(planTitle, monthlyPrice, monthsCount) {
+      const modal = document.getElementById('modal-upgrade-plan');
+      if (!modal) return;
+
+      document.getElementById('upgrade-plan-name').textContent = planTitle;
+
+      // Pro-rata calculation logic:
+      // Current plan: R$ 129/month. Suppose they are exactly halfway through the month.
+      // Pro-rata credit remaining: R$ 64.50.
+      const currentPlanPrice = 129.00;
+      const creditRemaining = 64.50;
+      const newPlanTotalPrice = monthlyPrice * monthsCount;
+      const totalDue = Math.max(0, newPlanTotalPrice - creditRemaining);
+
+      document.getElementById('upgrade-new-price').textContent = `R$ ${newPlanTotalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      document.getElementById('upgrade-prorata-credit').textContent = `- R$ ${creditRemaining.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      document.getElementById('upgrade-total-due').textContent = `R$ ${totalDue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+
+      activeProrataUpgrade = { planTitle, price: monthlyPrice, months: monthsCount, totalPaid: totalDue };
+      modal.style.display = 'flex';
+    };
+
+    window.buyCredits = function(amount, price) {
+      const modal = document.getElementById('modal-buy-credits');
+      if (!modal) return;
+
+      document.getElementById('recharge-credits-amount').textContent = amount;
+      activeBuyCredits = { amount, price };
+      modal.style.display = 'flex';
+    };
+  </script>
+
   <script type="module">
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
+
+    const db = runtime?.firebase?.db;
+    const workspaceId = runtime?.snapshot?.workspace?.id;
+
+    if (db && workspaceId) {
+      const { 
+        doc,
+        collection, 
+        addDoc, 
+        updateDoc,
+        onSnapshot, 
+        serverTimestamp 
+      } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+
+      // 1. Sincronizar dados do Workspace (Plano e Renovação)
+      const workspaceRef = doc(db, 'workspaces', workspaceId);
+      onSnapshot(workspaceRef, (snap) => {
+        if (!snap.exists()) return;
+        const data = snap.data();
+        
+        // Billing cycle calculation
+        const cycleStartStr = data.billing_cycle_start || new Date().toISOString();
+        const cycleStartDate = new Date(cycleStartStr);
+        // Next renewal is 1 month later
+        const nextRenewalDate = new Date(cycleStartDate.getFullYear(), cycleStartDate.getMonth() + 1, cycleStartDate.getDate());
+        const renewalFormatted = nextRenewalDate.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+        const planName = data.plan || 'O Teste — Mensal';
+        const planPrice = Number(data.plan_price || 129);
+
+        const planEl = document.getElementById('faturamento-plan');
+        const renewalEl = document.getElementById('faturamento-renewal');
+        const priceEl = document.getElementById('faturamento-price');
+
+        if (planEl) planEl.textContent = planName;
+        if (renewalEl) renewalEl.textContent = `Renova em ${renewalFormatted} · Cartão •••• 4242`;
+        if (priceEl) priceEl.textContent = planPrice;
+      });
+
+      // 2. Carregar Faturas (Transactions) do Firestore
+      const transactionsRef = collection(db, 'workspaces', workspaceId, 'transactions');
+      onSnapshot(transactionsRef, (snapshot) => {
+        const container = document.getElementById('invoice-list-container');
+        if (!container) return;
+
+        if (snapshot.empty) {
+          // Render default realistic invoices if collection is empty
+          container.innerHTML = `
+            <div class="invoice-item">
+              <div>
+                <div class="invoice-date">Junho 2026</div>
+                <div class="invoice-desc">O Teste — Mensal (Fatura Inicial)</div>
+              </div>
+              <div class="invoice-amount">R$ 129,00</div>
+              <span class="invoice-status paid">Pago</span>
+            </div>
+          `;
+          return;
+        }
+
+        const items = [];
+        snapshot.forEach(docSnap => {
+          const t = docSnap.data();
+          const d = t.createdAt ? new Date(t.createdAt.seconds * 1000) : new Date();
+          const dateStr = d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+          items.push({
+            id: docSnap.id,
+            date: dateStr,
+            description: t.description || 'Assinatura',
+            amount: Number(t.amount || 0),
+            status: t.status || 'Pago',
+            rawDate: d
+          });
+        });
+
+        // Sort descending
+        items.sort((a, b) => b.rawDate - a.rawDate);
+
+        container.innerHTML = items.map(item => {
+          const statusClass = item.status === 'Pago' ? 'paid' : item.status === 'Pendente' ? 'pending' : 'failed';
+          const label = item.status || 'Pago';
+          return `
+            <div class="invoice-item">
+              <div>
+                <div class="invoice-date">${item.date}</div>
+                <div class="invoice-desc">${item.description}</div>
+              </div>
+              <div class="invoice-amount">R$ ${item.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+              <span class="invoice-status ${statusClass}">${label}</span>
+            </div>
+          `;
+        }).join('');
+      });
+
+      // 3. Confirmar Cancelamento
+      document.getElementById('btn-confirm-cancel-subscription').addEventListener('click', async () => {
+        const reasonInput = document.getElementById('cancel-reason');
+        const reason = reasonInput.value.trim();
+
+        try {
+          const cancelRef = collection(db, 'workspaces', workspaceId, 'cancellations');
+          await addDoc(cancelRef, {
+            reason: reason || 'Nenhum motivo fornecido.',
+            cancelledAt: serverTimestamp()
+          });
+
+          await updateDoc(workspaceRef, {
+            planStatus: 'canceling',
+            updatedAt: serverTimestamp()
+          });
+
+          document.getElementById('modal-cancel-subscription').style.display = 'none';
+          alert('Sua assinatura foi programada para cancelamento ao final do ciclo corrente.');
+        } catch (err) {
+          console.error('Erro ao cancelar assinatura:', err);
+          alert('Erro ao registrar cancelamento.');
+        }
+      });
+
+      // 4. Confirmar Upgrade (Pro-rata)
+      document.getElementById('btn-confirm-upgrade').addEventListener('click', async () => {
+        if (!activeProrataUpgrade) return;
+
+        try {
+          // Add to transactions history
+          await addDoc(transactionsRef, {
+            description: `Upgrade para ${activeProrataUpgrade.planTitle}`,
+            amount: activeProrataUpgrade.totalPaid,
+            status: 'Pago',
+            createdAt: serverTimestamp()
+          });
+
+          // Update Plan details in Workspace
+          await updateDoc(workspaceRef, {
+            plan: activeProrataUpgrade.planTitle,
+            plan_price: activeProrataUpgrade.price,
+            billing_cycle_start: new Date().toISOString(),
+            updatedAt: serverTimestamp()
+          });
+
+          document.getElementById('modal-upgrade-plan').style.display = 'none';
+          alert(`Upgrade para o plano ${activeProrataUpgrade.planTitle} realizado com sucesso!`);
+        } catch (err) {
+          console.error('Erro ao realizar upgrade de plano:', err);
+          alert('Erro ao processar alteração de plano.');
+        }
+      });
+
+      // 5. Confirmar Recarga de Créditos (PIX paid simulation)
+      document.getElementById('btn-simulate-pix-paid').addEventListener('click', async () => {
+        if (!activeBuyCredits) return;
+
+        try {
+          // Increment credits balance in workspace
+          const currentBalance = Number(runtime.snapshot.workspace.credits_balance || 0);
+          const newBalance = currentBalance + activeBuyCredits.amount;
+
+          await updateDoc(workspaceRef, {
+            credits_balance: newBalance,
+            updatedAt: serverTimestamp()
+          });
+
+          // Write to transaction logs
+          await addDoc(transactionsRef, {
+            description: `Recarga de ${activeBuyCredits.amount} créditos avulsos`,
+            amount: activeBuyCredits.price,
+            status: 'Pago',
+            createdAt: serverTimestamp()
+          });
+
+          document.getElementById('modal-buy-credits').style.display = 'none';
+          alert(`Sucesso! ${activeBuyCredits.amount} créditos adicionados ao seu saldo.`);
+        } catch (err) {
+          console.error('Erro ao atualizar saldo de créditos:', err);
+          alert('Erro ao creditar recarga.');
+        }
+      });
+    }
   </script>
 
   <script type="module" src="./session-ui.js"></script>
@@ -647,5 +866,89 @@ Venda a usabilidade diária, o conforto e a realização de um espaço feito exc
       }
     })()
   </script>
+
+  <!-- Buy Extra Credits -->
+  <div style="margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.6rem;">
+    <div class="section-title">Créditos Extras Avulsos (Sem expiração)</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 0.6rem;">
+      <div class="glass-panel" style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(124,58,237,0.15); border-radius: 12px; background: rgba(124,58,237,0.02);">
+        <div>
+          <h4 style="color: #FFF; font-size: 0.95rem; margin-bottom: 0.3rem;">Pacote Starter (500 Créditos)</h4>
+          <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0;">⚡ 500 interações neurais de IA avulsas</p>
+        </div>
+        <div style="text-align: right; display: flex; flex-direction: column; gap: 8px;">
+          <strong style="color: var(--accent-primary); font-size: 1.2rem;">R$ 99,00</strong>
+          <button class="btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; border-radius:6px; cursor:pointer;" onclick="buyCredits(500, 99)">Comprar</button>
+        </div>
+      </div>
+      <div class="glass-panel" style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(249,115,22,0.15); border-radius: 12px; background: rgba(249,115,22,0.02);">
+        <div>
+          <h4 style="color: #FFF; font-size: 0.95rem; margin-bottom: 0.3rem;">Pacote Scale (1.500 Créditos)</h4>
+          <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0;">⚡ 1.500 interações neurais de IA avulsas</p>
+        </div>
+        <div style="text-align: right; display: flex; flex-direction: column; gap: 8px;">
+          <strong style="color: #F97316; font-size: 1.2rem;">R$ 249,00</strong>
+          <button class="btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; background: #F97316; border-color: #F97316; border-radius:6px; cursor:pointer;" onclick="buyCredits(1500, 249)">Comprar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Cancelamento de Plano -->
+  <div id="modal-cancel-subscription" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div style="background: #111114; border: 1px solid rgba(239,68,68,0.3); border-radius: 16px; width: 450px; max-width: 95vw; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); padding: 1.5rem 2rem;">
+      <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: #EF4444; margin-bottom: 0.5rem;">Cancelar Assinatura</h3>
+      <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 1.2rem;">Lamentamos que decida nos deixar. Por favor, diga-nos o motivo para melhorarmos nosso serviço.</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <textarea id="cancel-reason" placeholder="Qual o principal motivo do cancelamento?" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none; resize: none; min-height: 80px;"></textarea>
+      </div>
+      
+      <div style="display: flex; justify-content: flex-end; gap: 0.8rem;">
+        <button onclick="document.getElementById('modal-cancel-subscription').style.display='none'" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 500;">Manter Plano</button>
+        <button id="btn-confirm-cancel-subscription" style="background: #EF4444; border: none; color: #FFF; padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 700;">Cancelar Assinatura</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Upgrade de Plano (Pro-rata) -->
+  <div id="modal-upgrade-plan" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div style="background: #111114; border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; width: 450px; max-width: 95vw; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); padding: 1.5rem 2rem;">
+      <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: #FFF; margin-bottom: 0.5rem;">Alteração de Plano</h3>
+      <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 1.2rem;">Confirmar upgrade para o plano <strong id="upgrade-plan-name">Anual</strong></p>
+      
+      <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between;"><span style="color: rgba(255,255,255,0.6);">Valor do Novo Plano:</span><strong id="upgrade-new-price">R$ 0,00</strong></div>
+        <div style="display: flex; justify-content: space-between;"><span style="color: rgba(255,255,255,0.6);">Crédito Pro-rata Restante:</span><strong style="color: #10B981;" id="upgrade-prorata-credit">- R$ 0,00</strong></div>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 0.3rem 0;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.95rem;"><span style="color: #FFF; font-weight: 600;">Total a pagar agora:</span><strong style="color: var(--accent-primary);" id="upgrade-total-due">R$ 0,00</strong></div>
+      </div>
+      
+      <div style="display: flex; justify-content: flex-end; gap: 0.8rem;">
+        <button onclick="document.getElementById('modal-upgrade-plan').style.display='none'" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 500;">Voltar</button>
+        <button id="btn-confirm-upgrade" style="background: var(--accent-primary); border: none; color: #000; padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 700;">Confirmar Alteração</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Recarga de Créditos (PIX Sandbox) -->
+  <div id="modal-buy-credits" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div style="background: #111114; border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; width: 420px; max-width: 95vw; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); padding: 1.5rem 2rem; text-align: center;">
+      <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: #FFF; margin-bottom: 0.3rem;">Pagamento PIX Sandbox</h3>
+      <p style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 1.2rem;">Escaneie o QR Code abaixo para recarregar <span id="recharge-credits-amount">500</span> créditos.</p>
+      
+      <div style="background: #FFF; padding: 12px; border-radius: 12px; display: inline-block; margin: 0.5rem auto 1.2rem; width: 180px; height: 180px;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=156x156&data=acessordigital-sandbox-recharge-pix-payment" alt="QR Code PIX Sandbox" style="width: 156px; height: 156px; display: block; margin: 0 auto;">
+      </div>
+      
+      <p style="font-size: 0.85rem; color: #10B981; font-weight: 600; margin-bottom: 1.5rem;">⚡ Status: Aguardando pagamento (Sandbox automático)...</p>
+      
+      <div style="display: flex; gap: 0.8rem; justify-content: center;">
+        <button onclick="document.getElementById('modal-buy-credits').style.display='none'" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 500; width: 100%;">Cancelar</button>
+        <button id="btn-simulate-pix-paid" style="background: #10B981; border: none; color: #000; padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 700; width: 100%;">Confirmar Pagamento</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

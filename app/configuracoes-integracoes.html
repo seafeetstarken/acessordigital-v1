@@ -368,19 +368,6 @@
           <div class="topbar-sep"></div>
         </div>
         <div class="topbar-right">
-          <!-- Period Selector Dropdown -->
-          <div class="period-selector" id="period-selector" style="position:relative; display:inline-block; margin-right: 0.5rem;">
-            <button id="period-trigger" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); padding:0.4rem 0.8rem; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.75rem;">
-              <span id="period-label">Últimos 7 dias</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div id="period-menu" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; background:rgba(15,15,35,0.98); border:1px solid rgba(255,255,255,0.1); border-radius:8px; min-width:140px; z-index:100; overflow:hidden;">
-              <button data-period="today" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Hoje</button>
-              <button data-period="week" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Esta semana</button>
-              <button data-period="month" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Este mês</button>
-              <button data-period="custom" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Personalizado</button>
-            </div>
-          </div>
           <button class="tb-btn" id="btnNotifBell" title="Notificações">
             <div class="n-dot"></div>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
@@ -439,72 +426,125 @@
           </div>
           <!-- Right: Config Panel Content -->
           <div class="config-panels-wrapper">
-<!-- Panel: Workspace (G-HOF structure reference) -->
-            <div class="glass-card" id="panel-workspace">
-              <h3>Workspace</h3>
-              <p class="subtitle">Configurações gerais do seu workspace</p>
-
-              <!-- Logo Upload Row -->
-              <div class="logo-uploader">
-                <div class="logo-preview">A</div>
-                <div class="upload-btn-group">
-                  <button class="btn-upload">Alterar imagem</button>
+<!-- Panel: Integrações -->
+            <div class="glass-card" id="panel-integracoes">
+              <h3>Contas Conectadas</h3>
+              <p class="subtitle">Gerencie suas conexões de atendimento e tráfego pago</p>
+              
+              <div class="integrations-card-list" id="accountsIntegrationList">
+                
+                <!-- 1. WHATSAPP (Evolution API) -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(16,185,129,0.15); color: #10b981; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">WhatsApp</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Evolution API VPS Instance</div>
+                      </div>
+                    </div>
+                    <div id="waStatusMount">
+                      <button class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;" onclick="openWaPilotModal()">Conectar</button>
+                    </div>
+                  </div>
+                  <div id="waDetailsMount" style="display:none; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Status:</strong> <span style="color: #F59E0B;">Em desenvolvimento / Fase piloto</span></div>
+                  </div>
                 </div>
+
+                <!-- 2. MESSENGER (Facebook Page) -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;" id="cardMessenger">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(24,119,242,0.15); color: #1877f2; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">Facebook Messenger</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Chatbot de Atendimento Messenger</div>
+                      </div>
+                    </div>
+                    <div id="messengerStatusMount">
+                      <button id="connectMessengerBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>
+                    </div>
+                  </div>
+                  <div id="messengerDetailsMount" style="display:none; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Página Vinculada:</strong> <span id="messengerPageName" style="color: #FFF;">Nenhuma</span></div>
+                    <div><strong>Webhook Status:</strong> <span style="color: #10B981;">Ativo (messages, postbacks)</span></div>
+                  </div>
+                </div>
+
+                <!-- 3. INSTAGRAM DIRECT -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;" id="cardInstagram">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(225,48,108,0.15); color: #e1306c; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">Instagram Direct</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Chatbot de Atendimento Direct</div>
+                      </div>
+                    </div>
+                    <div id="instagramStatusMount">
+                      <button id="connectInstagramBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>
+                    </div>
+                  </div>
+                  <div id="instagramDetailsMount" style="display:none; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Conta Conectada:</strong> <span id="instagramAccountName" style="color: #FFF;">Nenhuma</span></div>
+                    <div><strong>Webhook Status:</strong> <span style="color: #10B981;">Ativo (instagram_messages)</span></div>
+                  </div>
+                </div>
+
+                <!-- 4. FACEBOOK ADS (Meta Ads) -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;" id="cardFacebookAds">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(24,119,242,0.15); color: #1877f2; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">Facebook Ads</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Meta Business Suite Ads Insights</div>
+                      </div>
+                    </div>
+                    <div id="fbAdsStatusMount">
+                      <button id="connectFbAdsBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>
+                    </div>
+                  </div>
+                  <div id="fbAdsDetailsMount" style="display:none; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Conectado como:</strong> <span id="fbAdsUser" style="color: #FFF;">Nenhum</span></div>
+                    <div><strong>Conta de Anúncios Ativa:</strong> <span id="fbAdsAccount" style="color: #FFF;">Nenhuma</span></div>
+                    <div><strong>Servidor de Integração (MCP):</strong> <code style="color: var(--accent-primary); font-size: 0.78rem;">https://meta-ads.mcp.acessordigital.com.br/</code></div>
+                  </div>
+                </div>
+
+                <!-- 5. GOOGLE ADS -->
+                <div class="integration-panel-card" style="display: flex; flex-direction: column; align-items: stretch; gap: 1rem; padding: 1.5rem;" id="cardGoogleAds">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="int-panel-left" style="display: flex; align-items: center; gap: 1rem;">
+                      <div class="int-panel-icon" style="background: rgba(245,158,11,0.15); color: #f59e0b; font-weight: bold; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                      </div>
+                      <div>
+                        <div class="int-panel-title" style="font-size: 1.05rem; font-weight: 600; color: #FFF;">Google Ads</div>
+                        <div class="int-panel-desc" style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Google Advertising Platform Insights</div>
+                      </div>
+                    </div>
+                    <div id="googleAdsStatusMount">
+                      <button id="connectGoogleAdsBtn" class="btn-primary" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>
+                    </div>
+                  </div>
+                  <div id="googleAdsDetailsMount" style="display:none; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); flex-direction: column; gap: 0.4rem;">
+                    <div><strong>Conectado como:</strong> <span id="googleAdsUser" style="color: #FFF;">Nenhum</span></div>
+                    <div><strong>Conta de Anúncios Ativa:</strong> <span id="googleAdsAccount" style="color: #FFF;">Nenhuma</span></div>
+                    <div><strong>Servidor de Integração (MCP):</strong> <code style="color: var(--accent-primary); font-size: 0.78rem;">https://google-ads.mcp.acessordigital.com.br/</code></div>
+                  </div>
+                </div>
+
               </div>
-
-              <!-- General details fields -->
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Nome do workspace</label>
-                  <input type="text" class="form-control" id="config-workspace-name" placeholder="Ex: Starken Tecnologia" value="">
-                </div>
-                <div class="form-group">
-                  <label>Slug</label>
-                  <input type="text" class="form-control" id="config-workspace-slug" placeholder="Ex: starken-tecnologia" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Website</label>
-                  <input type="text" class="form-control" id="config-workspace-site" placeholder="Ex: https://starkentech.com" value="">
-                </div>
-                <div class="form-group">
-                  <label>E-mail de suporte</label>
-                  <input type="email" class="form-control" id="config-support-email" placeholder="Ex: suporte@starkentech.com" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Fuso horário</label>
-                  <select class="form-control">
-                    <option>America/Sao_Paulo (GMT -3)</option>
-                    <option>America/Bahia (GMT -3)</option>
-                    <option>America/Manaus (GMT -4)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Idioma da Plataforma</label>
-                  <select class="form-control">
-                    <option>Português (BR)</option>
-                    <option>English (US)</option>
-                    <option>Español</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Horários de atendimento (A IA usa para responder)</label>
-                <textarea class="form-control" placeholder="Ex: Segunda a Sexta: 8h às 18h&#10;Sábado: 9h às 13h"></textarea>
-              </div>
-
-              <div class="form-group">
-                <label>Tabela de valores (A IA usa para informar preços)</label>
-                <textarea class="form-control" placeholder="Ex: Botox: R$600 a R$1.200&#10;Preenchimento labial: R$1.500"></textarea>
-              </div>
-
-              <button class="btn-primary">Salvar Alterações</button>
             </div>
 
             
@@ -517,8 +557,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Setup active menu item style
-      const tab = document.getElementById('tab-workspace');
+      const tab = document.getElementById('tab-integracoes');
       if (tab) tab.classList.add('active');
     });
   </script>
@@ -529,45 +568,197 @@
     hydrateCockpitPage(runtime);
 
     const workspace = runtime?.snapshot?.workspace;
-    if (workspace) {
-      document.getElementById('config-workspace-name').value = workspace.name || '';
-      document.getElementById('config-workspace-slug').value = workspace.slug || '';
-      document.getElementById('config-workspace-site').value = workspace.website || '';
-      document.getElementById('config-support-email').value = workspace.ownerEmail || '';
+    const isMetaConnected = Boolean(workspace?.metaUserAccessToken);
+
+    function triggerMetaOAuth() {
+      const workspaceId = workspace?.id || 'demo';
+      const clientId = '1005343792207733';
+      const redirectUri = encodeURIComponent(`${window.location.protocol}//${window.location.host}/api/auth-meta-callback`);
+      const scopes = 'pages_show_list,pages_read_engagement,pages_manage_metadata,pages_messaging,instagram_basic,instagram_manage_messages';
+      const authUrl = `https://www.facebook.com/v20.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&state=${workspaceId}&scope=${scopes}`;
+      
+      const width = 600;
+      const height = 750;
+      const left = (screen.width / 2) - (width / 2);
+      const top = (screen.height / 2) - (height / 2);
+      
+      window.open(
+        authUrl, 
+        'meta_oauth_popup', 
+        `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,status=yes`
+      );
     }
+
+    // Ouvinte de mensagem (postMessage) do Popup
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data === 'meta_oauth_success') {
+        alert('✅ Integração Meta realizada com sucesso!');
+        window.location.reload();
+      }
+    });
+
+    const setupMetaCard = (statusMountId, detailsMountId, textElementId, defaultText) => {
+      const statusMount = document.getElementById(statusMountId);
+      const detailsMount = document.getElementById(detailsMountId);
+      const textElement = document.getElementById(textElementId);
+
+      if (isMetaConnected) {
+        if (statusMount) {
+          statusMount.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.8rem;">
+              <span class="status-badge-inline" style="background: rgba(16,185,129,0.15); color: #10b981; padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 500;">
+                <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span> Conectado
+              </span>
+              <button class="btn-ghost disconnectMetaBtn" style="padding: 0.4rem; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          `;
+        }
+        if (detailsMount) detailsMount.style.display = 'flex';
+        if (textElement) textElement.textContent = workspace.activeMetaPageName || defaultText;
+      } else {
+        if (statusMount) {
+          statusMount.innerHTML = `<button class="btn-primary connectMetaTrigger" style="font-size: 0.8rem; padding: 0.45rem 1.2rem;">Conectar</button>`;
+        }
+      }
+    };
+
+    // WhatsApp Pilot modal toggle
+    window.openWaPilotModal = function() {
+      document.getElementById('modal-wa-pilot').style.display = 'flex';
+    };
+
+    // Google Ads connection modal triggers
+    const connectGadsBtn = document.getElementById('connectGoogleAdsBtn');
+    if (connectGadsBtn) {
+      connectGadsBtn.addEventListener('click', () => {
+        document.getElementById('modal-connect-google-ads').style.display = 'flex';
+        document.getElementById('gads-customer-id').focus();
+      });
+    }
+
+    const testGadsBtn = document.getElementById('btn-test-gads-connection');
+    if (testGadsBtn) {
+      testGadsBtn.addEventListener('click', async () => {
+        const idInput = document.getElementById('gads-customer-id');
+        const idVal = idInput.value.trim();
+
+        if (!idVal) {
+          idInput.focus();
+          idInput.style.borderColor = '#EF4444';
+          setTimeout(() => idInput.style.borderColor = '', 1500);
+          return;
+        }
+
+        // Simulate connection test
+        testGadsBtn.textContent = 'Testando conexão...';
+        testGadsBtn.disabled = true;
+
+        setTimeout(() => {
+          testGadsBtn.textContent = 'Testar Conexão';
+          testGadsBtn.disabled = false;
+          
+          document.getElementById('modal-connect-google-ads').style.display = 'none';
+          
+          // Switch UI state of Google Ads to Connected
+          const statusMount = document.getElementById('googleAdsStatusMount');
+          const detailsMount = document.getElementById('googleAdsDetailsMount');
+          const userSpan = document.getElementById('googleAdsUser');
+          const accountSpan = document.getElementById('googleAdsAccount');
+
+          if (statusMount) {
+            statusMount.innerHTML = `
+              <span class="status-badge-inline" style="background: rgba(16,185,129,0.15); color: #10b981; padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 500;">
+                <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span> Conectado
+              </span>`;
+          }
+          if (detailsMount) detailsMount.style.display = 'flex';
+          if (userSpan) userSpan.textContent = 'Cliente Google Ads Sandbox';
+          if (accountSpan) accountSpan.textContent = `Conta (${idVal})`;
+
+          alert(`✅ Conexão com a conta do cliente [${idVal}] testada com sucesso!`);
+        }, 1200);
+      });
+    }
+
+    setupMetaCard('messengerStatusMount', 'messengerDetailsMount', 'messengerPageName', 'Página do Facebook');
+    setupMetaCard('instagramStatusMount', 'instagramDetailsMount', 'instagramAccountName', '@instagram_business');
+    setupMetaCard('fbAdsStatusMount', 'fbAdsDetailsMount', 'fbAdsUser', 'Conta de Anúncios');
+
+    if (isMetaConnected) {
+      const fbAdsUser = document.getElementById('fbAdsUser');
+      const fbAdsAccount = document.getElementById('fbAdsAccount');
+      if (fbAdsUser) fbAdsUser.textContent = runtime?.profile?.displayName || runtime?.profile?.email || 'Usuário Meta';
+      if (fbAdsAccount) fbAdsAccount.textContent = workspace.activeMetaPageName ? `${workspace.activeMetaPageName} Ads Account` : 'Conta de Anúncios';
+    }
+
+    document.querySelectorAll('.connectMetaTrigger').forEach(el => {
+      el.addEventListener('click', triggerMetaOAuth);
+    });
+
+    document.querySelectorAll('.disconnectMetaBtn').forEach(el => {
+      el.addEventListener('click', async () => {
+        if (confirm('Tem certeza que deseja desconectar o Acessor Digital de todas as contas e canais da Meta?')) {
+          try {
+            const { doc, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+            const db = runtime.firebase.db;
+            await updateDoc(doc(db, 'workspaces', workspace.id), {
+              metaUserAccessToken: null,
+              metaPages: null,
+              activeMetaPageId: null,
+              activeMetaPageAccessToken: null,
+              activeMetaPageName: null,
+              activeInstagramAccountId: null,
+              updatedAt: new Date().toISOString()
+            });
+            alert('Contas Meta desconectadas com sucesso!');
+            window.location.reload();
+          } catch (err) {
+            alert('Erro ao desconectar: ' + err.message);
+          }
+        }
+      });
+    });
   </script>
     
   <script type="module" src="./session-ui.js"></script>
 
-  <script>
-    (function() {
-      const trigger = document.getElementById('period-trigger');
-      const menu = document.getElementById('period-menu');
-      const label = document.getElementById('period-label');
+  <!-- Modal: WhatsApp Piloto -->
+  <div id="modal-wa-pilot" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div style="background: #111114; border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; width: 450px; max-width: 95vw; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); padding: 1.5rem 2rem;">
+      <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #FFF; margin-bottom: 0.8rem; display:flex; align-items:center; gap:8px;">
+        <span>⚡</span> Integração em Desenvolvimento
+      </h3>
+      <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 1.5rem;">
+        Esta integração está atualmente em <strong>fase piloto</strong>. Para conectar o Evolution API ao seu número e ativar os disparos do WhatsApp, entre em contato com nosso suporte técnico.
+      </p>
+      <div style="display: flex; justify-content: flex-end;">
+        <button onclick="document.getElementById('modal-wa-pilot').style.display='none'" style="background: var(--accent-primary); border: none; color: #000; padding: 0.5rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 700;">Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Conectar Google Ads -->
+  <div id="modal-connect-google-ads" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div style="background: #111114; border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; width: 450px; max-width: 95vw; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); padding: 1.5rem 2rem;">
+      <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #FFF; margin-bottom: 0.5rem;">Vincular Conta Google Ads</h3>
+      <p style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 1.2rem;">Informe o ID da Conta do Cliente para testar a conexão com o Google Ads.</p>
       
-      if (trigger && menu) {
-        trigger.addEventListener('click', (e) => {
-          e.stopPropagation();
-          menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-        });
-        
-        menu.addEventListener('click', (e) => {
-          const btn = e.target.closest('[data-period]');
-          if (btn) {
-            label.textContent = btn.textContent.trim();
-            menu.style.display = 'none';
-            // Custom event trigger if needed by metrics
-            const event = new CustomEvent('periodChange', { detail: btn.getAttribute('data-period') });
-            window.dispatchEvent(event);
-          }
-        });
-        
-        document.addEventListener('click', () => {
-          menu.style.display = 'none';
-        });
-      }
-    })();
-  </script>
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <label style="display: block; font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 600;">ID do Cliente Google Ads</label>
+          <input type="text" id="gads-customer-id" placeholder="Ex: 123-456-7890" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+        </div>
+      </div>
+      
+      <div style="display: flex; justify-content: flex-end; gap: 0.8rem;">
+        <button onclick="document.getElementById('modal-connect-google-ads').style.display='none'" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 500;">Cancelar</button>
+        <button id="btn-test-gads-connection" style="background: var(--accent-primary); border: none; color: #000; padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 700;">Testar Conexão</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

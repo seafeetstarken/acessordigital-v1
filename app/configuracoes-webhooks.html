@@ -368,19 +368,6 @@
           <div class="topbar-sep"></div>
         </div>
         <div class="topbar-right">
-          <!-- Period Selector Dropdown -->
-          <div class="period-selector" id="period-selector" style="position:relative; display:inline-block; margin-right: 0.5rem;">
-            <button id="period-trigger" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.8); padding:0.4rem 0.8rem; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.75rem;">
-              <span id="period-label">Últimos 7 dias</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div id="period-menu" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; background:rgba(15,15,35,0.98); border:1px solid rgba(255,255,255,0.1); border-radius:8px; min-width:140px; z-index:100; overflow:hidden;">
-              <button data-period="today" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Hoje</button>
-              <button data-period="week" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Esta semana</button>
-              <button data-period="month" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Este mês</button>
-              <button data-period="custom" style="display:block; width:100%; text-align:left; padding:8px 12px; background:none; border:none; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.75rem;">Personalizado</button>
-            </div>
-          </div>
           <button class="tb-btn" id="btnNotifBell" title="Notificações">
             <div class="n-dot"></div>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
@@ -439,72 +426,14 @@
           </div>
           <!-- Right: Config Panel Content -->
           <div class="config-panels-wrapper">
-<!-- Panel: Workspace (G-HOF structure reference) -->
-            <div class="glass-card" id="panel-workspace">
-              <h3>Workspace</h3>
-              <p class="subtitle">Configurações gerais do seu workspace</p>
-
-              <!-- Logo Upload Row -->
-              <div class="logo-uploader">
-                <div class="logo-preview">A</div>
-                <div class="upload-btn-group">
-                  <button class="btn-upload">Alterar imagem</button>
-                </div>
+<!-- Panel: Webhooks -->
+            <div class="glass-card" id="panel-webhooks">
+              <h3>Webhooks</h3>
+              <p class="subtitle">Em desenvolvimento — disponível em breve.</p>
+              
+              <div style="border: 1px dashed rgba(255,255,255,0.08); border-radius: 12px; padding: 3rem; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.95rem; font-weight: 600;">
+                Disponível na próxima versão.
               </div>
-
-              <!-- General details fields -->
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Nome do workspace</label>
-                  <input type="text" class="form-control" id="config-workspace-name" placeholder="Ex: Starken Tecnologia" value="">
-                </div>
-                <div class="form-group">
-                  <label>Slug</label>
-                  <input type="text" class="form-control" id="config-workspace-slug" placeholder="Ex: starken-tecnologia" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Website</label>
-                  <input type="text" class="form-control" id="config-workspace-site" placeholder="Ex: https://starkentech.com" value="">
-                </div>
-                <div class="form-group">
-                  <label>E-mail de suporte</label>
-                  <input type="email" class="form-control" id="config-support-email" placeholder="Ex: suporte@starkentech.com" value="">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Fuso horário</label>
-                  <select class="form-control">
-                    <option>America/Sao_Paulo (GMT -3)</option>
-                    <option>America/Bahia (GMT -3)</option>
-                    <option>America/Manaus (GMT -4)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Idioma da Plataforma</label>
-                  <select class="form-control">
-                    <option>Português (BR)</option>
-                    <option>English (US)</option>
-                    <option>Español</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Horários de atendimento (A IA usa para responder)</label>
-                <textarea class="form-control" placeholder="Ex: Segunda a Sexta: 8h às 18h&#10;Sábado: 9h às 13h"></textarea>
-              </div>
-
-              <div class="form-group">
-                <label>Tabela de valores (A IA usa para informar preços)</label>
-                <textarea class="form-control" placeholder="Ex: Botox: R$600 a R$1.200&#10;Preenchimento labial: R$1.500"></textarea>
-              </div>
-
-              <button class="btn-primary">Salvar Alterações</button>
             </div>
 
             
@@ -517,8 +446,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Setup active menu item style
-      const tab = document.getElementById('tab-workspace');
+      const tab = document.getElementById('tab-webhooks');
       if (tab) tab.classList.add('active');
     });
   </script>
@@ -527,47 +455,8 @@
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
-
-    const workspace = runtime?.snapshot?.workspace;
-    if (workspace) {
-      document.getElementById('config-workspace-name').value = workspace.name || '';
-      document.getElementById('config-workspace-slug').value = workspace.slug || '';
-      document.getElementById('config-workspace-site').value = workspace.website || '';
-      document.getElementById('config-support-email').value = workspace.ownerEmail || '';
-    }
   </script>
     
   <script type="module" src="./session-ui.js"></script>
-
-  <script>
-    (function() {
-      const trigger = document.getElementById('period-trigger');
-      const menu = document.getElementById('period-menu');
-      const label = document.getElementById('period-label');
-      
-      if (trigger && menu) {
-        trigger.addEventListener('click', (e) => {
-          e.stopPropagation();
-          menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-        });
-        
-        menu.addEventListener('click', (e) => {
-          const btn = e.target.closest('[data-period]');
-          if (btn) {
-            label.textContent = btn.textContent.trim();
-            menu.style.display = 'none';
-            // Custom event trigger if needed by metrics
-            const event = new CustomEvent('periodChange', { detail: btn.getAttribute('data-period') });
-            window.dispatchEvent(event);
-          }
-        });
-        
-        document.addEventListener('click', () => {
-          menu.style.display = 'none';
-        });
-      }
-    })();
-  </script>
-
 </body>
 </html>

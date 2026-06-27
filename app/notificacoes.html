@@ -135,12 +135,10 @@
       </div>
       
       <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
+      <!-- Workspace Switcher Dropdown (Acessor Digital context toggle) -->
       <div style="padding: 0 1.2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-top: 1rem;">
         <label style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.25); font-weight: 700; display: block; margin-bottom: 0.4rem;">Workspace</label>
-        <select style="width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); color: #FFF; border-radius: 6px; padding: 0.4rem; font-size: 0.85rem; outline: none; cursor: pointer;" onchange="location.href=this.value;">
-          <option value="dashboard.html" selected>Empresa BR (Demo)</option>
-          <option value="realizzati.html">Realizzati Móveis</option>
-        </select>
+        <div id="sidebar-workspace-name" class="skeleton-text" style="font-weight:600;font-size:0.95rem;"></div>
       </div>
       <div class="nav-section">
         <div class="nav-label">Visão Geral</div>
@@ -174,10 +172,7 @@
           Catálogo
         </a>
         <div class="nav-label">Inteligência</div>
-        <a href="realizzati.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          Realizzati Cockpit
-        </a>
+        
         <a href="analytics.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           Analytics
@@ -200,16 +195,25 @@
           Notificações
         </a>
       </div>
-      <div class="sidebar-footer">
-        <div class="user-profile">
-          <div class="avatar">?</div>
-          <div class="user-info">
-            <span>Conta ativa</span>
-            <small>Plano pendente</small>
-          </div>
-        </div>
-      </div>
-    </aside>
+      <div class="sidebar-footer" id="sidebar-footer" style="margin-top:auto; padding:1rem 0.8rem; border-top:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; gap:0.6rem;">
+  <div style="display:flex; align-items:center; gap:0.65rem;">
+    <div class="avatar" id="sidebar-avatar" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--accent-primary), #8B5CF6); display:flex; align-items:center; justify-content:center; font-weight:700; color:#FFF; font-size:0.8rem; flex-shrink:0;">?</div>
+    <div class="user-info" style="display:flex; flex-direction:column; flex-grow:1; min-width:0;">
+      <span id="sidebar-name" style="display:block; font-weight:600; color:#FFF; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+      <small id="sidebar-plan" style="color:var(--text-muted); font-size:0.72rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+      <small id="sidebar-email" style="color:rgba(255,255,255,0.3); font-size:0.65rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></small>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; justify-content:space-between; padding-top:0.4rem; border-top:1px solid rgba(255,255,255,0.02);">
+    <div id="sidebar-credits" style="display:flex; align-items:center; gap:4px; font-size:0.75rem; color:rgba(255,255,255,0.5);">
+      <span>⚡</span>
+      <span id="sidebar-credits-value" class="skeleton-text" style="width:60px; height:12px;"></span>
+    </div>
+    <button id="btn-logout" class="sidebar-logout" title="Sair" style="background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; padding:4px; border-radius:6px; display:flex; align-items:center; transition:all 0.2s;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+</div></aside>
 
     <!-- Main Content Wrapper -->
     <main class="main-wrapper">
@@ -243,45 +247,8 @@
         </div>
 
         <div class="notif-list">
-          <div class="notif-item unread">
-            <div class="notif-dot" style="background:#EF4444"></div>
-            <div class="notif-body">
-              <div class="notif-title">João Silva precisou de atendimento humano</div>
-              <div class="notif-desc">A IA encontrou uma dúvida fora da base de conhecimento.</div>
-              <div class="notif-time">Há 5 minutos</div>
-            </div>
-          </div>
-          <div class="notif-item unread">
-            <div class="notif-dot" style="background:#7C3AED"></div>
-            <div class="notif-body">
-              <div class="notif-title">Novo lead qualificado — Empresa Beta LTDA</div>
-              <div class="notif-desc">Score IA: 88%. Valor estimado: R$ 800.</div>
-              <div class="notif-time">Há 1 hora</div>
-            </div>
-          </div>
-          <div class="notif-item unread">
-            <div class="notif-dot" style="background:#F59E0B"></div>
-            <div class="notif-body">
-              <div class="notif-title">Pico de atendimento detectado</div>
-              <div class="notif-desc">+340% acima da média. IA operando em plena capacidade.</div>
-              <div class="notif-time">Há 2 horas</div>
-            </div>
-          </div>
-          <div class="notif-item">
-            <div class="notif-dot" style="background:rgba(255,255,255,0.15)"></div>
-            <div class="notif-body">
-              <div class="notif-title">Relatório semanal disponível</div>
-              <div class="notif-desc">Confira as métricas da semana de 5 a 11 de Junho.</div>
-              <div class="notif-time">Ontem, 20:00</div>
-            </div>
-          </div>
-          <div class="notif-item">
-            <div class="notif-dot" style="background:rgba(255,255,255,0.15)"></div>
-            <div class="notif-body">
-              <div class="notif-title">Token WhatsApp renovado com sucesso</div>
-              <div class="notif-desc">Próxima renovação em 60 dias.</div>
-              <div class="notif-time">Há 3 dias</div>
-            </div>
+          <div style="text-align: center; padding: 4rem 1rem; color: rgba(255,255,255,0.4); font-size: 0.9rem;">
+            Nenhum alerta ou notificação pendente.
           </div>
         </div>
       </div>
