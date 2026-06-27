@@ -1,8 +1,22 @@
-﻿/**
- * api/meta-ads.js - Vercel Serverless Function
- * Proxy seguro para a Meta Marketing API (Graph API v23.0)
- * Token nunca exposto ao frontend.
- */
+import admin from 'firebase-admin';
+
+// Inicializar Firebase Admin SDK se não estiver inicializado
+if (!admin.apps.length) {
+  const serviceAccountKeyB64 = process.env.GA_SERVICE_ACCOUNT_KEY;
+  if (serviceAccountKeyB64) {
+    try {
+      const serviceAccountJson = Buffer.from(serviceAccountKeyB64, 'base64').toString('utf-8');
+      const serviceAccount = JSON.parse(serviceAccountJson);
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+      });
+      console.log('[meta-ads] Firebase Admin inicializado.');
+    } catch (err) {
+      console.error('[meta-ads] Erro Firebase Admin:', err);
+    }
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,18 +27,35 @@ export default async function handler(req, res) {
 
   res.setHeader('Access-Control-Allow-Origin', '*');
 
-  const token = process.env.META_MARKETING_TOKEN;
-  const accountId = process.env.META_AD_ACCOUNT_ID;
+  const query = req.method === 'POST' ? req.body : req.query;
+  const { workspaceId, endpoint = 'insights', date_preset = 'last_30d', fields, breakdown, limit = 50 } = query;
+
+  let token = process.env.META_MARKETING_TOKEN;
+  let accountId = process.env.META_AD_ACCOUNT_ID;
+
+  // Se workspaceId for fornecido, tentar carregar credenciais do Firestore (Multi-tenant)
+  if (workspaceId) {
+    try {
+      const db = admin.firestore();
+      const workspaceSnap = await db.collection('workspaces').doc(workspaceId).get();
+      if (workspaceSnap.exists) {
+        const data = workspaceSnap.data() || {};
+        if (data.metaUserAccessToken) {
+          token = data.metaUserAccessToken;
+          accountId = data.metaAdAccountId || data.activeMetaPageId || accountId;
+        }
+      }
+    } catch (dbErr) {
+      console.error('[meta-ads] Erro ao carregar credenciais do workspace no Firestore:', dbErr);
+    }
+  }
 
   if (!token || !accountId) {
     return res.status(500).json({
       error: 'META_MARKETING_TOKEN ou META_AD_ACCOUNT_ID nao configurado.',
-      hint: 'Adicione as variaveis de ambiente no painel Vercel -> Settings -> Environment Variables.'
+      hint: 'Adicione as variaveis de ambiente no painel Vercel ou conecte sua conta Meta Ads no painel.'
     });
   }
-
-  const query = req.method === 'POST' ? req.body : req.query;
-  const { endpoint = 'insights', date_preset = 'last_30d', fields, breakdown, limit = 50 } = query;
 
   const defaultFields = {
     insights: 'campaign_name,impressions,reach,clicks,spend,cpc,cpm,ctr,actions,date_start,date_stop',

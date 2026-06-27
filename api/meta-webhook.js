@@ -62,6 +62,28 @@ export default async function handler(req, res) {
         for (const entry of body.entry) {
           const pageId = entry.id;
           
+          // 1. Buscar dinamicamente qual workspace é o dono desta página ou conta de Instagram
+          const workspacesRef = db.collection('workspaces');
+          let workspaceQuery = await workspacesRef
+            .where('activeMetaPageId', '==', pageId)
+            .get();
+
+          if (workspaceQuery.empty) {
+            workspaceQuery = await workspacesRef
+              .where('activeInstagramAccountId', '==', pageId)
+              .get();
+          }
+
+          if (workspaceQuery.empty) {
+            console.warn(`[meta-webhook] Nenhum workspace ativo encontrado para o Page/IG ID: ${pageId}. Ignorando evento.`);
+            continue;
+          }
+
+          const workspaceDoc = workspaceQuery.docs[0];
+          const workspaceId = workspaceDoc.id;
+          const workspaceData = workspaceDoc.data() || {};
+          const pageAccessToken = workspaceData.activeMetaPageAccessToken || process.env.META_PAGE_ACCESS_TOKEN;
+
           // Tratar array 'messaging' (Messenger e Instagram Direct padrão)
           if (entry.messaging && Array.isArray(entry.messaging)) {
             for (const messagingEvent of entry.messaging) {
@@ -75,12 +97,12 @@ export default async function handler(req, res) {
                 
                 const channel = body.object === 'instagram' ? 'Instagram' : 'Messenger';
 
-                console.log(`[meta-webhook] Nova mensagem de ${senderId} no canal ${channel}: "${messageText}"`);
+                console.log(`[meta-webhook] Nova mensagem de ${senderId} no canal ${channel} (Workspace: ${workspaceId}): "${messageText}"`);
 
-                // 1. Procurar ou criar o Contato (Lead)
+                // 2. Procurar ou criar o Contato (Lead)
                 const contactsRef = db.collection('contacts');
                 const contactQuery = await contactsRef
-                  .where('workspaceId', '==', 'realizzati')
+                  .where('workspaceId', '==', workspaceId)
                   .where('phone', '==', senderId)
                   .get();
 
@@ -89,10 +111,10 @@ export default async function handler(req, res) {
 
                 if (contactQuery.empty) {
                   // Tentar buscar perfil do usuário no Facebook se for Messenger
-                  if (channel === 'Messenger' && process.env.META_PAGE_ACCESS_TOKEN) {
+                  if (channel === 'Messenger' && pageAccessToken) {
                     try {
                       const userProfileRes = await fetch(
-                        `https://graph.facebook.com/v23.0/${senderId}?fields=first_name,last_name&access_token=${process.env.META_PAGE_ACCESS_TOKEN}`
+                        `https://graph.facebook.com/v23.0/${senderId}?fields=first_name,last_name&access_token=${pageAccessToken}`
                       );
                       if (userProfileRes.ok) {
                         const profileData = await userProfileRes.json();
@@ -106,7 +128,7 @@ export default async function handler(req, res) {
                   }
 
                   const newContactDoc = await contactsRef.add({
-                    workspaceId: 'realizzati',
+                    workspaceId: workspaceId,
                     name: contactName,
                     phone: senderId,
                     channel: channel,
@@ -126,10 +148,10 @@ export default async function handler(req, res) {
                   console.log(`[meta-webhook] Contato existente encontrado com ID: ${contactId}`);
                 }
 
-                // 2. Procurar ou criar a Conversa
+                // 3. Procurar ou criar a Conversa
                 const conversationsRef = db.collection('conversations');
                 const conversationQuery = await conversationsRef
-                  .where('workspaceId', '==', 'realizzati')
+                  .where('workspaceId', '==', workspaceId)
                   .where('contactId', '==', contactId)
                   .get();
 
@@ -142,7 +164,7 @@ export default async function handler(req, res) {
 
                 if (conversationQuery.empty) {
                   await conversationsRef.add({
-                    workspaceId: 'realizzati',
+                    workspaceId: workspaceId,
                     contactId: contactId,
                     contactName: contactName,
                     summary: messageText,
