@@ -42,25 +42,122 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: 'Forbidden' });
   }
 
-  const { event, payment } = req.body || {};
+  const { event, payment, subscription } = req.body || {};
 
-  console.log(`[asaas-webhook] Evento recebido: ${event}`, JSON.stringify(payment));
+  console.log(`[asaas-webhook] Evento recebido: ${event}`);
 
-  if (!event || !payment) {
-    return res.status(400).json({ error: 'Bad Request: missing event or payment details' });
+  if (!event) {
+    return res.status(400).json({ error: 'Bad Request: missing event' });
   }
 
-  // 2. Filtrar apenas eventos de pagamento confirmado/recebido
+  const db = admin.firestore();
+
+  // 2. Tratar Evento: Cancelamento de Assinatura (SUBSCRIPTION_DELETED)
+  if (event === 'SUBSCRIPTION_DELETED') {
+    const workspaceId = subscription?.externalReference || '';
+    if (!workspaceId) {
+      console.warn('[asaas-webhook] Cancelamento de assinatura recebido sem externalReference.');
+      return res.status(200).json({ success: false, error: 'Missing subscription externalReference' });
+    }
+
+    try {
+      const workspaceRef = db.collection('workspaces').doc(workspaceId);
+      const workspaceSnap = await workspaceRef.get();
+
+      if (!workspaceSnap.exists) {
+        console.error(`[asaas-webhook] Workspace ${workspaceId} nao encontrado.`);
+        return res.status(404).json({ error: 'Workspace not found' });
+      }
+
+      // Alterar plano para Pendente e zerar créditos
+      await workspaceRef.update({
+        billingPlan: 'Pendente',
+        creditsBalance: 0,
+        updatedAt: new Date().toISOString()
+      });
+
+      const ownerUid = workspaceSnap.data()?.ownerUid;
+      if (ownerUid) {
+        await db.collection('users').doc(ownerUid).update({
+          plan: 'Pendente',
+          updatedAt: new Date().toISOString()
+        });
+      }
+
+      await db.collection('changelog_events').add({
+        workspaceId,
+        type: 'billing',
+        title: 'Assinatura Cancelada 🔴',
+        content: `A assinatura recorrente no Asaas foi cancelada. O plano foi rebaixado para Pendente e o saldo de créditos foi resetado.`,
+        createdAt: new Date().toISOString()
+      });
+
+      console.log(`[asaas-webhook] Assinatura cancelada com sucesso para o workspace ${workspaceId}.`);
+      return res.status(200).json({ success: true, message: 'Subscription cancelled successfully' });
+    } catch (err) {
+      console.error('[asaas-webhook] Erro ao processar cancelamento de assinatura:', err);
+      return res.status(500).json({ error: 'Internal Server Error', details: err.message });
+    }
+  }
+
+  // 3. Tratar Evento: Fatura Vencida / Não Paga (PAYMENT_OVERDUE)
+  if (event === 'PAYMENT_OVERDUE') {
+    const workspaceId = payment?.externalReference || '';
+    if (!workspaceId) {
+      console.warn('[asaas-webhook] Notificacao de vencimento sem externalReference.');
+      return res.status(200).json({ success: false, error: 'Missing payment externalReference' });
+    }
+
+    try {
+      const workspaceRef = db.collection('workspaces').doc(workspaceId);
+      const workspaceSnap = await workspaceRef.get();
+
+      if (!workspaceSnap.exists) {
+        return res.status(404).json({ error: 'Workspace not found' });
+      }
+
+      // Marcar como Vencido e zerar créditos operacionais
+      await workspaceRef.update({
+        billingPlan: 'Vencido',
+        creditsBalance: 0,
+        updatedAt: new Date().toISOString()
+      });
+
+      const ownerUid = workspaceSnap.data()?.ownerUid;
+      if (ownerUid) {
+        await db.collection('users').doc(ownerUid).update({
+          plan: 'Vencido',
+          updatedAt: new Date().toISOString()
+        });
+      }
+
+      await db.collection('changelog_events').add({
+        workspaceId,
+        type: 'billing',
+        title: 'Fatura Atrasada / Vencida ⚠️',
+        content: `A cobrança recorrente está vencida no Asaas. O cockpit foi suspenso temporariamente até a confirmação do pagamento.`,
+        createdAt: new Date().toISOString()
+      });
+
+      console.log(`[asaas-webhook] Workspace ${workspaceId} suspenso devido a fatura vencida.`);
+      return res.status(200).json({ success: true, message: 'Workspace suspended due to overdue payment' });
+    } catch (err) {
+      console.error('[asaas-webhook] Erro ao suspender workspace por vencimento:', err);
+      return res.status(500).json({ error: 'Internal Server Error', details: err.message });
+    }
+  }
+
+  // 4. Tratar Eventos de Sucesso: Pagamento Recebido/Confirmado
   const isPaymentConfirmed = event === 'PAYMENT_CONFIRMED' || event === 'PAYMENT_RECEIVED';
   if (!isPaymentConfirmed) {
     console.log(`[asaas-webhook] Ignorando evento secundario: ${event}`);
     return res.status(200).json({ success: true, message: `Ignored event: ${event}` });
   }
 
-  // 3. Obter ID do Workspace e Plano das Referências Externas
-  // Esperado no formato: "workspaceId" ou "workspaceId|NomeDoPlano"
-  let workspaceId = payment.externalReference || '';
-  let planName = 'Mensal'; // Plano padrão se não especificado
+  // Extrair ID do Workspace e Nome do Plano do externalReference
+  // Formato esperado: "workspaceId" ou "workspaceId|NomeDoPlano"
+  let workspaceId = payment?.externalReference || '';
+  let planName = 'Mensal';
 
   if (workspaceId.includes('|')) {
     const parts = workspaceId.split('|');
@@ -69,57 +166,44 @@ export default async function handler(req, res) {
   }
 
   if (!workspaceId) {
-    console.warn('[asaas-webhook] Pagamento recebido sem campo externalReference contendo o workspaceId.');
+    console.warn('[asaas-webhook] Pagamento recebido sem externalReference.');
     return res.status(200).json({ success: false, error: 'Missing externalReference' });
   }
 
-  const db = admin.firestore();
-
   try {
-    // 4. Prevenir Processamento Duplicado (Idempotência)
+    // Evitar Processamento Duplicado (Idempotência)
     const paymentLockRef = db.collection('asaas_payments').doc(payment.id);
     const paymentLockSnap = await paymentLockRef.get();
 
     if (paymentLockSnap.exists) {
-      console.log(`[asaas-webhook] Transacao ${payment.id} ja processada anteriormente.`);
+      console.log(`[asaas-webhook] Transacao ${payment.id} ja processada.`);
       return res.status(200).json({ success: true, message: 'Already processed' });
     }
 
-    // 5. Verificar se o Workspace existe no Firestore
     const workspaceRef = db.collection('workspaces').doc(workspaceId);
     const workspaceSnap = await workspaceRef.get();
 
     if (!workspaceSnap.exists) {
-      console.error(`[asaas-webhook] Workspace ${workspaceId} nao encontrado no banco.`);
       return res.status(404).json({ error: 'Workspace not found' });
     }
 
     const workspaceData = workspaceSnap.data() || {};
     const ownerUid = workspaceData.ownerUid;
 
-    // 6. Atualizar os dados do Workspace e adicionar créditos (500 créditos por plano contratado)
+    // Atualizar créditos (+500 créditos por fatura paga)
     await workspaceRef.update({
       billingPlan: planName,
       creditsBalance: admin.firestore.FieldValue.increment(500),
       updatedAt: new Date().toISOString()
     });
 
-    console.log(`[asaas-webhook] Workspace ${workspaceId} atualizado para o plano ${planName} (+500 creditos).`);
-
-    // 7. Atualizar o plano do usuário proprietário
     if (ownerUid) {
-      const userRef = db.collection('users').doc(ownerUid);
-      const userSnap = await userRef.get();
-      if (userSnap.exists) {
-        await userRef.update({
-          plan: planName,
-          updatedAt: new Date().toISOString()
-        });
-        console.log(`[asaas-webhook] Perfil do usuario dono ${ownerUid} atualizado para o plano ${planName}.`);
-      }
+      await db.collection('users').doc(ownerUid).update({
+        plan: planName,
+        updatedAt: new Date().toISOString()
+      });
     }
 
-    // 8. Gravar evento de faturamento no histórico operacional (changelog_events)
     const billingTypeMap = {
       CREDIT_CARD: 'Cartão de Crédito',
       PIX: 'Pix',
@@ -135,7 +219,7 @@ export default async function handler(req, res) {
       createdAt: new Date().toISOString()
     });
 
-    // 9. Marcar pagamento como processado
+    // Gravar trava de pagamento
     await paymentLockRef.set({
       workspaceId,
       value: payment.value,
@@ -145,11 +229,10 @@ export default async function handler(req, res) {
       processedAt: new Date().toISOString()
     });
 
-    console.log(`[asaas-webhook] Transacao ${payment.id} concluida com sucesso.`);
+    console.log(`[asaas-webhook] Transacao ${payment.id} processada com sucesso (+500 creditos).`);
     return res.status(200).json({ success: true, message: 'Workspace upgraded successfully' });
-
   } catch (err) {
-    console.error('[asaas-webhook] Erro crítico ao processar webhook do Asaas:', err);
+    console.error('[asaas-webhook] Erro ao processar pagamento confirmado:', err);
     return res.status(500).json({ error: 'Internal Server Error', details: err.message });
   }
 }
