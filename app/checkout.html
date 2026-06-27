@@ -859,15 +859,6 @@
             source: 'checkout-form'
           }, { merge: true });
 
-          // 4. Gravar evento de cobrança simulando webhook recebido do Asaas
-          await setDoc(doc(firebase.db, 'changelog_events', `event_${Date.now()}`), {
-            workspaceId,
-            type: 'billing',
-            title: 'Assinatura Ativada 🎉',
-            content: `Plano ${selectedPlanData.label} ativado com sucesso via Asaas (Checkout Transparente Sandbox). Quota de 500 créditos adicionada ao saldo.`,
-            createdAt: serverTimestamp()
-          });
-
           // 5. Configurar Sessão do Usuário
           const session = {
             access_token: await result.user.getIdToken().catch(() => 'firebase-session'),
