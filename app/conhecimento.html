@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -1083,7 +1083,13 @@
     import { initCockpitRuntime } from './cockpit-runtime.js';
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
+    const { loadCollectionForWorkspace } = await import('./firebase-data.js');
     hydrateCockpitPage(runtime);
+
+    if (runtime?.firebase?.db && runtime?.snapshot?.workspace?.id && window.ACESSOR_KNOWLEDGE?.setDocuments) {
+      const docs = await loadCollectionForWorkspace(runtime.firebase, 'knowledge_base', runtime.snapshot.workspace.id);
+      window.ACESSOR_KNOWLEDGE.setDocuments(docs || []);
+    }
   </script>
   <script type="module" src="./session-ui.js"></script>
     <!-- Script para adequacao de workspace dinamico (Realizzati Moveis exclusivo) -->

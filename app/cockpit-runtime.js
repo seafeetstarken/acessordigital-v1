@@ -176,17 +176,19 @@ async function buildSnapshot(firebase) {
     dealDocs,
     automationDocs,
     noteDocs,
-    eventDocs
+    eventDocs,
+    knowledgeDocs
   ] = await Promise.all([
     collectionDocs('contacts'),
     collectionDocs('conversations'),
     collectionDocs('deals'),
     collectionDocs('automations'),
     collectionDocs('session_notes'),
-    collectionDocs('changelog_events')
+    collectionDocs('changelog_events'),
+    collectionDocs('knowledge_base')
   ]);
 
-  snapshot.counts.knowledge = 0;
+  snapshot.counts.knowledge = knowledgeDocs.length;
   snapshot.counts.contacts = contactDocs.length;
   snapshot.counts.conversations = conversationDocs.length;
   snapshot.counts.dealsOpen = dealDocs.filter((deal) => deal.stage !== 'Fechado').length;

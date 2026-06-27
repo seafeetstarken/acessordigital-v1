@@ -293,6 +293,17 @@
     const runtime = await initCockpitRuntime();
     const { hydrateCockpitPage } = await import('./cockpit-hydrate.js');
     hydrateCockpitPage(runtime);
+
+    if (localStorage.getItem('acessor_session')) {
+      const notifList = document.querySelector('.notif-list');
+      if (notifList) {
+        notifList.innerHTML = `
+          <div style="text-align: center; padding: 4rem 1rem; color: rgba(255,255,255,0.4); font-size: 0.9rem;">
+            Nenhum alerta ou notificação pendente.
+          </div>
+        `;
+      }
+    }
   </script>
 
   <script type="module" src="./session-ui.js"></script>
