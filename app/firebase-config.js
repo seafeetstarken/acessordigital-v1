@@ -5,5 +5,5 @@ export const FIREBASE_CONFIG = {
   storageBucket: "acessordigital-v1.firebasestorage.app",
   messagingSenderId: "646046956718",
   appId: "1:646046956718:web:473bb10954d7007989413f",
-  measurementId: "G-LPVXBN8LV3"
+  measurementId: "G-8EMHSG4B54"
 };
