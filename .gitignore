@@ -2,3 +2,10 @@
 
 # Orchestra Automations
 /skills/
+
+# Credentials and Local Environment Files
+.env
+.env.local
+gcp-service-account.json
+seafeet-starken-core-*.json
+client_secret_*.json
