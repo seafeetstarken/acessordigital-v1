@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     const token = req.query['hub.verify_token'];
     const challenge = req.query['hub.challenge'];
 
-    const expectedVerifyToken = process.env.META_WEBHOOK_VERIFY_TOKEN || 'realizzati_verify_token';
+    const expectedVerifyToken = process.env.META_WEBHOOK_VERIFY_TOKEN || 'acessor_digital_verify_token';
 
     if (mode && token) {
       if (mode === 'subscribe' && token === expectedVerifyToken) {
