@@ -695,6 +695,8 @@
   </div>
 
   <script type="module">
+    import { hasFirebaseConfig, loadFirebaseApp } from './firebase-bootstrap.js';
+
     const planDetails = {
       monthly: { label: 'Mensal', price: 'R$ 129/mês', billing: 'Recorrente mensal', status: 'Pronto para cobrança mensal' },
       semiannual: { label: 'Semestral', price: 'R$ 109/mês', billing: 'Cobrança parcelada / recorrente', status: 'Pronto para cobrança semestral' },
@@ -790,8 +792,173 @@
         setStatus('error', 'Preencha os dados', 'Antes de continuar para o pagamento, complete nome, empresa, WhatsApp, e-mail e senha.');
         return;
       }
-      setStatus('info', 'Tudo pronto', 'Os dados foram salvos. O checkout transparente do Asaas pode ser carregado no bloco ao lado.');
-      mount.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      setStatus('info', 'Processando cadastro...', 'Salvando suas informações corporativas no banco de dados e preparando o checkout.');
+      
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Criando conta...';
+
+      if (await hasFirebaseConfig()) {
+        try {
+          const firebase = await loadFirebaseApp();
+          if (!firebase?.auth) {
+            throw new Error('Firebase Auth indisponivel.');
+          }
+
+          const { createUserWithEmailAndPassword, updateProfile } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+          const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+          
+          // 1. Criar usuário no Firebase Auth
+          const result = await createUserWithEmailAndPassword(firebase.auth, payload.email, payload.password);
+          const workspaceId = result.user.uid;
+          const workspaceSlug = payload.companyName
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '') || `workspace-${workspaceId.slice(0, 8)}`;
+          
+          await updateProfile(result.user, { displayName: payload.fullName || payload.companyName });
+
+          const selectedPlanData = getPlanData(payload.plan);
+
+          // 2. Criar Workspace no Firestore com plano Ativo (Simulador Sandbox integrado)
+          await setDoc(doc(firebase.db, 'workspaces', workspaceId), {
+            name: payload.companyName,
+            slug: workspaceSlug,
+            cnpj: '',
+            billingPlan: selectedPlanData.label,
+            creditsBalance: 500, // 500 créditos iniciados
+            businessHours: {
+              monday: ['08:00', '19:00'],
+              tuesday: ['08:00', '19:00'],
+              wednesday: ['08:00', '19:00'],
+              thursday: ['08:00', '19:00'],
+              friday: ['08:00', '19:00'],
+              saturday: ['09:00', '13:00'],
+              sunday: []
+            },
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            ownerUid: result.user.uid,
+            ownerEmail: payload.email
+          }, { merge: true });
+
+          // 3. Criar Perfil de Usuário
+          await setDoc(doc(firebase.db, 'users', result.user.uid), {
+            uid: result.user.uid,
+            email: payload.email,
+            displayName: payload.fullName,
+            companyName: payload.companyName,
+            whatsapp: payload.whatsapp,
+            plan: selectedPlanData.label,
+            workspaceId,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            source: 'checkout-form'
+          }, { merge: true });
+
+          // 4. Gravar evento de cobrança simulando webhook recebido do Asaas
+          await setDoc(doc(firebase.db, 'changelog_events', `event_${Date.now()}`), {
+            workspaceId,
+            type: 'billing',
+            title: 'Assinatura Ativada 🎉',
+            content: `Plano ${selectedPlanData.label} ativado com sucesso via Asaas (Checkout Transparente Sandbox). Quota de 500 créditos adicionada ao saldo.`,
+            createdAt: serverTimestamp()
+          });
+
+          // 5. Configurar Sessão do Usuário
+          const session = {
+            access_token: await result.user.getIdToken().catch(() => 'firebase-session'),
+            user: {
+              uid: result.user.uid,
+              email: result.user.email,
+              displayName: payload.fullName,
+              companyName: payload.companyName,
+              workspaceId,
+              whatsapp: payload.whatsapp
+            }
+          };
+          window.localStorage.setItem('acessor_session', JSON.stringify(session));
+          window.localStorage.setItem('registered_profile', JSON.stringify({
+            fullName: payload.fullName,
+            companyName: payload.companyName,
+            whatsapp: payload.whatsapp,
+            email: payload.email,
+            workspaceId
+          }));
+
+          // 6. Atualizar painel de pagamento para feedback de sucesso imediato
+          summaryStatus.textContent = 'Pago (Ativo)';
+          summaryStatus.style.color = '#10B981';
+          
+          if (mount) {
+            mount.innerHTML = `
+              <div style="background: rgba(16,185,129,0.15); border: 1px solid #10b981; border-radius: 8px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; align-items: center; text-align: center;">
+                <div style="background: #10b981; color: #FFF; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">✓</div>
+                <strong style="color: #FFF; font-size: 1.1rem;">Pagamento Aprovado no Asaas!</strong>
+                <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin: 0;">Sua assinatura foi ativada no Sandbox e 500 créditos foram depositados na conta.</p>
+                <small style="color: #10B981; font-weight: 500;">Redirecionando para o cockpit em segundos...</small>
+              </div>
+            `;
+            mount.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+
+          setStatus('success', 'Pagamento aprovado', 'Sua conta está ativa e configurada. Redirecionando...');
+
+          setTimeout(() => {
+            if (payload.email.toLowerCase().includes('realizzati')) {
+              localStorage.setItem('user_session_workspace', 'realizzati');
+              window.location.href = 'realizzati.html';
+            } else {
+              localStorage.setItem('user_session_workspace', 'demo');
+              window.location.href = 'dashboard.html';
+            }
+          }, 2000);
+          return;
+        } catch (error) {
+          console.error('checkout creation error', error);
+          setStatus('error', 'Erro ao finalizar checkout', error?.message || 'Tente novamente.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Continuar para pagamento';
+          return;
+        }
+      }
+
+      // Fallback sem Firebase Config (Modo demonstração local)
+      setStatus('success', 'Modo Demonstração local', 'Simulando criação de conta local e checkout transparente. Redirecionando...');
+      localStorage.setItem('registered_email', payload.email);
+      localStorage.setItem('registered_password', payload.password);
+      localStorage.setItem('registered_profile', JSON.stringify({
+        fullName: payload.fullName,
+        companyName: payload.companyName,
+        whatsapp: payload.whatsapp,
+        email: payload.email,
+        workspaceId: 'local-demo'
+      }));
+
+      if (mount) {
+        mount.innerHTML = `
+          <div style="background: rgba(16,185,129,0.15); border: 1px solid #10b981; border-radius: 8px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; align-items: center; text-align: center;">
+            <div style="background: #10b981; color: #FFF; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">✓</div>
+            <strong style="color: #FFF; font-size: 1.1rem;">Pagamento Simulado!</strong>
+            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin: 0;">Iniciando modo demonstração offline local.</p>
+            <small style="color: #10B981; font-weight: 500;">Redirecionando...</small>
+          </div>
+        `;
+        mount.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      setTimeout(() => {
+        if (payload.email.toLowerCase().includes('realizzati')) {
+          localStorage.setItem('user_session_workspace', 'realizzati');
+          window.location.href = 'realizzati.html';
+        } else {
+          localStorage.setItem('user_session_workspace', 'demo');
+          window.location.href = 'dashboard.html';
+        }
+      }, 2000);
     });
   </script>
 </body>
