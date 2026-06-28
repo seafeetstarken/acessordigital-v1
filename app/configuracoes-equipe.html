@@ -579,6 +579,8 @@
         btnInviteSubmit.addEventListener('click', () => {
           const name = document.getElementById('inviteName').value.trim();
           const email = document.getElementById('inviteEmail').value.trim();
+          const whatsapp = document.getElementById('inviteWhatsapp').value.trim();
+          const password = document.getElementById('invitePassword').value.trim();
           const role = document.getElementById('inviteRole').value;
 
           if (name && email) {
@@ -586,6 +588,8 @@
             members.push({
               name: name,
               email: email,
+              whatsapp: whatsapp,
+              password: password,
               role: role,
               status: "Convidado"
             });
@@ -595,7 +599,11 @@
             // Clear inputs & hide modal
             document.getElementById('inviteName').value = '';
             document.getElementById('inviteEmail').value = '';
+            document.getElementById('inviteWhatsapp').value = '';
+            document.getElementById('invitePassword').value = '';
             inviteModal.classList.add('hidden');
+          } else {
+            alert('Por favor, preencha o Nome e E-mail.');
           }
         });
       }
@@ -640,5 +648,54 @@
     })();
   </script>
 
+  <!-- Invite Member Modal -->
+  <div class="modal-overlay hidden" id="inviteMemberModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div class="modal-card" style="background: #111114; border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; width: 450px; max-width: 95vw; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); padding: 1.5rem 2rem;">
+      <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: #FFF; margin-bottom: 0.5rem;">Convidar Membro</h3>
+      <p style="font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-bottom: 1.2rem;">Cadastre as credenciais de acesso do novo colaborador.</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <label class="form-label" style="display: block; font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.3rem; font-weight: 600;">Nome e Sobrenome</label>
+          <input type="text" id="inviteName" class="form-input" placeholder="Ex: João Silva" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+        </div>
+        <div>
+          <label class="form-label" style="display: block; font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.3rem; font-weight: 600;">WhatsApp</label>
+          <input type="text" id="inviteWhatsapp" class="form-input" placeholder="Ex: (47) 99999-9999" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+        </div>
+        <div>
+          <label class="form-label" style="display: block; font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.3rem; font-weight: 600;">E-mail de Acesso</label>
+          <input type="email" id="inviteEmail" class="form-input" placeholder="Ex: joao@empresa.com" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+        </div>
+        <div>
+          <label class="form-label" style="display: block; font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.3rem; font-weight: 600;">Nova Senha</label>
+          <input type="password" id="invitePassword" class="form-input" placeholder="Defina a senha inicial" style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none;">
+        </div>
+        <div>
+          <label class="form-label" style="display: block; font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.3rem; font-weight: 600;">Nível de Acesso</label>
+          <select id="inviteRole" class="form-select" style="width: 100%; padding: 0.6rem 0.8rem; background: #111114; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #FFF; font-size: 0.85rem; outline: none; cursor: pointer;">
+            <option value="Agente" style="background:#111114; color:#fff;">Agente</option>
+            <option value="Administrador" style="background:#111114; color:#fff;">Administrador</option>
+            <option value="Proprietário" style="background:#111114; color:#fff;">Proprietário</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 0.5rem;">
+        <button id="btnInviteCancel" class="btn-cancel" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); padding: 0.5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 500;">Cancelar</button>
+        <button id="btnInviteSubmit" class="btn-primary" style="background: var(--accent-primary); border: none; color: #000; padding: 0.5rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 700;">Criar Acesso</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Utility class to control modal visibility */
+    #inviteMemberModal.hidden {
+      display: none !important;
+    }
+    #inviteMemberModal:not(.hidden) {
+      display: flex !important;
+    }
+  </style>
 </body>
 </html>
