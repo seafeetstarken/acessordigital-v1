@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Acessor Digital</title>
+  <title>Checkout Premium - Acessor Digital</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../tokens/acessor-tokens.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,484 +14,524 @@
     body {
       min-height: 100vh;
       background:
-        radial-gradient(circle at top left, rgba(124,58,237,0.18), transparent 32%),
-        radial-gradient(circle at top right, rgba(255,94,58,0.12), transparent 24%),
-        linear-gradient(180deg, rgba(10,10,12,0.98), rgba(8,8,10,1) 42%, rgba(8,8,10,1));
-      color: var(--text-main);
-      font-family: var(--font-body);
+        radial-gradient(circle at top left, rgba(139, 92, 246, 0.15), transparent 45%),
+        radial-gradient(circle at bottom right, rgba(245, 158, 11, 0.08), transparent 40%),
+        #0b0b0f;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
-    a { color: inherit; }
     .tech-grid {
       position: fixed;
       inset: 0;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 36px 36px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0) 100%);
-      opacity: 0.25;
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.8;
     }
     .page-shell {
       width: 100%;
-      max-width: 1240px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 1.4rem 1.2rem 2rem;
+      padding: 1.5rem 1rem 3rem;
       position: relative;
       z-index: 1;
     }
     .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
-      padding: 0.8rem 0 1.3rem;
-      backdrop-filter: blur(16px);
+      margin-bottom: 2rem;
     }
-    .brand-link {
-      display: inline-flex;
-      align-items: baseline;
-      text-decoration: none;
-      font-family: var(--font-display);
+    .brand {
+      font-family: 'Outfit', sans-serif;
       font-size: 1.6rem;
       font-weight: 800;
-      letter-spacing: -0.05em;
       color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.05em;
     }
     .brand-dot {
-      color: var(--accent-coral);
-      margin-left: 2px;
-      text-shadow: 0 0 10px rgba(255,94,58,0.5);
+      color: #8b5cf6;
+      text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
     }
-    .topbar-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.7rem 1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.82);
+    .btn-login {
+      padding: 0.5rem 1.1rem;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255,255,255,0.8);
       text-decoration: none;
       font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s;
     }
-    .hero-shell {
-      background: linear-gradient(145deg, rgba(24,24,27,0.75), rgba(10,10,12,0.92));
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 1.8rem;
-      box-shadow: inset 0 0 40px rgba(0,0,0,0.36), 0 20px 40px rgba(0,0,0,0.3);
+    .btn-login:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
     }
-    .hero {
-      display: grid;
-      gap: 1rem;
-      margin-bottom: 0;
-    }
-    .hero-kicker {
-      font-family: var(--font-mono);
-      color: var(--accent-primary);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-size: 0.78rem;
-    }
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 4vw, 3.75rem);
-      line-height: 0.95;
-      letter-spacing: -0.05em;
-      max-width: 12ch;
-    }
-    .hero p {
-      color: rgba(255,255,255,0.62);
-      font-size: 1rem;
-      max-width: 60ch;
-      line-height: 1.6;
-    }
-    .hero-wrap {
+    
+    /* Layout */
+    .checkout-layout {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap: 1rem;
-      margin: 1rem 0 1.4rem;
-    }
-    .manifesto-box {
-      background: linear-gradient(145deg, rgba(24, 24, 27, 0.8), rgba(10, 10, 12, 0.9));
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 2rem;
-      border-radius: 18px;
-      box-shadow: inset 0 0 40px rgba(0,0,0,0.5), 0 20px 40px rgba(0,0,0,0.4);
-      overflow: hidden;
-      position: relative;
-    }
-    .manifesto-quote {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 2.8vw, 3.2rem);
-      line-height: 1.05;
-      color: var(--text-pure);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      max-width: 13ch;
-    }
-    .manifesto-quote span {
-      background: -webkit-linear-gradient(0deg, var(--accent-coral), var(--accent-primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .manifesto-text {
-      margin-top: 1rem;
-      color: rgba(255,255,255,0.72);
-      max-width: 58ch;
-      line-height: 1.65;
-      font-size: 0.98rem;
-    }
-    .hero-actions {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-      margin-top: 1.2rem;
-    }
-    .hero-side {
-      display: grid;
-      gap: 0.85rem;
-    }
-    .info-chip {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 0.95rem 1rem;
-    }
-    .info-chip strong { display: block; font-family: var(--font-display); }
-    .info-chip span { color: rgba(255,255,255,0.58); font-size: 0.8rem; line-height: 1.4; }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.8rem;
-      margin: 1.35rem 0 1.6rem;
-    }
-    .step {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 0.9rem;
-      display: flex;
-      gap: 0.85rem;
-      align-items: center;
-      min-height: 74px;
-    }
-    .step-badge {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-primary), #8B5CF6);
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      color: #fff;
-      flex-shrink: 0;
-    }
-    .step strong { display: block; margin-bottom: 0.15rem; font-size: 0.92rem; }
-    .step span { color: rgba(255,255,255,0.54); font-size: 0.8rem; line-height: 1.4; }
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr);
-      gap: 1rem;
+      gap: 1.8rem;
       align-items: start;
     }
-    .card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 22px;
-      padding: 1.35rem;
+    
+    .panel-card {
+      background: rgba(20, 20, 27, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 2rem;
       backdrop-filter: blur(16px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.28);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     }
-    .section-title {
-      font-family: var(--font-display);
+    
+    .title-row {
+      margin-bottom: 1.5rem;
+    }
+    .title-row h2 {
+      font-family: 'Outfit', sans-serif;
       font-size: 1.35rem;
-      letter-spacing: -0.04em;
-      margin-bottom: 0.9rem;
-    }
-    .section-copy {
-      color: rgba(255,255,255,0.58);
-      font-size: 0.93rem;
-      line-height: 1.6;
-      margin-bottom: 1.1rem;
-    }
-    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
-    .form-group { margin-bottom: 0.95rem; }
-    .form-group label {
-      display: block;
-      font-size: 0.86rem;
-      color: rgba(255,255,255,0.58);
-      margin-bottom: 0.45rem;
-      font-weight: 600;
-    }
-    .input {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(0,0,0,0.35);
       color: #fff;
-      padding: 0.88rem 1rem;
-      font: inherit;
-      outline: none;
-      transition: 0.18s ease;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
-    .input:focus {
-      border-color: rgba(124,58,237,0.7);
-      box-shadow: 0 0 0 4px rgba(124,58,237,0.12);
+    .title-row p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 0.2rem;
     }
-    .plans {
+    
+    .form-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.85rem;
-      margin: 1rem 0 1.1rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
-    .plan-card {
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.09);
-      background: rgba(255,255,255,0.025);
-      padding: 1rem;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+    .form-group label {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .input-field {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 0.75rem 0.95rem;
+      color: #fff;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .input-field:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    }
+    .input-field::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Plans selection */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .plan-selector-card {
+      position: relative;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.015);
+      padding: 1.1rem;
       cursor: pointer;
-      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-      min-height: 170px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
     }
-    .plan-card:hover { transform: translateY(-2px); border-color: rgba(124,58,237,0.35); }
-    .plan-card.active {
-      background: linear-gradient(180deg, rgba(124,58,237,0.14), rgba(255,255,255,0.03));
-      border-color: rgba(124,58,237,0.5);
-      box-shadow: 0 10px 28px rgba(124,58,237,0.12);
+    .plan-selector-card:hover {
+      border-color: rgba(139, 92, 246, 0.3);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .plan-selector-card.active {
+      background: linear-gradient(180deg, rgba(139, 92, 246, 0.1), rgba(255, 255, 255, 0.02));
+      border-color: #8b5cf6;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.12);
+    }
+    .plan-selector-card input[type="radio"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
     }
     .plan-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.3rem 0.6rem;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      color: #fff;
-      background: rgba(255,255,255,0.08);
-      margin-bottom: 0.75rem;
-    }
-    .plan-name { font-family: var(--font-display); font-size: 1.02rem; margin-bottom: 0.35rem; }
-    .plan-price { font-family: var(--font-display); font-size: 1.85rem; font-weight: 800; line-height: 1; margin-bottom: 0.35rem; }
-    .plan-price span { font-size: 0.82rem; color: rgba(255,255,255,0.52); font-weight: 500; }
-    .plan-desc { color: rgba(255,255,255,0.54); font-size: 0.82rem; line-height: 1.45; margin-bottom: 0.8rem; }
-    .plan-card ul { list-style: none; display: grid; gap: 0.45rem; }
-    .plan-card li { color: rgba(255,255,255,0.74); font-size: 0.8rem; line-height: 1.4; }
-    .plan-card li::before { content: '•'; color: var(--accent-primary); margin-right: 0.45rem; }
-    .checkout-actions {
-      display: flex;
-      gap: 0.8rem;
-      margin-top: 1.05rem;
-      flex-wrap: wrap;
-    }
-    .btn {
-      border: 0;
-      border-radius: 14px;
-      padding: 0.95rem 1.1rem;
+      align-self: flex-start;
+      font-size: 0.65rem;
       font-weight: 700;
+      color: #8b5cf6;
+      background: rgba(139, 92, 246, 0.15);
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.6rem;
+    }
+    .plan-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .plan-price-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .plan-price-label span {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 400;
+    }
+    .plan-desc-text {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 0.4rem;
+      line-height: 1.3;
+    }
+    
+    .btn-submit-account {
+      width: 100%;
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: #FFF;
+      border: none;
+      padding: 0.9rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 10px;
       cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
+      box-shadow: 0 10px 20px rgba(124, 58, 237, 0.25);
+      transition: all 0.2s;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      transition: transform 0.18s ease, opacity 0.18s ease;
+      gap: 8px;
     }
-    .btn:hover { transform: translateY(-1px); }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-hover));
-      color: #000;
-      box-shadow: 0 10px 24px rgba(124,58,237,0.28);
+    .btn-submit-account:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(124, 58, 237, 0.35);
     }
-    .btn-ghost {
-      background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.84);
-      border: 1px solid rgba(255,255,255,0.08);
+    .btn-submit-account:disabled {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.3);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
     }
-    .summary-list { display: grid; gap: 0.75rem; margin-top: 1rem; }
+    
+    /* Right Side Order Panel */
+    .order-side-panel {
+      position: relative;
+    }
+    .order-lock-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 11, 15, 0.85);
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+    .order-lock-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .order-lock-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    .order-lock-overlay h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    .order-lock-overlay p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.4);
+      max-width: 240px;
+      line-height: 1.4;
+    }
+    
+    /* Summary details */
+    .summary-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 1.5rem;
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+      padding: 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
     .summary-item {
       display: flex;
       justify-content: space-between;
-      gap: 1rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .summary-item:last-child { border-bottom: 0; padding-bottom: 0; }
-    .summary-item span { color: rgba(255,255,255,0.55); font-size: 0.84rem; }
-    .summary-item strong { font-size: 0.95rem; text-align: right; }
-    .payment-shell {
-      margin-top: 1rem;
-      border-radius: 18px;
-      border: 1px solid rgba(124,58,237,0.28);
-      background:
-        linear-gradient(180deg, rgba(124,58,237,0.12), rgba(0,0,0,0.28));
-      padding: 1rem;
-      min-height: 270px;
-      display: grid;
-      gap: 0.8rem;
-    }
-    .sandbox-card {
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.22);
-      padding: 0.95rem;
-      display: grid;
-      gap: 0.8rem;
-    }
-    .sandbox-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
       align-items: center;
+      font-size: 0.85rem;
     }
-    .sandbox-header strong { font-family: var(--font-display); font-size: 1rem; }
-    .sandbox-header span { color: rgba(255,255,255,0.54); font-size: 0.8rem; }
-    .sandbox-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.75rem;
+    .summary-item span {
+      color: rgba(255, 255, 255, 0.5);
     }
-    .sandbox-field {
-      display: grid;
-      gap: 0.35rem;
-    }
-    .sandbox-field label {
-      color: rgba(255,255,255,0.56);
-      font-size: 0.78rem;
-      font-weight: 600;
-    }
-    .sandbox-field input,
-    .sandbox-field select {
-      width: 100%;
-      border-radius: 11px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.03);
+    .summary-item strong {
       color: #fff;
-      padding: 0.78rem 0.9rem;
-      font: inherit;
-      outline: none;
-    }
-    .sandbox-field input::placeholder {
-      color: rgba(255,255,255,0.34);
-    }
-    .sandbox-actions {
-      display: flex;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-    }
-    .sandbox-summary {
-      display: grid;
-      gap: 0.4rem;
-      padding-top: 0.2rem;
-      color: rgba(255,255,255,0.64);
-      font-size: 0.84rem;
-      line-height: 1.5;
-    }
-    .sandbox-summary strong { color: #fff; }
-    .payment-shell .head {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      align-items: center;
-    }
-    .payment-shell .head strong { font-family: var(--font-display); font-size: 1rem; }
-    .payment-shell .head span { color: rgba(255,255,255,0.52); font-size: 0.8rem; }
-    .payment-box {
-      border-radius: 16px;
-      border: 1px dashed rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.2);
-      min-height: 180px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 1.2rem;
-    }
-    .payment-box strong { display: block; margin-bottom: 0.4rem; font-size: 0.98rem; }
-    .payment-box p { color: rgba(255,255,255,0.56); font-size: 0.86rem; line-height: 1.6; }
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .badge {
-      padding: 0.35rem 0.6rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.7);
-      font-size: 0.72rem;
       font-weight: 600;
     }
-    .status {
-      margin-top: 1rem;
-      border-radius: 14px;
-      padding: 0.9rem 1rem;
+    .summary-item.total {
+      margin-top: 0.4rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .summary-item.total strong {
+      color: var(--accent-primary, #8b5cf6);
+      font-size: 1.1rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+    }
+    
+    /* Checkout Tabs */
+    .payment-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.25rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      padding: 0.55rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .tab-btn:hover {
+      color: #fff;
+    }
+    .tab-btn.active {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    
+    /* Tabs Content */
+    .payment-tab-content {
       display: none;
-      line-height: 1.5;
+      min-height: 180px;
     }
-    .status.visible { display: block; }
-    .status.info {
-      background: rgba(124,58,237,0.1);
-      border: 1px solid rgba(124,58,237,0.24);
-      color: #e8ddff;
+    .payment-tab-content.active {
+      display: block;
     }
-    .status.success {
-      background: rgba(16,185,129,0.08);
-      border: 1px solid rgba(16,185,129,0.22);
-      color: #d6ffee;
+    
+    /* Pix Tab Content */
+    .pix-qr-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: rgba(0,0,0,0.15);
+      border: 1px dashed rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
     }
-    .status.error {
-      background: rgba(239,68,68,0.08);
-      border: 1px solid rgba(239,68,68,0.22);
+    .pix-qr-mock {
+      width: 120px;
+      height: 120px;
+      background: #fff;
+      padding: 8px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .pix-qr-mock svg {
+      width: 100%;
+      height: 100%;
+    }
+    .pix-copy-box {
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.8rem;
+    }
+    .pix-copy-text {
+      font-family: monospace;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 75%;
+    }
+    .btn-copy-pix {
+      background: transparent;
+      border: none;
+      color: #8b5cf6;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .btn-copy-pix:hover {
+      color: #a78bfa;
+    }
+    
+    /* Card Tab Content */
+    .card-inputs-grid {
+      display: grid;
+      gap: 0.85rem;
+      background: rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    
+    /* Webhook Simulator Dashboard */
+    .sandbox-simulator-card {
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.05), rgba(0, 0, 0, 0.3));
+      border-radius: 14px;
+      padding: 1.1rem;
+      margin-top: 1rem;
+    }
+    .sandbox-sim-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #f59e0b;
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-bottom: 0.4rem;
+    }
+    .sandbox-sim-header svg {
+      width: 14px;
+      height: 14px;
+    }
+    .sandbox-simulator-card p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.45;
+      margin-bottom: 1rem;
+    }
+    .btn-simulate-webhook {
+      width: 100%;
+      background: #f59e0b;
+      color: #000;
+      border: none;
+      padding: 0.65rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-simulate-webhook:hover {
+      background: #fab73d;
+      transform: translateY(-1px);
+    }
+    .btn-simulate-webhook:disabled {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.25);
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .status-toast {
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      margin-top: 1rem;
+      display: none;
+    }
+    .status-toast.visible {
+      display: block;
+    }
+    .status-toast.info {
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: #d8c8ff;
+    }
+    .status-toast.success {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      color: #d1ffd6;
+    }
+    .status-toast.error {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.2);
       color: #ffd1d1;
     }
-    .status strong { display: block; margin-bottom: 0.2rem; color: #fff; }
-    .asaas-placeholder {
-      display: grid;
-      gap: 0.8rem;
-      width: 100%;
-      max-width: 360px;
-      justify-items: center;
+    
+    @media (max-width: 900px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
     }
-    .asaas-placeholder .logo {
-      width: 56px;
-      height: 56px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(124,58,237,0.22), rgba(255,94,58,0.18));
-      border: 1px solid rgba(255,255,255,0.08);
-      display: grid;
-      place-items: center;
-      color: #fff;
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      font-weight: 800;
-    }
-    .small-note {
-      color: rgba(255,255,255,0.5);
-      font-size: 0.8rem;
-      line-height: 1.5;
-      margin-top: 0.8rem;
-    }
-    @media (max-width: 1080px) {
-      .layout { grid-template-columns: 1fr; }
-      .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 640px) {
-      .page-shell { padding-inline: 0.9rem; }
-      .topbar { flex-direction: column; align-items: flex-start; }
-      .grid-2, .plans, .steps { grid-template-columns: 1fr; }
-      .card { padding: 1rem; border-radius: 18px; }
-      .hero h1 { max-width: 100%; }
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .plans-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -499,458 +539,509 @@
   <div class="tech-grid"></div>
   <div class="page-shell">
     <header class="topbar">
-      <a href="../index.html" class="brand-link">acessor<span class="brand-dot">.</span></a>
-      <a href="./login.html" class="topbar-cta">Já tenho conta</a>
+      <a href="../index.html" class="brand">acessor<span class="brand-dot">.</span></a>
+      <a href="./login.html" class="btn-login">Já tenho conta</a>
     </header>
-
-    <div class="hero-wrap">
-      <section class="hero-shell">
-        <section class="hero">
-          <div class="hero-kicker">// cadastro + pagamento transparente</div>
-          <div class="manifesto-box">
-            <div class="manifesto-quote">Escolha seu plano e conclua tudo em uma <span>única tela</span>.</div>
-            <div class="manifesto-text">
-              Cadastre seus dados, selecione o plano e finalize com o checkout transparente do Asaas sem sair do fluxo.
-              Depois da confirmação, a conta é ativada e o cockpit fica liberado.
-            </div>
-            <div class="hero-actions">
-              <a href="#checkoutForm" class="btn btn-primary">Começar agora</a>
-              <a href="./login.html" class="btn btn-ghost">Já sou cliente</a>
-            </div>
-          </div>
-        </section>
-      </section>
-      <div class="hero-side">
-        <div class="info-chip">
-          <div>
-            <strong>Recorrência</strong>
-            <span>Mensal, semestral ou anual.</span>
-          </div>
-          <span class="badge">Ativação imediata</span>
+    
+    <div class="checkout-layout">
+      <!-- Left Column: Account + Plan -->
+      <div class="panel-card">
+        <div class="title-row">
+          <h2>1. Dados Cadastrais</h2>
+          <p>Informe suas credenciais para a criação do seu workspace.</p>
         </div>
-        <div class="info-chip">
-          <div>
-            <strong>Pagamento</strong>
-            <span>Checkout transparente Asaas embutido.</span>
+        
+        <form id="checkoutAccountForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="fullName">Nome Completo</label>
+              <input type="text" id="fullName" class="input-field" placeholder="Ex: João da Silva" required>
+            </div>
+            <div class="form-group">
+              <label for="companyName">Nome da Empresa</label>
+              <input type="text" id="companyName" class="input-field" placeholder="Ex: Starken Tec" required>
+            </div>
           </div>
-          <span class="badge">Sem saída da tela</span>
+          
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="whatsapp">WhatsApp Comercial</label>
+              <input type="tel" id="whatsapp" class="input-field" placeholder="Ex: (47) 99999-9999" required>
+            </div>
+            <div class="form-group">
+              <label for="email">E-mail Corporativo</label>
+              <input type="email" id="email" class="input-field" placeholder="Ex: joao@starkentec.com" required>
+            </div>
+          </div>
+          
+          <div class="form-group full">
+            <label for="password">Defina sua Senha</label>
+            <input type="password" id="password" class="input-field" placeholder="Mínimo de 8 caracteres" required>
+          </div>
+          
+          <div class="title-row" style="margin-top: 2rem;">
+            <h2>2. Seleção de Plano</h2>
+            <p>Selecione a recorrência desejada para habilitar o pagamento.</p>
+          </div>
+          
+          <div class="plans-grid">
+            <label class="plan-selector-card active" data-plan="monthly">
+              <input type="radio" name="plan" value="monthly" checked>
+              <div class="plan-tag">Flexível</div>
+              <div class="plan-title">Mensal</div>
+              <div class="plan-price-label">R$ 129<span>/mês</span></div>
+              <div class="plan-desc-text">Perfeito para iniciar e testar o cockpit sem compromisso de longo prazo.</div>
+            </label>
+            
+            <label class="plan-selector-card" data-plan="semiannual">
+              <input type="radio" name="plan" value="semiannual">
+              <div class="plan-tag" style="background:rgba(245,158,11,0.12); color:#F59E0B;">+ Escolhido</div>
+              <div class="plan-title">Semestral</div>
+              <div class="plan-price-label">R$ 109<span>/mês</span></div>
+              <div class="plan-desc-text">Excelente custo-benefício. Quota de 500 créditos inclusa mensalmente.</div>
+            </label>
+            
+            <label class="plan-selector-card" data-plan="annual">
+              <input type="radio" name="plan" value="annual">
+              <div class="plan-tag" style="background:rgba(16,185,129,0.12); color:#10B981;">Melhor Preço</div>
+              <div class="plan-title">Anual</div>
+              <div class="plan-price-label">R$ 89<span>/mês</span></div>
+              <div class="plan-desc-text">LTV estendido com o maior desconto. Cobrança recorrente a cada 12 meses.</div>
+            </label>
+          </div>
+          
+          <button type="submit" id="btnRegisterAccount" class="btn-submit-account">
+            Criar Conta & Liberar Pagamento →
+          </button>
+        </form>
+      </div>
+      
+      <!-- Right Column: Checkout + Sandbox -->
+      <div class="order-side-panel">
+        <!-- Overlay Lock -->
+        <div class="order-lock-overlay" id="paymentOverlayLock">
+          <div class="order-lock-icon">🔒</div>
+          <h4>Painel de Pagamento Bloqueado</h4>
+          <p>Preencha os dados do formulário ao lado e crie sua conta para liberar o checkout transparente do Asaas.</p>
         </div>
-        <div class="info-chip">
-          <div>
-            <strong>Pós-compra</strong>
-            <span>Webhook ativa o workspace automaticamente.</span>
+        
+        <div class="panel-card" style="min-height: 520px;">
+          <div class="title-row">
+            <h2>3. Resumo da Assinatura</h2>
+            <p>Conclua a ativação do seu workspace através do Asaas.</p>
           </div>
-          <span class="badge">Firebase + Asaas</span>
+          
+          <div class="summary-list">
+            <div class="summary-item">
+              <span>Plano Escolhido</span>
+              <strong id="summaryPlanName">Mensal</strong>
+            </div>
+            <div class="summary-item">
+              <span>Frequência</span>
+              <strong id="summaryPlanBilling">Recorrência Mensal</strong>
+            </div>
+            <div class="summary-item">
+              <span>Créditos Iniciais</span>
+              <strong>500 créditos</strong>
+            </div>
+            <div class="summary-item total">
+              <span>Valor da Fatura</span>
+              <strong id="summaryPlanTotal">R$ 129,00</strong>
+            </div>
+          </div>
+          
+          <div class="payment-tabs">
+            <button class="tab-btn active" data-tab-target="pix">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
+              Pix Copia e Cola
+            </button>
+            <button class="tab-btn" data-tab-target="card">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+              Cartão de Crédito
+            </button>
+          </div>
+          
+          <!-- Content Pix -->
+          <div class="payment-tab-content active" id="tab-pix">
+            <div class="pix-qr-container">
+              <div class="pix-qr-mock">
+                <!-- Simulado QR code SVG -->
+                <svg viewBox="0 0 100 100">
+                  <rect x="10" y="10" width="20" height="20" fill="#000" />
+                  <rect x="70" y="10" width="20" height="20" fill="#000" />
+                  <rect x="10" y="70" width="20" height="20" fill="#000" />
+                  <rect x="18" y="18" width="4" height="4" fill="#fff" />
+                  <rect x="78" y="18" width="4" height="4" fill="#fff" />
+                  <rect x="18" y="78" width="4" height="4" fill="#fff" />
+                  <!-- Random pixels -->
+                  <rect x="40" y="20" width="8" height="4" fill="#000" />
+                  <rect x="50" y="40" width="4" height="8" fill="#000" />
+                  <rect x="30" y="50" width="12" height="4" fill="#000" />
+                  <rect x="60" y="70" width="4" height="12" fill="#000" />
+                  <rect x="45" y="65" width="8" height="8" fill="#000" />
+                  <rect x="75" y="45" width="6" height="6" fill="#000" />
+                </svg>
+              </div>
+              <div class="pix-copy-box">
+                <span class="pix-copy-text" id="pixKeyString">00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407129.005802BR5916AcessorDigitalV26009SaoPaulo62070503***</span>
+                <button type="button" class="btn-copy-pix" onclick="copyPixKey()">Copiar</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Content Card -->
+          <div class="payment-tab-content" id="tab-card">
+            <div class="card-inputs-grid">
+              <div class="form-group" style="margin-bottom:0">
+                <label>Número do Cartão</label>
+                <input type="text" class="input-field" placeholder="4242 4242 4242 4242" value="4242 4242 4242 4242" disabled style="opacity: 0.7;">
+              </div>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div class="form-group" style="margin-bottom:0">
+                  <label>Vencimento</label>
+                  <input type="text" class="input-field" placeholder="MM/AA" value="12/32" disabled style="opacity: 0.7;">
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label>CVV</label>
+                  <input type="text" class="input-field" placeholder="123" value="123" disabled style="opacity: 0.7;">
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:0">
+                <label>Nome no Cartão</label>
+                <input type="text" id="cardHolderNameDisplay" class="input-field" placeholder="NOME DO TITULAR" disabled style="opacity: 0.7;">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Webhook Simulator Console -->
+          <div class="sandbox-simulator-card">
+            <div class="sandbox-sim-header">
+              <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"></path></svg>
+              <span>Console de Teste Sandbox (Asaas Webhook)</span>
+            </div>
+            <p>Como você está em modo de homologação sandbox, utilize o simulador para disparar o webhook HTTP `/api/asaas-webhook` e ativar o workspace no Firebase.</p>
+            <button type="button" id="btnTriggerWebhook" class="btn-simulate-webhook">
+              ⚡ Simular Confirmação de Pagamento
+            </button>
+          </div>
+          
+          <div id="checkoutStatusToast" class="status-toast info"></div>
         </div>
       </div>
-    </div>
-
-    <section class="steps" aria-label="Etapas do checkout">
-      <div class="step"><div class="step-badge">1</div><div><strong>Seus dados</strong><span>Nome, empresa, WhatsApp, e-mail e senha.</span></div></div>
-      <div class="step"><div class="step-badge">2</div><div><strong>Plano</strong><span>Mensal, semestral ou anual com resumo claro.</span></div></div>
-      <div class="step"><div class="step-badge">3</div><div><strong>Pagamento</strong><span>Checkout transparente Asaas embutido na tela.</span></div></div>
-      <div class="step"><div class="step-badge">4</div><div><strong>Ativação</strong><span>Pagamento aprovado, acesso liberado ao cockpit.</span></div></div>
-    </section>
-
-    <div class="layout">
-      <form id="checkoutForm" class="card">
-        <div class="section-title">1. Dados da conta</div>
-        <div class="section-copy">Use um e-mail corporativo para manter a conta vinculada ao workspace da sua operação.</div>
-
-        <div class="grid-2">
-          <div class="form-group">
-            <label for="fullName">Nome completo</label>
-            <input id="fullName" class="input" type="text" placeholder="Seu nome e sobrenome" required>
-          </div>
-          <div class="form-group">
-            <label for="companyName">Nome da empresa</label>
-            <input id="companyName" class="input" type="text" placeholder="Minha Loja S/A" required>
-          </div>
-        </div>
-
-        <div class="grid-2">
-          <div class="form-group">
-            <label for="whatsapp">WhatsApp comercial</label>
-            <input id="whatsapp" class="input" type="tel" placeholder="(00) 00000-0000" required>
-          </div>
-          <div class="form-group">
-            <label for="email">E-mail corporativo</label>
-            <input id="email" class="input" type="email" placeholder="contato@empresa.com.br" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="password">Crie sua senha</label>
-          <input id="password" class="input" type="password" placeholder="••••••••" required>
-        </div>
-
-        <div class="section-title" style="margin-top:1.4rem;">2. Escolha do plano</div>
-        <div class="section-copy">Selecione o plano que será usado no checkout e na criação do workspace.</div>
-
-        <div class="plans">
-          <label class="plan-card" data-plan-card="monthly">
-            <input type="radio" name="plan" value="monthly" hidden checked>
-            <div class="plan-tag">Teste</div>
-            <div class="plan-name">Mensal</div>
-            <div class="plan-price">R$ 129<span>/mês</span></div>
-            <div class="plan-desc">Ideal para começar rápido, com cobrança recorrente mensal.</div>
-            <ul>
-              <li>500 créditos/mês</li>
-              <li>Pagamento recorrente</li>
-              <li>PIX e cartão</li>
-            </ul>
-          </label>
-          <label class="plan-card active" data-plan-card="semiannual">
-            <input type="radio" name="plan" value="semiannual" hidden>
-            <div class="plan-tag">Mais escolhido</div>
-            <div class="plan-name">Semestral</div>
-            <div class="plan-price">R$ 109<span>/mês</span></div>
-            <div class="plan-desc">Melhor equilíbrio entre conversão e previsibilidade de caixa.</div>
-            <ul>
-              <li>500 créditos/mês por 6 meses</li>
-              <li>Parcela no cartão</li>
-              <li>Suporte IA 24/7</li>
-            </ul>
-          </label>
-          <label class="plan-card" data-plan-card="annual">
-            <input type="radio" name="plan" value="annual" hidden>
-            <div class="plan-tag">Melhor preço</div>
-            <div class="plan-name">Anual</div>
-            <div class="plan-price">R$ 89<span>/mês</span></div>
-            <div class="plan-desc">Plano de maior LTV, com desconto maior e recorrência anual.</div>
-            <ul>
-              <li>500 créditos/mês por 12 meses</li>
-              <li>Menor custo mensal</li>
-              <li>Suporte IA 24/7</li>
-            </ul>
-          </label>
-          <label class="plan-card" data-plan-card="custom">
-            <input type="radio" name="plan" value="custom" hidden>
-            <div class="plan-tag">Sob medida</div>
-            <div class="plan-name">Operação maior</div>
-            <div class="plan-price">Fale <span>com vendas</span></div>
-            <div class="plan-desc">Para quem quer negociar volume, múltiplos CNPJs ou implantação customizada.</div>
-            <ul>
-              <li>Plano customizado</li>
-              <li>Ativação guiada</li>
-              <li>Proposta comercial</li>
-            </ul>
-          </label>
-        </div>
-
-        <div class="checkout-actions">
-          <button type="submit" class="btn btn-primary">Continuar para pagamento</button>
-          <button type="button" id="saveDraftBtn" class="btn btn-ghost">Salvar rascunho</button>
-        </div>
-
-        <div id="checkoutStatus" class="status info" aria-live="polite"></div>
-      </form>
-
-      <aside class="card">
-        <div class="section-title">3. Resumo e checkout Asaas</div>
-        <div class="section-copy">
-          Aqui vai o checkout transparente do Asaas. Quando a integração estiver ligada, o bloco abaixo recebe o componente oficial sem sair da página.
-        </div>
-
-        <div class="summary-list">
-          <div class="summary-item"><span>Plano selecionado</span><strong id="summaryPlan">Semestral</strong></div>
-          <div class="summary-item"><span>Valor de referência</span><strong id="summaryPrice">R$ 109/mês</strong></div>
-          <div class="summary-item"><span>Modelo de cobrança</span><strong id="summaryBilling">Recorrente</strong></div>
-          <div class="summary-item"><span>Status</span><strong id="summaryStatus">Aguardando pagamento</strong></div>
-        </div>
-
-        <div class="payment-shell">
-          <div class="head">
-            <div>
-              <strong>Checkout transparente Asaas</strong>
-              <span id="asaasHint">Área pronta para embutir o SDK oficial.</span>
-            </div>
-            <span class="badge">Transparente</span>
-          </div>
-          <div class="payment-box" id="asaasCheckoutMount">
-          <div class="asaas-placeholder">
-            <div class="logo">A</div>
-            <div>
-              <strong>Checkout transparente Asaas</strong>
-              <p>
-                Aqui entra o componente oficial do Asaas quando a chave pública e o fluxo de cobrança estiverem conectados.
-                Enquanto isso, a tela já salva o rascunho e prepara a ativação.
-              </p>
-            </div>
-          </div>
-        </div>
-          <div class="badges">
-            <span class="badge">Cartão</span>
-            <span class="badge">Pix</span>
-            <span class="badge">Boleto</span>
-            <span class="badge">Recorrência</span>
-          </div>
-        </div>
-
-        <p class="small-note">
-          Fluxo recomendado: dados → plano → checkout → webhook Asaas → ativação automática do workspace.
-        </p>
-      </aside>
     </div>
   </div>
 
   <script type="module">
     import { hasFirebaseConfig, loadFirebaseApp } from './firebase-bootstrap.js';
 
+    // Pricing details mapping
     const planDetails = {
-      monthly: { label: 'Mensal', price: 'R$ 129/mês', billing: 'Recorrente mensal', status: 'Pronto para cobrança mensal' },
-      semiannual: { label: 'Semestral', price: 'R$ 109/mês', billing: 'Cobrança parcelada / recorrente', status: 'Pronto para cobrança semestral' },
-      annual: { label: 'Anual', price: 'R$ 89/mês', billing: 'Cobrança anual', status: 'Pronto para cobrança anual' },
-      custom: { label: 'Operação maior', price: 'Sob consulta', billing: 'Proposta comercial', status: 'Encaminhar para vendas' }
+      monthly: { label: 'Mensal', price: 'R$ 129,00', billing: 'Recorrente Mensal', total: 129.00 },
+      semiannual: { label: 'Semestral', price: 'R$ 109,00', billing: 'Recorrente Semestral (R$ 654,00/ciclo)', total: 654.00 },
+      annual: { label: 'Anual', price: 'R$ 89,00', billing: 'Recorrente Anual (R$ 1.068,00/ciclo)', total: 1068.00 }
     };
 
-    const form = document.getElementById('checkoutForm');
-    const saveDraftBtn = document.getElementById('saveDraftBtn');
-    const statusBox = document.getElementById('checkoutStatus');
-    const summaryPlan = document.getElementById('summaryPlan');
-    const summaryPrice = document.getElementById('summaryPrice');
-    const summaryBilling = document.getElementById('summaryBilling');
-    const summaryStatus = document.getElementById('summaryStatus');
-    const asaasHint = document.getElementById('asaasHint');
-    const mount = document.getElementById('asaasCheckoutMount');
-    const planInputs = Array.from(document.querySelectorAll('input[name="plan"]'));
-    const planCards = Array.from(document.querySelectorAll('.plan-card'));
+    const accountForm = document.getElementById('checkoutAccountForm');
+    const paymentOverlayLock = document.getElementById('paymentOverlayLock');
+    const btnRegisterAccount = document.getElementById('btnRegisterAccount');
+    const btnTriggerWebhook = document.getElementById('btnTriggerWebhook');
+    const statusToast = document.getElementById('checkoutStatusToast');
+    
+    const summaryPlanName = document.getElementById('summaryPlanName');
+    const summaryPlanBilling = document.getElementById('summaryPlanBilling');
+    const summaryPlanTotal = document.getElementById('summaryPlanTotal');
+    const cardHolderDisplay = document.getElementById('cardHolderNameDisplay');
+    const pixKeyString = document.getElementById('pixKeyString');
 
-    const draftKey = 'acessor_checkout_draft';
-    const urlParams = new URLSearchParams(window.location.search);
-    const initialPlan = urlParams.get('plan') || JSON.parse(localStorage.getItem(draftKey) || '{}').plan || 'semiannual';
+    // Tab buttons & contents
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.payment-tab-content');
 
-    function setStatus(kind, title, message) {
-      statusBox.className = `status visible ${kind}`;
-      statusBox.innerHTML = `<strong>${title}</strong><span>${message}</span>`;
-    }
+    let currentWorkspaceId = '';
+    let selectedPlan = 'monthly';
+    let activeTab = 'pix';
 
-    function getPlanData(plan) {
-      return planDetails[plan] || planDetails.semiannual;
-    }
-
-    function updatePlan(plan) {
-      const data = getPlanData(plan);
-      summaryPlan.textContent = data.label;
-      summaryPrice.textContent = data.price;
-      summaryBilling.textContent = data.billing;
-      summaryStatus.textContent = data.status;
-      asaasHint.textContent = `Checkout transparente preparado para o plano ${data.label}.`;
-      planCards.forEach((card) => card.classList.toggle('active', card.dataset.planCard === plan));
-      planInputs.forEach((input) => { input.checked = input.value === plan; });
-      saveDraft();
-    }
-
-    function saveDraft() {
-      const checkedPlan = document.querySelector('input[name="plan"]:checked')?.value || 'semiannual';
-      const payload = {
-        fullName: document.getElementById('fullName').value.trim(),
-        companyName: document.getElementById('companyName').value.trim(),
-        whatsapp: document.getElementById('whatsapp').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        password: document.getElementById('password').value.trim(),
-        plan: checkedPlan,
-        planData: getPlanData(checkedPlan),
-        paymentStatus: 'draft',
-        updatedAt: new Date().toISOString()
-      };
-      localStorage.setItem(draftKey, JSON.stringify(payload));
-      return payload;
-    }
-
-    function loadDraft() {
-      try {
-        return JSON.parse(localStorage.getItem(draftKey) || '{}');
-      } catch {
-        return {};
-      }
-    }
-
-    const draft = loadDraft();
-    document.getElementById('fullName').value = draft.fullName || '';
-    document.getElementById('companyName').value = draft.companyName || '';
-    document.getElementById('whatsapp').value = draft.whatsapp || '';
-    document.getElementById('email').value = draft.email || '';
-    document.getElementById('password').value = draft.password || '';
-    updatePlan(draft.plan || initialPlan);
-
-    planInputs.forEach((input) => {
-      input.addEventListener('change', () => updatePlan(input.value));
+    // Toggle Payment Tabs (Pix / Credit Card)
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        
+        btn.classList.add('active');
+        activeTab = btn.getAttribute('data-tab-target');
+        document.getElementById(`tab-${activeTab}`).classList.add('active');
+      });
     });
 
-    form.addEventListener('input', saveDraft);
-
-    saveDraftBtn.addEventListener('click', () => {
-      const payload = saveDraft();
-      setStatus('success', 'Rascunho salvo', `Plano ${getPlanData(payload.plan).label} guardado. Pronto para o checkout transparente Asaas.`);
+    // Handle plan selection update
+    const planLabels = document.querySelectorAll('.plan-selector-card');
+    planLabels.forEach(label => {
+      label.addEventListener('click', () => {
+        planLabels.forEach(l => l.classList.remove('active'));
+        label.classList.add('active');
+        
+        const radio = label.querySelector('input[type="radio"]');
+        if (radio) {
+          radio.checked = true;
+          selectedPlan = radio.value;
+          updateSummary();
+        }
+      });
     });
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const payload = saveDraft();
-      if (!payload.fullName || !payload.companyName || !payload.whatsapp || !payload.email || !payload.password) {
-        setStatus('error', 'Preencha os dados', 'Antes de continuar para o pagamento, complete nome, empresa, WhatsApp, e-mail e senha.');
+    function updateSummary() {
+      const details = planDetails[selectedPlan];
+      summaryPlanName.textContent = details.label;
+      summaryPlanBilling.textContent = details.billing;
+      summaryPlanTotal.textContent = `R$ ${details.total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      
+      // Update simulated Pix key text string with correct price
+      pixKeyString.textContent = `00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407${details.total.toFixed(2)}5802BR5916AcessorDigitalV26009SaoPaulo62070503***`;
+    }
+
+    function showStatus(type, message) {
+      statusToast.className = `status-toast visible ${type}`;
+      statusToast.innerHTML = `<span>${message}</span>`;
+    }
+
+    // Submit Account Form (Register Account in Pendente state)
+    accountForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const fullName = document.getElementById('fullName').value.trim();
+      const companyName = document.getElementById('companyName').value.trim();
+      const whatsapp = document.getElementById('whatsapp').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!fullName || !companyName || !whatsapp || !email || !password) {
+        showStatus('error', '⚠️ Por favor, preencha todos os campos cadastrais.');
         return;
       }
 
-      setStatus('info', 'Processando cadastro...', 'Salvando suas informações corporativas no banco de dados e preparando o checkout.');
-      
-      const submitBtn = form.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Criando conta...';
+      btnRegisterAccount.disabled = true;
+      btnRegisterAccount.textContent = 'Processando cadastro...';
+      showStatus('info', 'ℹ️ Registrando conta no banco de dados e preparando fatura...');
 
-      if (await hasFirebaseConfig()) {
+      // Dynamic Cardholder display
+      if (cardHolderDisplay) {
+        cardHolderDisplay.value = fullName.toUpperCase();
+      }
+
+      const hasFirebase = await hasFirebaseConfig();
+      if (hasFirebase) {
         try {
           const firebase = await loadFirebaseApp();
-          if (!firebase?.auth) {
-            throw new Error('Firebase Auth indisponivel.');
-          }
+          if (!firebase?.auth) throw new Error('Serviço Auth indisponível.');
 
           const { createUserWithEmailAndPassword, updateProfile } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
           const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
-          
-          // 1. Criar usuário no Firebase Auth
-          const result = await createUserWithEmailAndPassword(firebase.auth, payload.email, payload.password);
-          const workspaceId = result.user.uid;
-          const workspaceSlug = payload.companyName
-            .toLowerCase()
+
+          // 1. Create Auth User
+          const userCredential = await createUserWithEmailAndPassword(firebase.auth, email, password);
+          const uid = userCredential.user.uid;
+          currentWorkspaceId = uid;
+
+          const slug = companyName.toLowerCase()
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-+|-+$/g, '') || `workspace-${workspaceId.slice(0, 8)}`;
-          
-          await updateProfile(result.user, { displayName: payload.fullName || payload.companyName });
+            .replace(/^-+|-+$/g, '') || `workspace-${uid.substring(0, 8)}`;
 
-          const selectedPlanData = getPlanData(payload.plan);
-
-          // 2. Criar Workspace no Firestore com plano Ativo (Simulador Sandbox integrado)
-          await setDoc(doc(firebase.db, 'workspaces', workspaceId), {
-            name: payload.companyName,
-            slug: workspaceSlug,
-            cnpj: '',
-            billingPlan: selectedPlanData.label,
-            creditsBalance: 500, // 500 créditos iniciados
-            businessHours: {
-              monday: ['08:00', '19:00'],
-              tuesday: ['08:00', '19:00'],
-              wednesday: ['08:00', '19:00'],
-              thursday: ['08:00', '19:00'],
-              friday: ['08:00', '19:00'],
-              saturday: ['09:00', '13:00'],
-              sunday: []
-            },
+          // 2. Create Workspace document with Pendente state and 0 credits
+          await setDoc(doc(firebase.db, 'workspaces', uid), {
+            id: uid,
+            name: companyName,
+            slug: slug,
+            billingPlan: 'Pendente', // Pending!
+            creditsBalance: 0,       // 0 credits initially!
+            creditsTotal: 500,
+            ownerUid: uid,
+            ownerEmail: email,
+            billing_cycle_start: new Date().toISOString(),
+            channels: { whatsapp: false, instagram: false, messenger: false },
             createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-            ownerUid: result.user.uid,
-            ownerEmail: payload.email
-          }, { merge: true });
+            updatedAt: serverTimestamp()
+          });
 
-          // 3. Criar Perfil de Usuário
-          await setDoc(doc(firebase.db, 'users', result.user.uid), {
-            uid: result.user.uid,
-            email: payload.email,
-            displayName: payload.fullName,
-            companyName: payload.companyName,
-            whatsapp: payload.whatsapp,
-            plan: selectedPlanData.label,
-            workspaceId,
+          // 3. Create User Profile
+          await setDoc(doc(firebase.db, 'users', uid), {
+            uid: uid,
+            email: email,
+            displayName: fullName,
+            companyName: companyName,
+            whatsapp: whatsapp,
+            plan: 'Pendente',
+            workspaceId: uid,
             createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-            source: 'checkout-form'
-          }, { merge: true });
+            updatedAt: serverTimestamp()
+          });
 
-          // 5. Configurar Sessão do Usuário
+          // 4. Setup Local Session storage
           const session = {
-            access_token: await result.user.getIdToken().catch(() => 'firebase-session'),
+            access_token: await userCredential.user.getIdToken().catch(() => 'firebase-session'),
             user: {
-              uid: result.user.uid,
-              email: result.user.email,
-              displayName: payload.fullName,
-              companyName: payload.companyName,
-              workspaceId,
-              whatsapp: payload.whatsapp
+              uid: uid,
+              email: email,
+              displayName: fullName,
+              companyName: companyName,
+              workspaceId: uid,
+              whatsapp: whatsapp
             }
           };
           window.localStorage.setItem('acessor_session', JSON.stringify(session));
           window.localStorage.setItem('registered_profile', JSON.stringify({
-            fullName: payload.fullName,
-            companyName: payload.companyName,
-            whatsapp: payload.whatsapp,
-            email: payload.email,
-            workspaceId
+            fullName,
+            companyName,
+            whatsapp,
+            email,
+            workspaceId: uid
           }));
 
-          // 6. Atualizar painel de pagamento para feedback de sucesso imediato
-          summaryStatus.textContent = 'Pago (Ativo)';
-          summaryStatus.style.color = '#10B981';
-          
-          if (mount) {
-            mount.innerHTML = `
-              <div style="background: rgba(16,185,129,0.15); border: 1px solid #10b981; border-radius: 8px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; align-items: center; text-align: center;">
-                <div style="background: #10b981; color: #FFF; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">✓</div>
-                <strong style="color: #FFF; font-size: 1.1rem;">Pagamento Aprovado no Asaas!</strong>
-                <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin: 0;">Sua assinatura foi ativada no Sandbox e 500 créditos foram depositados na conta.</p>
-                <small style="color: #10B981; font-weight: 500;">Redirecionando para o cockpit em segundos...</small>
-              </div>
-            `;
-            mount.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Unlock Payment Column & Attach live Document Listener
+          unlockPaymentPanel(firebase.db, uid);
+
+        } catch (err) {
+          console.error(err);
+          showStatus('error', '⚠️ Erro ao registrar conta: ' + err.message);
+          btnRegisterAccount.disabled = false;
+          btnRegisterAccount.textContent = 'Criar Conta & Liberar Pagamento →';
+        }
+      } else {
+        // Local mode fallback
+        currentWorkspaceId = 'local_sandbox_user';
+        const session = {
+          access_token: 'local-session-token',
+          user: {
+            uid: currentWorkspaceId,
+            email: email,
+            displayName: fullName,
+            companyName: companyName,
+            workspaceId: currentWorkspaceId,
+            whatsapp: whatsapp
           }
+        };
+        window.localStorage.setItem('acessor_session', JSON.stringify(session));
+        window.localStorage.setItem('registered_profile', JSON.stringify({
+          fullName,
+          companyName,
+          whatsapp,
+          email,
+          workspaceId: currentWorkspaceId
+        }));
 
-          setStatus('success', 'Pagamento aprovado', 'Sua conta está ativa e configurada. Redirecionando...');
-
-          setTimeout(() => {
-            if (payload.email.toLowerCase().includes('realizzati')) {
-              localStorage.setItem('user_session_workspace', 'realizzati');
-              window.location.href = 'realizzati.html';
-            } else {
-              localStorage.setItem('user_session_workspace', 'demo');
-              window.location.href = 'dashboard.html';
-            }
-          }, 2000);
-          return;
-        } catch (error) {
-          console.error('checkout creation error', error);
-          setStatus('error', 'Erro ao finalizar checkout', error?.message || 'Tente novamente.');
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Continuar para pagamento';
-          return;
-        }
+        showStatus('success', '✅ Conta criada offline. Painel de pagamento liberado!');
+        unlockPaymentPanel(null, currentWorkspaceId);
       }
-
-      // Fallback sem Firebase Config (Modo demonstração local)
-      setStatus('success', 'Modo Demonstração local', 'Simulando criação de conta local e checkout transparente. Redirecionando...');
-      localStorage.setItem('registered_email', payload.email);
-      localStorage.setItem('registered_password', payload.password);
-      localStorage.setItem('registered_profile', JSON.stringify({
-        fullName: payload.fullName,
-        companyName: payload.companyName,
-        whatsapp: payload.whatsapp,
-        email: payload.email,
-        workspaceId: 'local-demo'
-      }));
-
-      if (mount) {
-        mount.innerHTML = `
-          <div style="background: rgba(16,185,129,0.15); border: 1px solid #10b981; border-radius: 8px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; align-items: center; text-align: center;">
-            <div style="background: #10b981; color: #FFF; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">✓</div>
-            <strong style="color: #FFF; font-size: 1.1rem;">Pagamento Simulado!</strong>
-            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin: 0;">Iniciando modo demonstração offline local.</p>
-            <small style="color: #10B981; font-weight: 500;">Redirecionando...</small>
-          </div>
-        `;
-        mount.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-
-      setTimeout(() => {
-        if (payload.email.toLowerCase().includes('realizzati')) {
-          localStorage.setItem('user_session_workspace', 'realizzati');
-          window.location.href = 'realizzati.html';
-        } else {
-          localStorage.setItem('user_session_workspace', 'demo');
-          window.location.href = 'dashboard.html';
-        }
-      }, 2000);
     });
+
+    // Unlock payment interface column and listen to database changes
+    async function unlockPaymentPanel(db, uid) {
+      paymentOverlayLock.classList.add('hidden');
+      btnRegisterAccount.textContent = 'Conta Criada ✓';
+      showStatus('success', '✅ Conta criada! Efetue o pagamento simulado para ativar.');
+
+      if (db && uid) {
+        const { doc, onSnapshot } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+        
+        // Listen to changes in workspace document in real time
+        onSnapshot(doc(db, 'workspaces', uid), (snap) => {
+          if (!snap.exists()) return;
+          const data = snap.data();
+          if (data && data.billingPlan && data.billingPlan !== 'Pendente') {
+            // Workspace has been upgraded by webhook!
+            showStatus('success', `🎉 Assinatura aprovada! Plano ${data.billingPlan} ativado com sucesso.`);
+            btnTriggerWebhook.disabled = true;
+            btnTriggerWebhook.textContent = 'Pagamento Confirmado ✓';
+
+            setTimeout(() => {
+              if (data.ownerEmail && data.ownerEmail.toLowerCase().includes('realizzati')) {
+                localStorage.setItem('user_session_workspace', 'realizzati');
+                window.location.href = 'realizzati.html';
+              } else {
+                localStorage.setItem('user_session_workspace', 'demo');
+                window.location.href = 'dashboard.html';
+              }
+            }, 2500);
+          }
+        });
+      }
+    }
+
+    // Trigger Simulated Webhook call
+    btnTriggerWebhook.addEventListener('click', async () => {
+      if (!currentWorkspaceId) {
+        showStatus('error', '⚠️ Crie a conta de acesso primeiro para gerar o ID de faturamento.');
+        return;
+      }
+
+      btnTriggerWebhook.disabled = true;
+      btnTriggerWebhook.textContent = 'Aguardando Webhook...';
+      showStatus('info', '⚡ Enviando POST com payload de pagamento para /api/asaas-webhook...');
+
+      const details = planDetails[selectedPlan];
+      const payload = {
+        event: 'PAYMENT_RECEIVED',
+        payment: {
+          id: 'pay_simulated_' + Math.random().toString(36).substring(7),
+          value: details.total,
+          billingType: activeTab === 'pix' ? 'PIX' : 'CREDIT_CARD',
+          externalReference: `${currentWorkspaceId}|${details.label}`
+        }
+      };
+
+      try {
+        const response = await fetch('/api/asaas-webhook', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'asaas-access-token': 'acessor_asaas_webhook_token'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const resData = await response.json();
+        
+        if (response.ok && resData.success !== false) {
+          showStatus('success', '⚡ Webhook recebido com sucesso! Sincronizando banco de dados...');
+          
+          if (currentWorkspaceId === 'local_sandbox_user') {
+            // Local fallback simulation redirect
+            setTimeout(() => {
+              window.location.href = 'dashboard.html';
+            }, 2000);
+          }
+        } else {
+          throw new Error(resData.error || 'Erro na resposta do webhook.');
+        }
+      } catch (err) {
+        console.error(err);
+        showStatus('error', '❌ Falha ao disparar webhook: ' + err.message);
+        btnTriggerWebhook.disabled = false;
+        btnTriggerWebhook.textContent = '⚡ Simular Confirmação de Pagamento';
+      }
+    });
+
+    // Copy PIX Copia e Cola to clipboard function
+    window.copyPixKey = function() {
+      const keyText = pixKeyString.textContent;
+      navigator.clipboard.writeText(keyText).then(() => {
+        const copyBtn = document.querySelector('.btn-copy-pix');
+        if (copyBtn) {
+          copyBtn.textContent = 'Copiado!';
+          copyBtn.style.color = '#10B981';
+          setTimeout(() => {
+            copyBtn.textContent = 'Copiar';
+            copyBtn.style.color = '#8b5cf6';
+          }, 1500);
+        }
+      }).catch(err => {
+        console.error('Erro ao copiar chave pix:', err);
+      });
+    };
+
+    // Initial setup call
+    updateSummary();
   </script>
 </body>
 </html>
