@@ -807,10 +807,11 @@
     fullNameInput.addEventListener('input', () => {
       if (cardHolderDisplay) cardHolderDisplay.value = fullNameInput.value.toUpperCase();
     });
-
     function showModalStatus(type, message) {
-      modalStatusToast.className = `status-toast visible ${type}`;
-      modalStatusToast.innerHTML = `<span>${message}</span>`;
+      if (modalStatusToast) {
+        modalStatusToast.className = `status-toast visible ${type}`;
+        modalStatusToast.innerHTML = `<span>${message}</span>`;
+      }
     }
 
     // Submit Complete Checkout Flow
@@ -824,94 +825,84 @@
       const password = document.getElementById('password').value.trim();
 
       btnCheckoutSubmit.disabled = true;
-      btnCheckoutSubmit.textContent = 'Processando Cadastro...';
+      btnCheckoutSubmit.textContent = 'Processando Faturamento...';
 
       const hasFirebase = await hasFirebaseConfig();
-      if (hasFirebase) {
-        try {
-          const firebase = await loadFirebaseApp();
-          if (!firebase?.auth) throw new Error('Serviço Auth indisponível.');
-
-          const { createUserWithEmailAndPassword, updateProfile } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
-          const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
-
-          // 1. Create Auth User
-          const userCredential = await createUserWithEmailAndPassword(firebase.auth, email, password);
-          const uid = userCredential.user.uid;
-          currentWorkspaceId = uid;
-
-          const slug = companyName.toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-+|-+$/g, '') || `workspace-${uid.substring(0, 8)}`;
-
-          // 2. Create Workspace document with Pendente state and 0 credits
-          await setDoc(doc(firebase.db, 'workspaces', uid), {
-            id: uid,
-            name: companyName,
-            slug: slug,
-            billingPlan: 'Pendente',
-            creditsBalance: 0,
-            creditsTotal: 500,
-            ownerUid: uid,
-            ownerEmail: email,
-            billing_cycle_start: new Date().toISOString(),
-            channels: { whatsapp: false, instagram: false, messenger: false },
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-          });
-
-          // 3. Create User Profile
-          await setDoc(doc(firebase.db, 'users', uid), {
-            uid: uid,
-            email: email,
-            displayName: fullName,
-            companyName: companyName,
-            whatsapp: whatsapp,
-            plan: 'Pendente',
-            workspaceId: uid,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-          });
-
-          // 4. Setup Local Session storage
-          const session = {
-            access_token: await userCredential.user.getIdToken().catch(() => 'firebase-session'),
-            user: {
-              uid: uid,
-              email: email,
-              displayName: fullName,
-              companyName: companyName,
-              workspaceId: uid,
-              whatsapp: whatsapp
-            }
-          };
-          window.localStorage.setItem('acessor_session', JSON.stringify(session));
-          window.localStorage.setItem('registered_profile', JSON.stringify({
+      try {
+        const response = await fetch('/api/create-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
             fullName,
             companyName,
             whatsapp,
             email,
-            workspaceId: uid
-          }));
+            password,
+            plan: selectedPlan,
+            paymentMethod: activeTab === 'pix' ? 'PIX' : 'CREDIT_CARD'
+          })
+        });
 
-          // Attach Live listener to workspace doc
-          startDatabaseObserver(firebase.db, uid);
+        const resData = await response.json();
 
-          // Open sandbox webhook confirmation modal
-          openSimulationModal();
-
-        } catch (err) {
-          console.error(err);
-          alert('Erro no cadastro: ' + err.message);
-          btnCheckoutSubmit.disabled = false;
-          btnCheckoutSubmit.textContent = 'Finalizar e Pagar Assinatura';
+        if (!response.ok || resData.error) {
+          throw new Error(resData.error || 'Erro desconhecido ao criar faturamento.');
         }
-      } else {
-        // Fallback local mode
-        currentWorkspaceId = 'local_sandbox_user';
+
+        currentWorkspaceId = resData.workspaceId;
+
+        // Render real QR Code if Asaas Pix API returned it
+        if (resData.pix && resData.pix.encodedImage && modalPixBlock) {
+          modalPixBlock.innerHTML = `
+            <div class="pix-qr-container" style="width: 100%; margin-bottom: 0.8rem; text-align: center;">
+              <div class="pix-qr-mock" style="background:#fff; display:flex; align-items:center; justify-content:center; margin: 0 auto 1rem;">
+                <img src="data:image/png;base64,${resData.pix.encodedImage}" style="width:100%; height:100%; object-fit:contain;" alt="Pix QR Code">
+              </div>
+              <div class="pix-copy-box">
+                <span class="pix-copy-text" id="modalPixKeyString">${resData.pix.payload}</span>
+                <button type="button" class="btn-copy-pix" onclick="copyPixKey()">Copiar</button>
+              </div>
+            </div>
+          `;
+        }
+
+        // Setup session profile in local storage
+        const session = {
+          access_token: 'firebase-session-token',
+          user: {
+            uid: resData.workspaceId,
+            email: email,
+            displayName: fullName,
+            companyName: companyName,
+            workspaceId: resData.workspaceId,
+            whatsapp: whatsapp
+          }
+        };
+        window.localStorage.setItem('acessor_session', JSON.stringify(session));
+        window.localStorage.setItem('registered_profile', JSON.stringify({
+          fullName,
+          companyName,
+          whatsapp,
+          email,
+          workspaceId: resData.workspaceId
+        }));
+
+        if (hasFirebase) {
+          const firebase = await loadFirebaseApp();
+          if (firebase?.db) {
+            startDatabaseObserver(firebase.db, resData.workspaceId);
+          }
+        }
+
         openSimulationModal();
+
+      } catch (err) {
+        console.error(err);
+        alert('Erro no checkout: ' + err.message);
+        btnCheckoutSubmit.disabled = false;
+        btnCheckoutSubmit.textContent = 'Finalizar e Pagar Assinatura';
       }
     });
 

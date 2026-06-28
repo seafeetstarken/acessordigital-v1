@@ -171,39 +171,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Evitar Processamento Duplicado (Idempotência)
-    const paymentLockRef = db.collection('asaas_payments').doc(payment.id);
-    const paymentLockSnap = await paymentLockRef.get();
-
-    if (paymentLockSnap.exists) {
-      console.log(`[asaas-webhook] Transacao ${payment.id} ja processada.`);
-      return res.status(200).json({ success: true, message: 'Already processed' });
-    }
-
-    const workspaceRef = db.collection('workspaces').doc(workspaceId);
-    const workspaceSnap = await workspaceRef.get();
-
-    if (!workspaceSnap.exists) {
-      return res.status(404).json({ error: 'Workspace not found' });
-    }
-
-    const workspaceData = workspaceSnap.data() || {};
-    const ownerUid = workspaceData.ownerUid;
-
-    // Atualizar créditos (+500 créditos por fatura paga)
-    await workspaceRef.update({
-      billingPlan: planName,
-      creditsBalance: admin.firestore.FieldValue.increment(500),
-      updatedAt: new Date().toISOString()
-    });
-
-    if (ownerUid) {
-      await db.collection('users').doc(ownerUid).update({
-        plan: planName,
-        updatedAt: new Date().toISOString()
-      });
-    }
-
     const billingTypeMap = {
       CREDIT_CARD: 'Cartão de Crédito',
       PIX: 'Pix',
@@ -211,6 +178,53 @@ export default async function handler(req, res) {
     };
     const methodStr = billingTypeMap[payment.billingType] || payment.billingType || 'Método desconhecido';
 
+    await db.runTransaction(async (transaction) => {
+      const paymentLockRef = db.collection('asaas_payments').doc(payment.id);
+      const paymentLockSnap = await transaction.get(paymentLockRef);
+
+      if (paymentLockSnap.exists) {
+        throw new Error('ALREADY_PROCESSED');
+      }
+
+      const workspaceRef = db.collection('workspaces').doc(workspaceId);
+      const workspaceSnap = await transaction.get(workspaceRef);
+
+      if (!workspaceSnap.exists) {
+        throw new Error('WORKSPACE_NOT_FOUND');
+      }
+
+      const workspaceData = workspaceSnap.data() || {};
+      const ownerUid = workspaceData.ownerUid;
+      const currentCredits = Number(workspaceData.creditsBalance || 0);
+
+      // 1. Update Workspace Plan & Credits Atomically
+      transaction.update(workspaceRef, {
+        billingPlan: planName,
+        creditsBalance: currentCredits + 500,
+        updatedAt: new Date().toISOString()
+      });
+
+      // 2. Update User Plan
+      if (ownerUid) {
+        const userRef = db.collection('users').doc(ownerUid);
+        transaction.update(userRef, {
+          plan: planName,
+          updatedAt: new Date().toISOString()
+        });
+      }
+
+      // 3. Write Lock Document Atomically
+      transaction.set(paymentLockRef, {
+        workspaceId,
+        value: payment.value,
+        billingType: payment.billingType,
+        event,
+        planName,
+        processedAt: new Date().toISOString()
+      });
+    });
+
+    // Write changelog outside transaction boundary
     await db.collection('changelog_events').add({
       workspaceId,
       type: 'billing',
@@ -219,19 +233,16 @@ export default async function handler(req, res) {
       createdAt: new Date().toISOString()
     });
 
-    // Gravar trava de pagamento
-    await paymentLockRef.set({
-      workspaceId,
-      value: payment.value,
-      billingType: payment.billingType,
-      event,
-      planName,
-      processedAt: new Date().toISOString()
-    });
-
     console.log(`[asaas-webhook] Transacao ${payment.id} processada com sucesso (+500 creditos).`);
     return res.status(200).json({ success: true, message: 'Workspace upgraded successfully' });
   } catch (err) {
+    if (err.message === 'ALREADY_PROCESSED') {
+      console.log(`[asaas-webhook] Transacao ${payment.id} ja processada.`);
+      return res.status(200).json({ success: true, message: 'Already processed' });
+    }
+    if (err.message === 'WORKSPACE_NOT_FOUND') {
+      return res.status(404).json({ error: 'Workspace not found' });
+    }
     console.error('[asaas-webhook] Erro ao processar pagamento confirmado:', err);
     return res.status(500).json({ error: 'Internal Server Error', details: err.message });
   }
