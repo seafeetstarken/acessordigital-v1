@@ -709,17 +709,34 @@
           
           <!-- Pix Tab -->
           <div class="payment-tab-content active" id="tab-pix">
-            <div class="pix-qr-container">
-              <div class="pix-info-row">
-                <div class="pix-icon-badge">⚡</div>
-                <div class="pix-info-text">
-                  <strong>Pague instantaneamente por Pix</strong>
-                  <span>A ativação da conta ocorre em poucos segundos.</span>
-                </div>
+            <div class="pix-qr-container" style="display: flex; flex-direction: row; align-items: center; gap: 1.2rem; background: rgba(0,0,0,0.15); padding: 1.2rem; border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 1.2rem; min-height: 154px;">
+              <!-- QR Code on the left -->
+              <div class="pix-qr-mock" style="width: 100px; height: 100px; background: #fff; padding: 6px; border-radius: 8px; flex-shrink: 0; display: block;">
+                <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
+                  <rect x="10" y="10" width="20" height="20" fill="#000" />
+                  <rect x="70" y="10" width="20" height="20" fill="#000" />
+                  <rect x="10" y="70" width="20" height="20" fill="#000" />
+                  <rect x="18" y="18" width="4" height="4" fill="#fff" />
+                  <rect x="78" y="18" width="4" height="4" fill="#fff" />
+                  <rect x="18" y="78" width="4" height="4" fill="#fff" />
+                  <rect x="40" y="20" width="8" height="4" fill="#000" />
+                  <rect x="50" y="40" width="4" height="8" fill="#000" />
+                  <rect x="30" y="50" width="12" height="4" fill="#000" />
+                  <rect x="60" y="70" width="4" height="12" fill="#000" />
+                  <rect x="45" y="65" width="8" height="8" fill="#000" />
+                </svg>
               </div>
-              <div class="pix-copy-box">
-                <span class="pix-copy-text" id="pixKeyString">00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407129.005802BR5916AcessorDigitalV26009SaoPaulo62070503***</span>
-                <button type="button" class="btn-copy-pix" onclick="copyPixKey()">Copiar</button>
+              <!-- Pix details and copy button on the right -->
+              <div style="display: flex; flex-grow: 1; flex-direction: column; gap: 0.5rem; min-width: 0;">
+                <div style="display: flex; align-items: center; gap: 6px; color: #1acaab; font-weight: 700; font-size: 0.85rem;">
+                  <span style="font-size: 1rem;">⚡</span>
+                  <span>Pagamento Instantâneo</span>
+                </div>
+                <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.35; margin: 0;">Escaneie o QR Code ou copie a chave Pix abaixo para pagar.</p>
+                <div class="pix-copy-box" style="margin-top: 0.2rem;">
+                  <span class="pix-copy-text" id="pixKeyString">00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407129.005802BR5916AcessorDigitalV26009SaoPaulo62070503***</span>
+                  <button type="button" class="btn-copy-pix" onclick="copyPixKey()">Copiar</button>
+                </div>
               </div>
             </div>
           </div>
