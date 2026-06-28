@@ -14,8 +14,8 @@
     body {
       min-height: 100vh;
       background:
-        radial-gradient(circle at top left, rgba(139, 92, 246, 0.15), transparent 45%),
-        radial-gradient(circle at bottom right, rgba(245, 158, 11, 0.08), transparent 40%),
+        radial-gradient(circle at top left, rgba(139, 92, 246, 0.12), transparent 45%),
+        radial-gradient(circle at bottom right, rgba(255, 94, 58, 0.06), transparent 40%),
         #0b0b0f;
       color: #fff;
       font-family: 'Inter', sans-serif;
@@ -26,14 +26,14 @@
       inset: 0;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
       background-size: 40px 40px;
-      opacity: 0.8;
+      opacity: 0.6;
     }
     .page-shell {
       width: 100%;
-      max-width: 1120px;
+      max-width: 1040px;
       margin: 0 auto;
       padding: 1.5rem 1rem 3rem;
       position: relative;
@@ -76,7 +76,7 @@
     /* Layout */
     .checkout-layout {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 1.8rem;
       align-items: start;
     }
@@ -85,7 +85,7 @@
       background: rgba(20, 20, 27, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 20px;
-      padding: 2rem;
+      padding: 1.8rem;
       backdrop-filter: blur(16px);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     }
@@ -95,13 +95,13 @@
     }
     .title-row h2 {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       color: #fff;
       font-weight: 700;
       letter-spacing: -0.02em;
     }
     .title-row p {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: rgba(255,255,255,0.45);
       margin-top: 0.2rem;
     }
@@ -109,20 +109,20 @@
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 0.85rem;
+      margin-bottom: 0.85rem;
     }
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
     }
     .form-group.full {
       grid-column: 1 / -1;
     }
     .form-group label {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: rgba(255, 255, 255, 0.6);
       font-weight: 600;
       text-transform: uppercase;
@@ -130,12 +130,12 @@
     }
     .input-field {
       width: 100%;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 0.75rem 0.95rem;
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-family: inherit;
       outline: none;
       transition: all 0.2s;
@@ -148,157 +148,98 @@
       color: rgba(255, 255, 255, 0.2);
     }
     
-    /* Plans selection */
-    .plans-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* Premium Stacked Plan Rows (stripe-style) */
+    .plans-stack {
+      display: flex;
+      flex-direction: column;
       gap: 0.75rem;
-      margin-top: 0.5rem;
       margin-bottom: 1.5rem;
     }
-    .plan-selector-card {
-      position: relative;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    .plan-option-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       background: rgba(255, 255, 255, 0.015);
-      padding: 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 1rem;
       cursor: pointer;
       transition: all 0.2s ease;
-      display: flex;
-      flex-direction: column;
-    }
-    .plan-selector-card:hover {
-      border-color: rgba(139, 92, 246, 0.3);
-      background: rgba(255, 255, 255, 0.03);
-    }
-    .plan-selector-card.active {
-      background: linear-gradient(180deg, rgba(139, 92, 246, 0.1), rgba(255, 255, 255, 0.02));
-      border-color: #8b5cf6;
-      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.12);
-    }
-    .plan-selector-card input[type="radio"] {
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      pointer-events: none;
-    }
-    .plan-tag {
-      align-self: flex-start;
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: #8b5cf6;
-      background: rgba(139, 92, 246, 0.15);
-      padding: 0.2rem 0.5rem;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 0.6rem;
-    }
-    .plan-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    .plan-price-label {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #fff;
-    }
-    .plan-price-label span {
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.4);
-      font-weight: 400;
-    }
-    .plan-desc-text {
-      font-size: 0.72rem;
-      color: rgba(255, 255, 255, 0.4);
-      margin-top: 0.4rem;
-      line-height: 1.3;
-    }
-    
-    .btn-submit-account {
-      width: 100%;
-      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-      color: #FFF;
-      border: none;
-      padding: 0.9rem 1.5rem;
-      font-size: 0.95rem;
-      font-weight: 700;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(124, 58, 237, 0.25);
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .btn-submit-account:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 24px rgba(124, 58, 237, 0.35);
-    }
-    .btn-submit-account:disabled {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: rgba(255, 255, 255, 0.3);
-      cursor: not-allowed;
-      box-shadow: none;
-      transform: none;
-    }
-    
-    /* Right Side Order Panel */
-    .order-side-panel {
       position: relative;
     }
-    .order-lock-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(11, 11, 15, 0.85);
-      backdrop-filter: blur(4px);
-      border-radius: 20px;
-      z-index: 5;
+    .plan-option-row:hover {
+      border-color: rgba(139, 92, 246, 0.4);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .plan-option-row.active {
+      border-color: #8b5cf6;
+      background: linear-gradient(90deg, rgba(139, 92, 246, 0.08), rgba(255, 255, 255, 0.01));
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08);
+    }
+    .plan-option-row input[type="radio"] {
+      margin-right: 0.8rem;
+      accent-color: #8b5cf6;
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+    .plan-info-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-grow: 1;
+    }
+    .plan-text-meta {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-      transition: all 0.3s ease;
     }
-    .order-lock-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .order-lock-icon {
-      font-size: 2.2rem;
-      margin-bottom: 0.8rem;
-    }
-    .order-lock-overlay h4 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.05rem;
+    .plan-text-meta strong {
+      font-size: 0.95rem;
       color: #fff;
-      margin-bottom: 0.4rem;
     }
-    .order-lock-overlay p {
-      font-size: 0.82rem;
+    .plan-text-meta span {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 0.15rem;
+    }
+    .plan-price-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .plan-price-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .plan-price-val span {
+      font-size: 0.72rem;
       color: rgba(255,255,255,0.4);
-      max-width: 240px;
-      line-height: 1.4;
+      font-weight: 400;
+    }
+    .plan-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: rgba(139, 92, 246, 0.15);
+      color: #a78bfa;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-top: 0.2rem;
     }
     
-    /* Summary details */
+    /* Summary box */
     .summary-list {
       display: flex;
       flex-direction: column;
       gap: 0.7rem;
-      margin-bottom: 1.5rem;
-      background: rgba(0,0,0,0.2);
+      margin-bottom: 1.2rem;
+      background: rgba(0,0,0,0.25);
       border-radius: 12px;
       padding: 1.1rem;
-      border: 1px solid rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
     .summary-item {
       display: flex;
@@ -319,7 +260,7 @@
       border-top: 1px solid rgba(255,255,255,0.06);
     }
     .summary-item.total strong {
-      color: var(--accent-primary, #8b5cf6);
+      color: #8b5cf6;
       font-size: 1.1rem;
       font-family: 'Outfit', sans-serif;
       font-weight: 700;
@@ -360,10 +301,9 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
     
-    /* Tabs Content */
     .payment-tab-content {
       display: none;
-      min-height: 180px;
+      min-height: 140px;
     }
     .payment-tab-content.active {
       display: block;
@@ -374,27 +314,40 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      text-align: center;
       background: rgba(0,0,0,0.15);
-      border: 1px dashed rgba(255,255,255,0.08);
+      border: 1px dashed rgba(255,255,255,0.06);
       border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
+      padding: 1.2rem;
+      margin-bottom: 1.2rem;
     }
-    .pix-qr-mock {
-      width: 120px;
-      height: 120px;
-      background: #fff;
-      padding: 8px;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      position: relative;
-    }
-    .pix-qr-mock svg {
+    .pix-info-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
       width: 100%;
-      height: 100%;
+    }
+    .pix-icon-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: rgba(26, 202, 178, 0.1);
+      display: grid;
+      place-items: center;
+      color: #1acaab;
+      font-size: 1.2rem;
+    }
+    .pix-info-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .pix-info-text strong {
+      font-size: 0.85rem;
+      color: #fff;
+    }
+    .pix-info-text span {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
     }
     .pix-copy-box {
       width: 100%;
@@ -404,7 +357,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.5rem 0.8rem;
+      padding: 0.55rem 0.8rem;
     }
     .pix-copy-text {
       font-family: monospace;
@@ -413,7 +366,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 75%;
+      max-width: 80%;
     }
     .btn-copy-pix {
       background: transparent;
@@ -422,6 +375,7 @@
       font-weight: 700;
       font-size: 0.78rem;
       cursor: pointer;
+      outline: none;
     }
     .btn-copy-pix:hover {
       color: #a78bfa;
@@ -435,67 +389,69 @@
       border: 1px solid rgba(255,255,255,0.04);
       border-radius: 12px;
       padding: 1.2rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
     }
     
-    /* Webhook Simulator Dashboard */
-    .sandbox-simulator-card {
-      border: 1px solid rgba(245, 158, 11, 0.25);
-      background: linear-gradient(180deg, rgba(245, 158, 11, 0.05), rgba(0, 0, 0, 0.3));
-      border-radius: 14px;
-      padding: 1.1rem;
-      margin-top: 1rem;
-    }
-    .sandbox-sim-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #f59e0b;
-      font-weight: 700;
-      font-size: 0.88rem;
-      margin-bottom: 0.4rem;
-    }
-    .sandbox-sim-header svg {
-      width: 14px;
-      height: 14px;
-    }
-    .sandbox-simulator-card p {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.45;
-      margin-bottom: 1rem;
-    }
-    .btn-simulate-webhook {
+    /* Unified Checkout Button */
+    .btn-checkout-primary {
       width: 100%;
-      background: #f59e0b;
-      color: #000;
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: #FFF;
       border: none;
-      padding: 0.65rem 1rem;
-      font-size: 0.85rem;
+      padding: 0.95rem 1.5rem;
+      font-size: 1rem;
       font-weight: 700;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
+      box-shadow: 0 10px 25px rgba(124, 58, 237, 0.28);
       transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
     }
-    .btn-simulate-webhook:hover {
-      background: #fab73d;
+    .btn-checkout-primary:hover {
       transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(124, 58, 237, 0.38);
     }
-    .btn-simulate-webhook:disabled {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.25);
+    .btn-checkout-primary:disabled {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.3);
       cursor: not-allowed;
+      box-shadow: none;
       transform: none;
+    }
+    
+    /* Payment Modal overlay */
+    .payment-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .payment-modal-overlay.show {
+      display: flex;
+    }
+    .payment-modal-card {
+      background: #111114;
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 20px;
+      width: 480px;
+      max-width: 95vw;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
     }
     
     .status-toast {
       padding: 0.8rem 1rem;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 0.82rem;
       line-height: 1.45;
       margin-top: 1rem;
@@ -520,6 +476,20 @@
       color: #ffd1d1;
     }
     
+    .secure-badge-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 1rem;
+    }
+    .secure-badge-footer svg {
+      width: 12px;
+      height: 12px;
+    }
+    
     @media (max-width: 900px) {
       .checkout-layout {
         grid-template-columns: 1fr;
@@ -527,9 +497,6 @@
     }
     @media (max-width: 600px) {
       .form-grid {
-        grid-template-columns: 1fr;
-      }
-      .plans-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -543,15 +510,15 @@
       <a href="./login.html" class="btn-login">Já tenho conta</a>
     </header>
     
-    <div class="checkout-layout">
-      <!-- Left Column: Account + Plan -->
-      <div class="panel-card">
-        <div class="title-row">
-          <h2>1. Dados Cadastrais</h2>
-          <p>Informe suas credenciais para a criação do seu workspace.</p>
-        </div>
-        
-        <form id="checkoutAccountForm">
+    <form id="unifiedCheckoutForm">
+      <div class="checkout-layout">
+        <!-- Left Column: Account + Stacked Plan -->
+        <div class="panel-card">
+          <div class="title-row">
+            <h2>1. Dados Cadastrais</h2>
+            <p>Insira suas credenciais corporativas para criação da sua conta e cockpit.</p>
+          </div>
+          
           <div class="form-grid">
             <div class="form-group">
               <label for="fullName">Nome Completo</label>
@@ -580,60 +547,65 @@
           </div>
           
           <div class="title-row" style="margin-top: 2rem;">
-            <h2>2. Seleção de Plano</h2>
-            <p>Selecione a recorrência desejada para habilitar o pagamento.</p>
+            <h2>2. Escolha o Plano</h2>
+            <p>Selecione a recorrência que melhor se adapta à sua equipe.</p>
           </div>
           
-          <div class="plans-grid">
-            <label class="plan-selector-card active" data-plan="monthly">
+          <div class="plans-stack">
+            <label class="plan-option-row active" data-plan="monthly">
               <input type="radio" name="plan" value="monthly" checked>
-              <div class="plan-tag">Flexível</div>
-              <div class="plan-title">Mensal</div>
-              <div class="plan-price-label">R$ 129<span>/mês</span></div>
-              <div class="plan-desc-text">Perfeito para iniciar e testar o cockpit sem compromisso de longo prazo.</div>
+              <div class="plan-info-left">
+                <div class="plan-text-meta">
+                  <strong>Mensal</strong>
+                  <span>Flexível, cancele a qualquer momento.</span>
+                </div>
+              </div>
+              <div class="plan-price-right">
+                <div class="plan-price-val">R$ 129<span>/mês</span></div>
+                <div class="plan-badge">Inicial</div>
+              </div>
             </label>
             
-            <label class="plan-selector-card" data-plan="semiannual">
+            <label class="plan-option-row" data-plan="semiannual">
               <input type="radio" name="plan" value="semiannual">
-              <div class="plan-tag" style="background:rgba(245,158,11,0.12); color:#F59E0B;">+ Escolhido</div>
-              <div class="plan-title">Semestral</div>
-              <div class="plan-price-label">R$ 109<span>/mês</span></div>
-              <div class="plan-desc-text">Excelente custo-benefício. Quota de 500 créditos inclusa mensalmente.</div>
+              <div class="plan-info-left">
+                <div class="plan-text-meta">
+                  <strong>Semestral</strong>
+                  <span>Garante LTV saudável com créditos mensais.</span>
+                </div>
+              </div>
+              <div class="plan-price-right">
+                <div class="plan-price-val">R$ 109<span>/mês</span></div>
+                <div class="plan-badge" style="background:rgba(245,158,11,0.15); color:#F59E0B;">+ Escolhido</div>
+              </div>
             </label>
             
-            <label class="plan-selector-card" data-plan="annual">
+            <label class="plan-option-row" data-plan="annual">
               <input type="radio" name="plan" value="annual">
-              <div class="plan-tag" style="background:rgba(16,185,129,0.12); color:#10B981;">Melhor Preço</div>
-              <div class="plan-title">Anual</div>
-              <div class="plan-price-label">R$ 89<span>/mês</span></div>
-              <div class="plan-desc-text">LTV estendido com o maior desconto. Cobrança recorrente a cada 12 meses.</div>
+              <div class="plan-info-left">
+                <div class="plan-text-meta">
+                  <strong>Anual</strong>
+                  <span>Previsibilidade total com o maior desconto.</span>
+                </div>
+              </div>
+              <div class="plan-price-right">
+                <div class="plan-price-val">R$ 89<span>/mês</span></div>
+                <div class="plan-badge" style="background:rgba(16,185,129,0.15); color:#10B981;">Melhor Preço</div>
+              </div>
             </label>
           </div>
-          
-          <button type="submit" id="btnRegisterAccount" class="btn-submit-account">
-            Criar Conta & Liberar Pagamento →
-          </button>
-        </form>
-      </div>
-      
-      <!-- Right Column: Checkout + Sandbox -->
-      <div class="order-side-panel">
-        <!-- Overlay Lock -->
-        <div class="order-lock-overlay" id="paymentOverlayLock">
-          <div class="order-lock-icon">🔒</div>
-          <h4>Painel de Pagamento Bloqueado</h4>
-          <p>Preencha os dados do formulário ao lado e crie sua conta para liberar o checkout transparente do Asaas.</p>
         </div>
         
-        <div class="panel-card" style="min-height: 520px;">
+        <!-- Right Column: Summary + Card/Pix Tabs -->
+        <div class="panel-card">
           <div class="title-row">
-            <h2>3. Resumo da Assinatura</h2>
-            <p>Conclua a ativação do seu workspace através do Asaas.</p>
+            <h2>3. Forma de Pagamento</h2>
+            <p>Selecione o método de pagamento integrado transparente.</p>
           </div>
           
           <div class="summary-list">
             <div class="summary-item">
-              <span>Plano Escolhido</span>
+              <span>Plano Selecionado</span>
               <strong id="summaryPlanName">Mensal</strong>
             </div>
             <div class="summary-item">
@@ -641,46 +613,33 @@
               <strong id="summaryPlanBilling">Recorrência Mensal</strong>
             </div>
             <div class="summary-item">
-              <span>Créditos Iniciais</span>
-              <strong>500 créditos</strong>
+              <span>Quota de Créditos</span>
+              <strong>500 créditos/mês</strong>
             </div>
             <div class="summary-item total">
-              <span>Valor da Fatura</span>
+              <span>Total Hoje</span>
               <strong id="summaryPlanTotal">R$ 129,00</strong>
             </div>
           </div>
           
           <div class="payment-tabs">
-            <button class="tab-btn active" data-tab-target="pix">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
-              Pix Copia e Cola
+            <button type="button" class="tab-btn active" data-tab-target="pix">
+              💸 Pix Copia e Cola
             </button>
-            <button class="tab-btn" data-tab-target="card">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-              Cartão de Crédito
+            <button type="button" class="tab-btn" data-tab-target="card">
+              💳 Cartão de Crédito
             </button>
           </div>
           
-          <!-- Content Pix -->
+          <!-- Pix Tab Content -->
           <div class="payment-tab-content active" id="tab-pix">
             <div class="pix-qr-container">
-              <div class="pix-qr-mock">
-                <!-- Simulado QR code SVG -->
-                <svg viewBox="0 0 100 100">
-                  <rect x="10" y="10" width="20" height="20" fill="#000" />
-                  <rect x="70" y="10" width="20" height="20" fill="#000" />
-                  <rect x="10" y="70" width="20" height="20" fill="#000" />
-                  <rect x="18" y="18" width="4" height="4" fill="#fff" />
-                  <rect x="78" y="18" width="4" height="4" fill="#fff" />
-                  <rect x="18" y="78" width="4" height="4" fill="#fff" />
-                  <!-- Random pixels -->
-                  <rect x="40" y="20" width="8" height="4" fill="#000" />
-                  <rect x="50" y="40" width="4" height="8" fill="#000" />
-                  <rect x="30" y="50" width="12" height="4" fill="#000" />
-                  <rect x="60" y="70" width="4" height="12" fill="#000" />
-                  <rect x="45" y="65" width="8" height="8" fill="#000" />
-                  <rect x="75" y="45" width="6" height="6" fill="#000" />
-                </svg>
+              <div class="pix-info-row">
+                <div class="pix-icon-badge">⚡</div>
+                <div class="pix-info-text">
+                  <strong>Pague instantaneamente por Pix</strong>
+                  <span>A ativação da conta ocorre em poucos segundos.</span>
+                </div>
               </div>
               <div class="pix-copy-box">
                 <span class="pix-copy-text" id="pixKeyString">00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407129.005802BR5916AcessorDigitalV26009SaoPaulo62070503***</span>
@@ -689,71 +648,115 @@
             </div>
           </div>
           
-          <!-- Content Card -->
+          <!-- Card Tab Content -->
           <div class="payment-tab-content" id="tab-card">
             <div class="card-inputs-grid">
               <div class="form-group" style="margin-bottom:0">
                 <label>Número do Cartão</label>
-                <input type="text" class="input-field" placeholder="4242 4242 4242 4242" value="4242 4242 4242 4242" disabled style="opacity: 0.7;">
+                <input type="text" class="input-field" value="4242 4242 4242 4242" disabled style="opacity: 0.7;">
               </div>
               <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                 <div class="form-group" style="margin-bottom:0">
                   <label>Vencimento</label>
-                  <input type="text" class="input-field" placeholder="MM/AA" value="12/32" disabled style="opacity: 0.7;">
+                  <input type="text" class="input-field" value="12/32" disabled style="opacity: 0.7;">
                 </div>
                 <div class="form-group" style="margin-bottom:0">
                   <label>CVV</label>
-                  <input type="text" class="input-field" placeholder="123" value="123" disabled style="opacity: 0.7;">
+                  <input type="text" class="input-field" value="123" disabled style="opacity: 0.7;">
                 </div>
               </div>
               <div class="form-group" style="margin-bottom:0">
                 <label>Nome no Cartão</label>
-                <input type="text" id="cardHolderNameDisplay" class="input-field" placeholder="NOME DO TITULAR" disabled style="opacity: 0.7;">
+                <input type="text" id="cardHolderNameDisplay" class="input-field" placeholder="NOME COMPLETO DO TITULAR" disabled style="opacity: 0.7;">
               </div>
             </div>
           </div>
           
-          <!-- Webhook Simulator Console -->
-          <div class="sandbox-simulator-card">
-            <div class="sandbox-sim-header">
-              <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"></path></svg>
-              <span>Console de Teste Sandbox (Asaas Webhook)</span>
-            </div>
-            <p>Como você está em modo de homologação sandbox, utilize o simulador para disparar o webhook HTTP `/api/asaas-webhook` e ativar o workspace no Firebase.</p>
-            <button type="button" id="btnTriggerWebhook" class="btn-simulate-webhook">
-              ⚡ Simular Confirmação de Pagamento
-            </button>
-          </div>
+          <button type="submit" id="btnCheckoutSubmit" class="btn-checkout-primary">
+            Finalizar e Pagar Assinatura
+          </button>
           
-          <div id="checkoutStatusToast" class="status-toast info"></div>
+          <div class="secure-badge-footer">
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 11.38A1 1 0 013 11h14a1 1 0 01.993 1.121l-1 9A1 1 0 0116 22H4a1 1 0 01-.993-.879l-1-9zM3 5a5 5 0 0110 0v2H3V5zm2 2V5a3 3 0 116 0v2H5z" clip-rule="evenodd"></path></svg>
+            <span>Ambiente seguro homologado Asaas Sandbox</span>
+          </div>
         </div>
       </div>
+    </form>
+  </div>
+
+  <!-- Interactive Sandbox Webhook Simulator Modal -->
+  <div class="payment-modal-overlay" id="paymentModalOverlay">
+    <div class="payment-modal-card">
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; color: #FFF; margin-bottom: 0.4rem;">Fatura Gerada com Sucesso</h3>
+      <p style="font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-bottom: 1.2rem;" id="modalInstructionText">Efetue o pagamento Pix ou confirme a transação simulada.</p>
+      
+      <!-- Pix dynamic block -->
+      <div id="modalPixBlock" style="display:flex; flex-direction:column; align-items:center; margin-bottom: 1rem; width: 100%;">
+        <div class="pix-qr-container" style="width: 100%; margin-bottom: 0.8rem;">
+          <div class="pix-qr-mock">
+            <svg viewBox="0 0 100 100">
+              <rect x="10" y="10" width="20" height="20" fill="#000" />
+              <rect x="70" y="10" width="20" height="20" fill="#000" />
+              <rect x="10" y="70" width="20" height="20" fill="#000" />
+              <rect x="18" y="18" width="4" height="4" fill="#fff" />
+              <rect x="78" y="18" width="4" height="4" fill="#fff" />
+              <rect x="18" y="78" width="4" height="4" fill="#fff" />
+              <rect x="40" y="20" width="8" height="4" fill="#000" />
+              <rect x="50" y="40" width="4" height="8" fill="#000" />
+              <rect x="30" y="50" width="12" height="4" fill="#000" />
+              <rect x="60" y="70" width="4" height="12" fill="#000" />
+              <rect x="45" y="65" width="8" height="8" fill="#000" />
+            </svg>
+          </div>
+          <div class="pix-copy-box">
+            <span class="pix-copy-text" id="modalPixKeyString"></span>
+            <button type="button" class="btn-copy-pix" onclick="copyPixKey()">Copiar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sandbox console integration -->
+      <div class="sandbox-simulator-card" style="margin-top:0">
+        <div class="sandbox-sim-header">
+          <svg fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"></path></svg>
+          <span>Console Sandbox (Confirmação Webhook)</span>
+        </div>
+        <p style="margin-bottom:0.8rem">Como você está em homologação sandbox, use o disparador abaixo para simular a resposta de sucesso do Asaas e ativar a licença.</p>
+        <button type="button" id="btnSimulateWebhookConfirm" class="btn-simulate-webhook">
+          ⚡ Simular Confirmação Asaas (Webhook)
+        </button>
+      </div>
+
+      <div id="modalStatusToast" class="status-toast info"></div>
     </div>
   </div>
 
   <script type="module">
     import { hasFirebaseConfig, loadFirebaseApp } from './firebase-bootstrap.js';
 
-    // Pricing details mapping
     const planDetails = {
       monthly: { label: 'Mensal', price: 'R$ 129,00', billing: 'Recorrente Mensal', total: 129.00 },
       semiannual: { label: 'Semestral', price: 'R$ 109,00', billing: 'Recorrente Semestral (R$ 654,00/ciclo)', total: 654.00 },
       annual: { label: 'Anual', price: 'R$ 89,00', billing: 'Recorrente Anual (R$ 1.068,00/ciclo)', total: 1068.00 }
     };
 
-    const accountForm = document.getElementById('checkoutAccountForm');
-    const paymentOverlayLock = document.getElementById('paymentOverlayLock');
-    const btnRegisterAccount = document.getElementById('btnRegisterAccount');
-    const btnTriggerWebhook = document.getElementById('btnTriggerWebhook');
-    const statusToast = document.getElementById('checkoutStatusToast');
+    const unifiedForm = document.getElementById('unifiedCheckoutForm');
+    const btnCheckoutSubmit = document.getElementById('btnCheckoutSubmit');
+    const paymentModalOverlay = document.getElementById('paymentModalOverlay');
+    const btnSimulateWebhookConfirm = document.getElementById('btnSimulateWebhookConfirm');
+    const modalStatusToast = document.getElementById('modalStatusToast');
+    const modalInstructionText = document.getElementById('modalInstructionText');
+    const modalPixBlock = document.getElementById('modalPixBlock');
     
     const summaryPlanName = document.getElementById('summaryPlanName');
     const summaryPlanBilling = document.getElementById('summaryPlanBilling');
     const summaryPlanTotal = document.getElementById('summaryPlanTotal');
     const cardHolderDisplay = document.getElementById('cardHolderNameDisplay');
     const pixKeyString = document.getElementById('pixKeyString');
+    const modalPixKeyString = document.getElementById('modalPixKeyString');
 
-    // Tab buttons & contents
+    // Tab switcher
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.payment-tab-content');
 
@@ -761,7 +764,6 @@
     let selectedPlan = 'monthly';
     let activeTab = 'pix';
 
-    // Toggle Payment Tabs (Pix / Credit Card)
     tabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         tabButtons.forEach(b => b.classList.remove('active'));
@@ -773,14 +775,14 @@
       });
     });
 
-    // Handle plan selection update
-    const planLabels = document.querySelectorAll('.plan-selector-card');
-    planLabels.forEach(label => {
-      label.addEventListener('click', () => {
-        planLabels.forEach(l => l.classList.remove('active'));
-        label.classList.add('active');
+    // Plan Row switcher
+    const planRows = document.querySelectorAll('.plan-option-row');
+    planRows.forEach(row => {
+      row.addEventListener('click', () => {
+        planRows.forEach(r => r.classList.remove('active'));
+        row.classList.add('active');
         
-        const radio = label.querySelector('input[type="radio"]');
+        const radio = row.querySelector('input[type="radio"]');
         if (radio) {
           radio.checked = true;
           selectedPlan = radio.value;
@@ -795,17 +797,24 @@
       summaryPlanBilling.textContent = details.billing;
       summaryPlanTotal.textContent = `R$ ${details.total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
       
-      // Update simulated Pix key text string with correct price
-      pixKeyString.textContent = `00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407${details.total.toFixed(2)}5802BR5916AcessorDigitalV26009SaoPaulo62070503***`;
+      const key = `00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407${details.total.toFixed(2)}5802BR5916AcessorDigitalV26009SaoPaulo62070503***`;
+      pixKeyString.textContent = key;
+      if (modalPixKeyString) modalPixKeyString.textContent = key;
     }
 
-    function showStatus(type, message) {
-      statusToast.className = `status-toast visible ${type}`;
-      statusToast.innerHTML = `<span>${message}</span>`;
+    // Dynamic Cardholder filler
+    const fullNameInput = document.getElementById('fullName');
+    fullNameInput.addEventListener('input', () => {
+      if (cardHolderDisplay) cardHolderDisplay.value = fullNameInput.value.toUpperCase();
+    });
+
+    function showModalStatus(type, message) {
+      modalStatusToast.className = `status-toast visible ${type}`;
+      modalStatusToast.innerHTML = `<span>${message}</span>`;
     }
 
-    // Submit Account Form (Register Account in Pendente state)
-    accountForm.addEventListener('submit', async (e) => {
+    // Submit Complete Checkout Flow
+    unifiedForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const fullName = document.getElementById('fullName').value.trim();
@@ -814,19 +823,8 @@
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
 
-      if (!fullName || !companyName || !whatsapp || !email || !password) {
-        showStatus('error', '⚠️ Por favor, preencha todos os campos cadastrais.');
-        return;
-      }
-
-      btnRegisterAccount.disabled = true;
-      btnRegisterAccount.textContent = 'Processando cadastro...';
-      showStatus('info', 'ℹ️ Registrando conta no banco de dados e preparando fatura...');
-
-      // Dynamic Cardholder display
-      if (cardHolderDisplay) {
-        cardHolderDisplay.value = fullName.toUpperCase();
-      }
+      btnCheckoutSubmit.disabled = true;
+      btnCheckoutSubmit.textContent = 'Processando Cadastro...';
 
       const hasFirebase = await hasFirebaseConfig();
       if (hasFirebase) {
@@ -853,8 +851,8 @@
             id: uid,
             name: companyName,
             slug: slug,
-            billingPlan: 'Pendente', // Pending!
-            creditsBalance: 0,       // 0 credits initially!
+            billingPlan: 'Pendente',
+            creditsBalance: 0,
             creditsTotal: 500,
             ownerUid: uid,
             ownerEmail: email,
@@ -898,86 +896,72 @@
             workspaceId: uid
           }));
 
-          // Unlock Payment Column & Attach live Document Listener
-          unlockPaymentPanel(firebase.db, uid);
+          // Attach Live listener to workspace doc
+          startDatabaseObserver(firebase.db, uid);
+
+          // Open sandbox webhook confirmation modal
+          openSimulationModal();
 
         } catch (err) {
           console.error(err);
-          showStatus('error', '⚠️ Erro ao registrar conta: ' + err.message);
-          btnRegisterAccount.disabled = false;
-          btnRegisterAccount.textContent = 'Criar Conta & Liberar Pagamento →';
+          alert('Erro no cadastro: ' + err.message);
+          btnCheckoutSubmit.disabled = false;
+          btnCheckoutSubmit.textContent = 'Finalizar e Pagar Assinatura';
         }
       } else {
-        // Local mode fallback
+        // Fallback local mode
         currentWorkspaceId = 'local_sandbox_user';
-        const session = {
-          access_token: 'local-session-token',
-          user: {
-            uid: currentWorkspaceId,
-            email: email,
-            displayName: fullName,
-            companyName: companyName,
-            workspaceId: currentWorkspaceId,
-            whatsapp: whatsapp
-          }
-        };
-        window.localStorage.setItem('acessor_session', JSON.stringify(session));
-        window.localStorage.setItem('registered_profile', JSON.stringify({
-          fullName,
-          companyName,
-          whatsapp,
-          email,
-          workspaceId: currentWorkspaceId
-        }));
-
-        showStatus('success', '✅ Conta criada offline. Painel de pagamento liberado!');
-        unlockPaymentPanel(null, currentWorkspaceId);
+        openSimulationModal();
       }
     });
 
-    // Unlock payment interface column and listen to database changes
-    async function unlockPaymentPanel(db, uid) {
-      paymentOverlayLock.classList.add('hidden');
-      btnRegisterAccount.textContent = 'Conta Criada ✓';
-      showStatus('success', '✅ Conta criada! Efetue o pagamento simulado para ativar.');
-
-      if (db && uid) {
-        const { doc, onSnapshot } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
-        
-        // Listen to changes in workspace document in real time
-        onSnapshot(doc(db, 'workspaces', uid), (snap) => {
-          if (!snap.exists()) return;
-          const data = snap.data();
-          if (data && data.billingPlan && data.billingPlan !== 'Pendente') {
-            // Workspace has been upgraded by webhook!
-            showStatus('success', `🎉 Assinatura aprovada! Plano ${data.billingPlan} ativado com sucesso.`);
-            btnTriggerWebhook.disabled = true;
-            btnTriggerWebhook.textContent = 'Pagamento Confirmado ✓';
-
-            setTimeout(() => {
-              if (data.ownerEmail && data.ownerEmail.toLowerCase().includes('realizzati')) {
-                localStorage.setItem('user_session_workspace', 'realizzati');
-                window.location.href = 'realizzati.html';
-              } else {
-                localStorage.setItem('user_session_workspace', 'demo');
-                window.location.href = 'dashboard.html';
-              }
-            }, 2500);
-          }
-        });
+    function openSimulationModal() {
+      // Toggle Pix / Card modal elements based on user selection
+      if (activeTab === 'pix') {
+        modalPixBlock.style.display = 'flex';
+        modalInstructionText.textContent = 'Fatura Pix gerada. Escaneie o QR Code ou use a chave copia e cola abaixo.';
+      } else {
+        modalPixBlock.style.display = 'none';
+        modalInstructionText.textContent = 'Fatura de cartão gerada. Confirme a transação simulada no console abaixo.';
       }
+      
+      paymentModalOverlay.classList.add('show');
+      showModalStatus('info', 'ℹ️ Fatura criada no Asaas. Aguardando confirmação de pagamento...');
     }
 
-    // Trigger Simulated Webhook call
-    btnTriggerWebhook.addEventListener('click', async () => {
-      if (!currentWorkspaceId) {
-        showStatus('error', '⚠️ Crie a conta de acesso primeiro para gerar o ID de faturamento.');
-        return;
-      }
+    async function startDatabaseObserver(db, uid) {
+      if (!db || !uid) return;
+      const { doc, onSnapshot } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+      
+      onSnapshot(doc(db, 'workspaces', uid), (snap) => {
+        if (!snap.exists()) return;
+        const data = snap.data();
+        if (data && data.billingPlan && data.billingPlan !== 'Pendente') {
+          // Success triggered by webhook API
+          showModalStatus('success', `🎉 Transação confirmada! Plano ${data.billingPlan} ativado.`);
+          btnSimulateWebhookConfirm.disabled = true;
+          btnSimulateWebhookConfirm.textContent = 'Confirmado ✓';
 
-      btnTriggerWebhook.disabled = true;
-      btnTriggerWebhook.textContent = 'Aguardando Webhook...';
-      showStatus('info', '⚡ Enviando POST com payload de pagamento para /api/asaas-webhook...');
+          setTimeout(() => {
+            if (data.ownerEmail && data.ownerEmail.toLowerCase().includes('realizzati')) {
+              localStorage.setItem('user_session_workspace', 'realizzati');
+              window.location.href = 'realizzati.html';
+            } else {
+              localStorage.setItem('user_session_workspace', 'demo');
+              window.location.href = 'dashboard.html';
+            }
+          }, 2000);
+        }
+      });
+    }
+
+    // Trigger Sandbox Webhook simulation
+    btnSimulateWebhookConfirm.addEventListener('click', async () => {
+      if (!currentWorkspaceId) return;
+
+      btnSimulateWebhookConfirm.disabled = true;
+      btnSimulateWebhookConfirm.textContent = 'Enviando Webhook...';
+      showModalStatus('info', '⚡ Disparando POST para `/api/asaas-webhook` no servidor...');
 
       const details = planDetails[selectedPlan];
       const payload = {
@@ -1000,47 +984,45 @@
           body: JSON.stringify(payload)
         });
 
-        const resData = await response.json();
+        const data = await response.json();
         
-        if (response.ok && resData.success !== false) {
-          showStatus('success', '⚡ Webhook recebido com sucesso! Sincronizando banco de dados...');
+        if (response.ok && data.success !== false) {
+          showModalStatus('success', '⚡ Webhook aceito! Sincronizando ativação do plano...');
           
           if (currentWorkspaceId === 'local_sandbox_user') {
-            // Local fallback simulation redirect
             setTimeout(() => {
               window.location.href = 'dashboard.html';
             }, 2000);
           }
         } else {
-          throw new Error(resData.error || 'Erro na resposta do webhook.');
+          throw new Error(data.error || 'Erro no webhook.');
         }
       } catch (err) {
         console.error(err);
-        showStatus('error', '❌ Falha ao disparar webhook: ' + err.message);
-        btnTriggerWebhook.disabled = false;
-        btnTriggerWebhook.textContent = '⚡ Simular Confirmação de Pagamento';
+        showModalStatus('error', '❌ Erro no webhook: ' + err.message);
+        btnSimulateWebhookConfirm.disabled = false;
+        btnSimulateWebhookConfirm.textContent = '⚡ Simular Confirmação Asaas (Webhook)';
       }
     });
 
-    // Copy PIX Copia e Cola to clipboard function
+    // Copy Pix Key Helper
     window.copyPixKey = function() {
-      const keyText = pixKeyString.textContent;
+      const keyText = modalPixKeyString.textContent || pixKeyString.textContent;
       navigator.clipboard.writeText(keyText).then(() => {
-        const copyBtn = document.querySelector('.btn-copy-pix');
-        if (copyBtn) {
-          copyBtn.textContent = 'Copiado!';
-          copyBtn.style.color = '#10B981';
+        const copyBtns = document.querySelectorAll('.btn-copy-pix');
+        copyBtns.forEach(btn => {
+          btn.textContent = 'Copiado!';
+          btn.style.color = '#10B981';
           setTimeout(() => {
-            copyBtn.textContent = 'Copiar';
-            copyBtn.style.color = '#8b5cf6';
+            btn.textContent = 'Copiar';
+            btn.style.color = '#8b5cf6';
           }, 1500);
-        }
+        });
       }).catch(err => {
         console.error('Erro ao copiar chave pix:', err);
       });
     };
 
-    // Initial setup call
     updateSummary();
   </script>
 </body>
