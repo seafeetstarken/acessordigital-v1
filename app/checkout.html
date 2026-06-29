@@ -710,22 +710,21 @@
           <!-- Pix Tab -->
           <div class="payment-tab-content active" id="tab-pix">
             <div class="pix-qr-container" style="display: flex; flex-direction: row; align-items: center; gap: 1.2rem; background: rgba(0,0,0,0.15); padding: 1.2rem; border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 1.2rem; min-height: 154px;">
-              <!-- Pix Card Mockup on the left (matches Credit Card dimensions exactly) -->
-              <div class="pix-card-mock" style="width: 130px; height: 80px; background: linear-gradient(135deg, #1acaab, #059669); border-radius: 8px; flex-shrink: 0; position: relative; padding: 0.8rem; box-shadow: 0 8px 16px rgba(26, 202, 178, 0.25); display: flex; flex-direction: column; justify-content: space-between;">
-                <!-- Pix Logo & Icon -->
+              <!-- CSS Credit Card on the left (matches Credit Card layout exactly) -->
+              <div class="credit-card-mock" style="width: 130px; height: 80px; background: linear-gradient(135deg, #8b5cf6, #ec4899); border-radius: 8px; flex-shrink: 0; position: relative; padding: 0.8rem; box-shadow: 0 8px 16px rgba(139, 92, 246, 0.25); display: flex; flex-direction: column; justify-content: space-between;">
+                <!-- Card Chip & Brand -->
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <svg viewBox="0 0 100 100" style="width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 8;">
-                    <path d="M50 15 L85 50 L50 85 L15 50 Z" />
-                    <path d="M35 50 L50 35 L65 50 L50 65 Z" fill="#fff" />
-                  </svg>
-                  <div style="font-size: 0.75rem; font-weight: 800; color: #fff; opacity: 0.9; font-family: 'Outfit', sans-serif;">pix</div>
+                  <!-- Chip -->
+                  <div style="width: 18px; height: 14px; background: #fbbf24; border-radius: 3px; position: relative;"></div>
+                  <!-- Brand -->
+                  <div style="font-size: 0.7rem; font-weight: 800; font-family: sans-serif; font-style: italic; color: #fff; opacity: 0.8;">VISA</div>
                 </div>
-                <!-- Card code title -->
-                <div style="font-family: monospace; font-size: 0.72rem; color: #fff; letter-spacing: 0.5px; margin-top: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">CHAVE AUTOMÁTICA</div>
-                <!-- Card Footer metadata -->
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.55rem; color: rgba(255,255,255,0.9); text-transform: uppercase;">
-                  <span>ACESSOR DIGITAL</span>
-                  <span>ONLINE</span>
+                <!-- Card Number -->
+                <div style="font-family: monospace; font-size: 0.72rem; color: #fff; letter-spacing: 1px; margin-top: 0.5rem;">•••• •••• •••• 4242</div>
+                <!-- Holder Name & Exp -->
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.55rem; color: rgba(255,255,255,0.8); text-transform: uppercase;">
+                  <span class="cardholder-name-label" style="max-width: 75px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">NOME TITULAR</span>
+                  <span>12/32</span>
                 </div>
               </div>
               <!-- Pix details and copy button on the right (matches Card Tab exactly) -->
@@ -759,7 +758,7 @@
                 <div style="font-family: monospace; font-size: 0.72rem; color: #fff; letter-spacing: 1px; margin-top: 0.5rem;">•••• •••• •••• 4242</div>
                 <!-- Holder Name & Exp -->
                 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.55rem; color: rgba(255,255,255,0.8); text-transform: uppercase;">
-                  <span id="cardHolderDisplayLabel" style="max-width: 75px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">NOME TITULAR</span>
+                  <span class="cardholder-name-label" style="max-width: 75px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">NOME TITULAR</span>
                   <span>12/32</span>
                 </div>
               </div>
@@ -770,7 +769,7 @@
                   <span>Cartão de Crédito</span>
                 </div>
                 <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.35; margin: 0;">Faturamento automático recorrente via cartão de homologação.</p>
-                <div class="pix-copy-box" style="margin-top: 0.2rem; background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.05);">
+                <div class="pix-copy-box" style="margin-top: 0.2rem; background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.8rem; border-radius: 8px;">
                   <span class="pix-copy-text" style="color: rgba(255,255,255,0.7); font-family: monospace; font-size: 0.75rem;">Visa final 4242 (Sandbox)</span>
                   <span style="font-size: 0.72rem; color: #10B981; font-weight: 700; text-transform: uppercase;">Ativo</span>
                 </div>
@@ -930,7 +929,9 @@
     // Dynamic Cardholder filler
     const fullNameInput = document.getElementById('fullName');
     fullNameInput.addEventListener('input', () => {
-      if (cardHolderDisplay) cardHolderDisplay.textContent = fullNameInput.value.toUpperCase() || 'NOME TITULAR';
+      const val = fullNameInput.value.toUpperCase() || 'NOME TITULAR';
+      const labels = document.querySelectorAll('.cardholder-name-label');
+      labels.forEach(l => l.textContent = val);
     });
 
     function showModalStatus(type, message) {
