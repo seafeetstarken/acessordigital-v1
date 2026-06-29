@@ -736,8 +736,8 @@
                 </div>
                 <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.35; margin: 0;">Faturamento instantâneo com liberação automática de créditos.</p>
                 <div class="pix-copy-box" style="margin-top: 0.2rem; background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.8rem; border-radius: 8px;">
-                  <span class="pix-copy-text" id="pixKeyString" style="font-family: monospace; font-size: 0.72rem; color: rgba(255,255,255,0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%;">00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407129.005802BR5916AcessorDigitalV26009SaoPaulo62070503***</span>
-                  <button type="button" class="btn-copy-pix" onclick="copyPixKey()" style="font-size: 0.72rem; color: #8b5cf6; font-weight: 700; text-transform: uppercase; background: transparent; border: none; cursor: pointer;">Copiar</button>
+                  <span class="pix-copy-text" style="color: rgba(255,255,255,0.7); font-family: inherit; font-size: 0.75rem;">Chave Pix (Sandbox)</span>
+                  <button type="button" class="btn-copy-pix" id="btnCopyPixMain" onclick="copyPixKey()" style="font-size: 0.72rem; color: #10B981; font-weight: 700; text-transform: uppercase; background: transparent; border: none; cursor: pointer;" data-key="00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407129.005802BR5916AcessorDigitalV26009SaoPaulo62070503***">Copiar</button>
                 </div>
               </div>
             </div>
@@ -919,7 +919,11 @@
       summaryPlanTotal.textContent = `R$ ${details.total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
       
       const key = `00020126580014br.gov.bcb.pix0136acessor-digital-pix-simulated-payment-key-asaas-05204000053039865407${details.total.toFixed(2)}5802BR5916AcessorDigitalV26009SaoPaulo62070503***`;
-      pixKeyString.textContent = key;
+      
+      // Update data-key attribute on the main copy button
+      const btnCopyMain = document.getElementById('btnCopyPixMain');
+      if (btnCopyMain) btnCopyMain.setAttribute('data-key', key);
+      
       if (modalPixKeyString) modalPixKeyString.textContent = key;
     }
 
@@ -988,6 +992,10 @@
               </div>
             </div>
           `;
+          
+          // Update the main page copy button data-key with the real Pix key
+          const btnCopyMain = document.getElementById('btnCopyPixMain');
+          if (btnCopyMain) btnCopyMain.setAttribute('data-key', resData.pix.payload);
         }
 
         // Setup session profile in local storage
@@ -1120,7 +1128,9 @@
 
     // Copy Pix Key Helper
     window.copyPixKey = function() {
-      const keyText = modalPixKeyString.textContent || pixKeyString.textContent;
+      const btnCopyMain = document.getElementById('btnCopyPixMain');
+      const keyText = btnCopyMain ? btnCopyMain.getAttribute('data-key') : (modalPixKeyString ? modalPixKeyString.textContent : '');
+      
       navigator.clipboard.writeText(keyText).then(() => {
         const copyBtns = document.querySelectorAll('.btn-copy-pix');
         copyBtns.forEach(btn => {
@@ -1128,7 +1138,7 @@
           btn.style.color = '#10B981';
           setTimeout(() => {
             btn.textContent = 'Copiar';
-            btn.style.color = '#8b5cf6';
+            btn.style.color = '#10B981';
           }, 1500);
         });
       }).catch(err => {
