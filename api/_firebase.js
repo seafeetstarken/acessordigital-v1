@@ -124,7 +124,11 @@ function initializeFirebase() {
       console.log('[Firebase Admin] Initialized successfully.');
     } catch (err) {
       console.error('[Firebase Admin] Initialization failed:', err);
-      initError = `Erro ao inicializar Firebase Admin: ${err.message}`;
+      const keyStr = serviceAccount.private_key || serviceAccount.privateKey || '';
+      const first20 = keyStr ? keyStr.substring(0, 20) : 'null';
+      const last20 = keyStr ? keyStr.substring(keyStr.length - 20) : 'null';
+      const len = keyStr ? keyStr.length : 0;
+      initError = `Erro ao inicializar Firebase Admin: ${err.message} (len: ${len}, start: "${first20}", end: "${last20}")`;
     }
   } else {
     if (!initError) {
