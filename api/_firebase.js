@@ -25,15 +25,13 @@ function sanitizePrivateKey(key) {
   
   let normalized = clean.replace(/\s+/g, ' ');
   if (normalized.includes(header) && normalized.includes(footer)) {
-    if (!clean.includes('\n') || clean.split('\n').length < 3) {
-      const startIdx = normalized.indexOf(header) + header.length;
-      const endIdx = normalized.indexOf(footer);
-      const body = normalized.substring(startIdx, endIdx).replace(/\s+/g, '');
-      // Split into 64-char lines for PEM compliance
-      const chunks = body.match(/.{1,64}/g);
-      if (chunks) {
-        clean = `${header}\n${chunks.join('\n')}\n${footer}\n`;
-      }
+    const startIdx = normalized.indexOf(header) + header.length;
+    const endIdx = normalized.indexOf(footer);
+    const body = normalized.substring(startIdx, endIdx).replace(/\s+/g, '');
+    // Split into 64-char lines for PEM compliance
+    const chunks = body.match(/.{1,64}/g);
+    if (chunks) {
+      clean = `${header}\n${chunks.join('\n')}\n${footer}\n`;
     }
   }
   return clean;
