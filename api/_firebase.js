@@ -128,7 +128,8 @@ function initializeFirebase() {
       const first20 = keyStr ? keyStr.substring(0, 20) : 'null';
       const last20 = keyStr ? keyStr.substring(keyStr.length - 20) : 'null';
       const len = keyStr ? keyStr.length : 0;
-      initError = `Erro ao inicializar Firebase Admin: ${err.message} (len: ${len}, start: "${first20}", end: "${last20}")`;
+      const emailStr = serviceAccount.client_email || serviceAccount.clientEmail || 'unknown';
+      initError = `Erro ao inicializar Firebase Admin: ${err.message} (Email: ${emailStr}, len: ${len}, start: "${first20}", end: "${last20}")`;
     }
   } else {
     if (!initError) {
