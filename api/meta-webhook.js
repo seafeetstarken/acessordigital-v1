@@ -1,23 +1,4 @@
-import admin from 'firebase-admin';
-
-// Inicializar Firebase Admin SDK se não estiver inicializado
-if (!admin.apps.length) {
-  const serviceAccountKeyB64 = process.env.GA_SERVICE_ACCOUNT_KEY;
-  if (serviceAccountKeyB64) {
-    try {
-      const serviceAccountJson = Buffer.from(serviceAccountKeyB64, 'base64').toString('utf-8');
-      const serviceAccount = JSON.parse(serviceAccountJson);
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-      });
-      console.log('[meta-webhook] Firebase Admin inicializado com sucesso.');
-    } catch (err) {
-      console.error('[meta-webhook] Erro ao inicializar Firebase Admin:', err);
-    }
-  } else {
-    console.warn('[meta-webhook] GA_SERVICE_ACCOUNT_KEY nao configurada.');
-  }
-}
+import { db, isInitialized, initError } from './_firebase.js';
 
 export default async function handler(req, res) {
   // Configurar CORS
@@ -51,12 +32,20 @@ export default async function handler(req, res) {
 
   // 2. Processamento das Notificações de Mensagem (POST)
   if (req.method === 'POST') {
+    if (!isInitialized) {
+      console.error('[meta-webhook] Firebase Admin nao inicializado:', initError);
+      return res.status(500).json({ 
+        error: 'Serviço de banco de dados temporariamente indisponível no servidor.',
+        details: initError
+      });
+    }
+
     const body = req.body;
 
     console.log('[meta-webhook] Recebendo notificacao:', JSON.stringify(body));
 
     if (body.object === 'page' || body.object === 'instagram') {
-      const db = admin.firestore();
+
 
       try {
         for (const entry of body.entry) {

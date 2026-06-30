@@ -1,8 +1,4 @@
-/**
- * api/analytics.js - Vercel Serverless Function
- * Proxy seguro para a Google Analytics Data API v1beta.
- * Service account JSON nunca exposta ao frontend.
- */
+import { db, serviceAccount, isInitialized, initError } from './_firebase.js';
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
@@ -13,24 +9,22 @@ export default async function handler(req, res) {
   }
   res.setHeader('Access-Control-Allow-Origin', '*');
 
-  const { GA_SERVICE_ACCOUNT_KEY, GA_PROPERTY_ID } = process.env;
+  if (!isInitialized) {
+    console.error('[analytics] Firebase Admin nao inicializado:', initError);
+    return res.status(500).json({ 
+      error: 'Serviço de banco de dados temporariamente indisponível no servidor.',
+      details: initError
+    });
+  }
 
-  if (!GA_SERVICE_ACCOUNT_KEY) {
+  if (!serviceAccount) {
     return res.status(500).json({
       error: 'GA_SERVICE_ACCOUNT_KEY nao configurado.',
       hint: 'Adicione a variavel de ambiente no painel Vercel.'
     });
   }
 
-  let serviceAccount;
-  try {
-    serviceAccount = JSON.parse(
-      Buffer.from(GA_SERVICE_ACCOUNT_KEY, 'base64').toString('utf-8')
-    );
-  } catch (e) {
-    return res.status(500).json({ error: 'GA_SERVICE_ACCOUNT_KEY invalido (deve ser JSON em base64).' });
-  }
-
+  const { GA_PROPERTY_ID } = process.env;
   const query = req.method === 'POST' ? req.body : req.query;
   const { workspaceId, report = 'overview', start_date = '30daysAgo', end_date = 'today' } = query;
 
@@ -38,13 +32,6 @@ export default async function handler(req, res) {
 
   if (workspaceId) {
     try {
-      const { default: admin } = await import('firebase-admin');
-      if (!admin.apps.length) {
-        admin.initializeApp({
-          credential: admin.credential.cert(serviceAccount)
-        });
-      }
-      const db = admin.firestore();
       const workspaceSnap = await db.collection('workspaces').doc(workspaceId).get();
       if (workspaceSnap.exists) {
         const data = workspaceSnap.data() || {};

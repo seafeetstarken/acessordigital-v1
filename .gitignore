@@ -9,3 +9,9 @@
 gcp-service-account.json
 seafeet-starken-core-*.json
 client_secret_*.json
+
+# Dependency Directories
+node_modules/
+
+
+.vercel

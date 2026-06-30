@@ -1,21 +1,4 @@
-import admin from 'firebase-admin';
-
-// Inicializar Firebase Admin SDK se não estiver inicializado
-if (!admin.apps.length) {
-  const serviceAccountKeyB64 = process.env.GA_SERVICE_ACCOUNT_KEY;
-  if (serviceAccountKeyB64) {
-    try {
-      const serviceAccountJson = Buffer.from(serviceAccountKeyB64, 'base64').toString('utf-8');
-      const serviceAccount = JSON.parse(serviceAccountJson);
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-      });
-      console.log('[auth-meta-callback] Firebase Admin inicializado.');
-    } catch (err) {
-      console.error('[auth-meta-callback] Erro Firebase Admin:', err);
-    }
-  }
-}
+import { db, isInitialized, initError } from './_firebase.js';
 
 export default async function handler(req, res) {
   const { code, state } = req.query || {};
@@ -26,6 +9,11 @@ export default async function handler(req, res) {
   if (!code || !workspaceId) {
     console.warn('[auth-meta-callback] Codigo ou Workspace ID ausentes na requisição.');
     return res.status(400).send('Bad Request: missing auth code or workspace state.');
+  }
+
+  if (!isInitialized) {
+    console.error('[auth-meta-callback] Firebase Admin nao inicializado:', initError);
+    return res.status(500).send(`Server Error: Banco de dados temporariamente indisponível. Detalhes: ${initError}`);
   }
 
   const clientId = process.env.META_CLIENT_ID || '1005343792207733';
@@ -117,7 +105,6 @@ export default async function handler(req, res) {
     const activePage = metaPages[0];
 
     // 5. Salvar dados no documento do Workspace no Firestore
-    const db = admin.firestore();
     const workspaceRef = db.collection('workspaces').doc(workspaceId);
     const workspaceSnap = await workspaceRef.get();
 

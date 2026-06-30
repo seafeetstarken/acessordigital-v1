@@ -1,21 +1,4 @@
-import admin from 'firebase-admin';
-
-// Inicializar Firebase Admin SDK se não estiver inicializado
-if (!admin.apps.length) {
-  const serviceAccountKeyB64 = process.env.GA_SERVICE_ACCOUNT_KEY;
-  if (serviceAccountKeyB64) {
-    try {
-      const serviceAccountJson = Buffer.from(serviceAccountKeyB64, 'base64').toString('utf-8');
-      const serviceAccount = JSON.parse(serviceAccountJson);
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-      });
-      console.log('[meta-ads] Firebase Admin inicializado.');
-    } catch (err) {
-      console.error('[meta-ads] Erro Firebase Admin:', err);
-    }
-  }
-}
+import { db, isInitialized, initError } from './_firebase.js';
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
@@ -27,6 +10,16 @@ export default async function handler(req, res) {
 
   res.setHeader('Access-Control-Allow-Origin', '*');
 
+  if (req.query?.workspaceId || req.body?.workspaceId) {
+    if (!isInitialized) {
+      console.error('[meta-ads] Firebase Admin nao inicializado:', initError);
+      return res.status(500).json({ 
+        error: 'Serviço de banco de dados temporariamente indisponível no servidor.',
+        details: initError
+      });
+    }
+  }
+
   const query = req.method === 'POST' ? req.body : req.query;
   const { workspaceId, endpoint = 'insights', date_preset = 'last_30d', fields, breakdown, limit = 50 } = query;
 
@@ -36,7 +29,6 @@ export default async function handler(req, res) {
   // Se workspaceId for fornecido, tentar carregar credenciais do Firestore (Multi-tenant)
   if (workspaceId) {
     try {
-      const db = admin.firestore();
       const workspaceSnap = await db.collection('workspaces').doc(workspaceId).get();
       if (workspaceSnap.exists) {
         const data = workspaceSnap.data() || {};

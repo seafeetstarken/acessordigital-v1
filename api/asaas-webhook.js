@@ -1,56 +1,4 @@
-import admin from 'firebase-admin';
-import fs from 'fs';
-import path from 'path';
-
-// Inicializar Firebase Admin SDK se não estiver inicializado
-if (!admin.apps.length) {
-  const serviceAccountKey = process.env.GA_SERVICE_ACCOUNT_KEY;
-  let serviceAccount = null;
-
-  if (serviceAccountKey) {
-    try {
-      const trimmed = serviceAccountKey.trim();
-      if (trimmed.startsWith('{')) {
-        serviceAccount = JSON.parse(trimmed);
-        console.log('[asaas-webhook] Firebase Admin parsed successfully from raw JSON.');
-      } else {
-        const serviceAccountJson = Buffer.from(serviceAccountKey, 'base64').toString('utf-8');
-        serviceAccount = JSON.parse(serviceAccountJson);
-        console.log('[asaas-webhook] Firebase Admin parsed successfully from base64.');
-      }
-    } catch (err) {
-      console.error('[asaas-webhook] Erro ao decodificar ou parsear GA_SERVICE_ACCOUNT_KEY:', err);
-    }
-  } else {
-    // Local fallback: search for credential JSON files in the workspace root
-    try {
-      const files = ['seafeet-starken-core-25fe21036efb.json', 'gcp-service-account.json'];
-      for (const file of files) {
-        const fullPath = path.join(process.cwd(), file);
-        if (fs.existsSync(fullPath)) {
-          serviceAccount = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-          console.log(`[asaas-webhook] Firebase Admin inicializado usando arquivo local: ${file}`);
-          break;
-        }
-      }
-    } catch (err) {
-      console.warn('[asaas-webhook] Erro ao buscar arquivos de credenciais locais:', err);
-    }
-  }
-
-  if (serviceAccount) {
-    try {
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-      });
-      console.log('[asaas-webhook] Firebase Admin inicializado com sucesso.');
-    } catch (err) {
-      console.error('[asaas-webhook] Erro ao inicializar Firebase Admin:', err);
-    }
-  } else {
-    console.warn('[asaas-webhook] Firebase Admin nao foi inicializado: credenciais nao configuradas.');
-  }
-}
+import { db, isInitialized, initError } from './_firebase.js';
 
 export default async function handler(req, res) {
   // Configurar CORS
@@ -64,6 +12,14 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  if (!isInitialized) {
+    console.error('[asaas-webhook] Firebase Admin nao inicializado:', initError);
+    return res.status(500).json({ 
+      error: 'Serviço de banco de dados temporariamente indisponível no servidor.',
+      details: initError
+    });
   }
 
   // 1. Validar Token de Segurança do Webhook
@@ -82,8 +38,6 @@ export default async function handler(req, res) {
   if (!event) {
     return res.status(400).json({ error: 'Bad Request: missing event' });
   }
-
-  const db = admin.firestore();
 
   // 2. Tratar Evento: Cancelamento de Assinatura (SUBSCRIPTION_DELETED)
   if (event === 'SUBSCRIPTION_DELETED') {
