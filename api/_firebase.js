@@ -16,6 +16,8 @@ function sanitizePrivateKey(key) {
   // Replace escaped newlines
   clean = clean.replace(/\\n/g, '\n');
   clean = clean.replace(/\\r/g, '\r');
+  // Remove actual carriage return characters (CR) to prevent CRLF parsing errors in Node.js
+  clean = clean.replace(/\r/g, '');
   
   // Reconstruct if it is single-line or newlines were lost
   const header = '-----BEGIN PRIVATE KEY-----';
