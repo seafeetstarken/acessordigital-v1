@@ -1022,14 +1022,16 @@
 
         if (hasFirebase) {
           const firebase = await loadFirebaseApp();
-          if (firebase?.db && firebase?.auth) {
+          if (firebase?.db && firebase?.auth && resData.customToken) {
             try {
-              const { signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
-              await signInWithEmailAndPassword(firebase.auth, email, password);
-              console.log('[Firebase] Client authenticated successfully.');
+              const { signInWithCustomToken } = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+              await signInWithCustomToken(firebase.auth, resData.customToken);
+              console.log('[Firebase] Client authenticated successfully via custom token.');
             } catch (authErr) {
-              console.error('[Firebase] Client authentication failed:', authErr);
+              console.error('[Firebase] Client authentication failed via custom token:', authErr);
             }
+            startDatabaseObserver(firebase.db, resData.workspaceId);
+          } else {
             startDatabaseObserver(firebase.db, resData.workspaceId);
           }
         }

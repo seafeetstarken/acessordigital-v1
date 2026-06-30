@@ -232,12 +232,22 @@ export default async function handler(req, res) {
       }
     }
 
+    // 7. Generate Firebase custom token for client authentication
+    let customToken = '';
+    try {
+      customToken = await auth.createCustomToken(workspaceId);
+      console.log(`[create-subscription] Token customizado gerado para o uid: ${workspaceId}`);
+    } catch (tokenErr) {
+      console.error('[create-subscription] Erro ao criar token customizado:', tokenErr);
+    }
+
     return res.status(200).json({
       success: true,
       workspaceId,
       subscriptionId: subData.id,
       customerId,
-      pix: pixData // { encodedImage, payload }
+      pix: pixData, // { encodedImage, payload }
+      customToken
     });
 
   } catch (err) {
