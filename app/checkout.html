@@ -974,7 +974,8 @@
         const resData = await response.json();
 
         if (!response.ok || resData.error) {
-          throw new Error(resData.error || 'Erro desconhecido ao criar faturamento.');
+          const detailMsg = resData.error + (resData.details ? `\n(Detalhes: ${resData.details})` : '');
+          throw new Error(detailMsg || 'Erro desconhecido ao criar faturamento.');
         }
 
         currentWorkspaceId = resData.workspaceId;
