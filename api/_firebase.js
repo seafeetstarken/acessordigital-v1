@@ -8,6 +8,35 @@ let serviceAccount = null;
 let isInitialized = false;
 let initError = null;
 
+function sanitizePrivateKey(key) {
+  if (!key || typeof key !== 'string') return key;
+  let clean = key.trim();
+  // Strip outer quotes
+  clean = clean.replace(/^['"]|['"]$/g, '').trim();
+  // Replace escaped newlines
+  clean = clean.replace(/\\n/g, '\n');
+  clean = clean.replace(/\\r/g, '\r');
+  
+  // Reconstruct if it is single-line or newlines were lost
+  const header = '-----BEGIN PRIVATE KEY-----';
+  const footer = '-----END PRIVATE KEY-----';
+  
+  let normalized = clean.replace(/\s+/g, ' ');
+  if (normalized.includes(header) && normalized.includes(footer)) {
+    if (!clean.includes('\n') || clean.split('\n').length < 3) {
+      const startIdx = normalized.indexOf(header) + header.length;
+      const endIdx = normalized.indexOf(footer);
+      const body = normalized.substring(startIdx, endIdx).replace(/\s+/g, '');
+      // Split into 64-char lines for PEM compliance
+      const chunks = body.match(/.{1,64}/g);
+      if (chunks) {
+        clean = `${header}\n${chunks.join('\n')}\n${footer}\n`;
+      }
+    }
+  }
+  return clean;
+}
+
 function initializeFirebase() {
   if (admin.apps.length > 0) {
     db = admin.firestore();
@@ -44,8 +73,6 @@ function initializeFirebase() {
 
     if (projectId && clientEmail && privateKey) {
       try {
-        // Handle newline characters in private key
-        privateKey = privateKey.replace(/\\n/g, '\n').replace(/^['"]|['"]$/g, '').trim();
         serviceAccount = {
           projectId,
           clientEmail,
@@ -79,9 +106,14 @@ function initializeFirebase() {
   // Initialize Admin SDK if we have credentials
   if (serviceAccount) {
     try {
+      // Sanitize private key in whichever format it exists (snake_case or camelCase)
       if (serviceAccount.private_key) {
-        serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+        serviceAccount.private_key = sanitizePrivateKey(serviceAccount.private_key);
       }
+      if (serviceAccount.privateKey) {
+        serviceAccount.privateKey = sanitizePrivateKey(serviceAccount.privateKey);
+      }
+
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
       });
